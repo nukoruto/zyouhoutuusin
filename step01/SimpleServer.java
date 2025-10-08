@@ -52,20 +52,20 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－０：　コンストラクタ【確認作業】
+ *<BR> 課題1－０：　コンストラクタ【確認作業】
  *<BR>   ・サーバの処理の流れを確認すること。
  */
 	public SimpleServer(String[] args){
 		super();
 		
 		//ポート番号の確定
-		boolean f1 = this.analizeCommandline(args);//課題①－１
+		boolean f1 = this.analizeCommandline(args);//課題1－１
 		if(!f1){
 			System.exit(1);
 		}
 		
 		//ソケットの生成とbind処理
-		boolean f2 = this.setSocket();//課題①－２
+		boolean f2 = this.setSocket();//課題1－２
 		
 		if(!f2){
 			System.exit(1);
@@ -78,26 +78,26 @@ public class SimpleServer extends Thread {
 		}
 		
 		//受動的オープン処理とaccept処理
-		boolean f3 = this.waitClient();//課題①－３
+		boolean f3 = this.waitClient();//課題1－３
 		if(!f3){
 			System.exit(1);
 		}
 		
 		//クライアントと接続したソケットから、入出力オブジェクトの生成
-		boolean f4 = this.setIO();//課題①－４
+		boolean f4 = this.setIO();//課題1－４
 		if(!f4){
 			System.exit(1);
 		}
 		
 		//サーバ情報、クライアント情報の表示
-		boolean f5 = this.printSocketInfo(); //課題①－５
+		boolean f5 = this.printSocketInfo(); //課題1－５
 		if(!f5){
 			System.exit(1);
 		}
 		
 		//チャットサーバの機能始動と終了
 		if(f3 && f4 && f5){
-			start(); //課題①－６
+			start(); //課題1－６
 		}
 		else{
 			System.exit(1);
@@ -106,7 +106,7 @@ public class SimpleServer extends Thread {
 	
 	
 /**
- *<BR> 課題①－１：　コマンドライン解析処理【確認作業】
+ *<BR> 課題1－１：　コマンドライン解析処理【確認作業】
  *<BR>   ・APIにてIntegerクラスのparseIntメソッドを確認すること。
  *<BR>   ・引数が1つで、数字ならば、ポート番号として設定する。
  *<BR>   ・引数が上述以外の場合には、ポート番号は初期値のままとする。
@@ -127,7 +127,7 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－２：　サーバソケットの生成処理【ソースコード追記作業】
+ *<BR> 課題1－２：　サーバソケットの生成処理【ソースコード追記作業】
  *<BR>   ・APIにてServerSocketクラスのコンストラクタ等を確認すること。
  *<BR>   ・オブジェクトの生成、ポート番号の設定をする（socketとbind）。
  *<BR>   ・例外発生時の処理はfalseを返す。
@@ -149,7 +149,7 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－３：　ソケット受付待ち処理【ソースコード追記作業】
+ *<BR> 課題1－３：　ソケット受付待ち処理【ソースコード追記作業】
  *<BR>   ・APIにてServerSocketクラスのメソッドを調べること。
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
@@ -171,7 +171,7 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－４：　入出力オブジェクトの生成処理【ソースコード追記作業】
+ *<BR> 課題1－４：　入出力オブジェクトの生成処理【ソースコード追記作業】
  *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
  *<BR>   ・文字コードはSJISを指定する。
  *<BR>   ・例外発生時の処理はfalseを返す。
@@ -195,7 +195,7 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－５：　ソケットの接続先と接続元の情報をclient_socketから取り出して標準出力。【ソースコード変更作業】
+ *<BR> 課題1－５：　ソケットの接続先と接続元の情報をclient_socketから取り出して標準出力。【ソースコード変更作業】
  *<BR>   ・APIにてSocketクラスを調べること。
  */
 	public boolean printSocketInfo(){
@@ -213,11 +213,11 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－６：　スレッドの実体（クライアントとの通信処理）【ソースコード追記作業】
+ *<BR> 課題1－６：　スレッドの実体（クライアントとの通信処理）【ソースコード追記作業】
  *<BR>   ・受信した文字列がnullならば、通信中にエラーが起こったと判断し、while文から抜ける。
  *<BR>   ・受信した文字列が「bye」ならば、通信の終了と判断し、while文から抜ける。
  *<BR>   ・受信した文字が上記以外ならば、文字列の先頭に「ECHO: 」を付与して、Clientに送信しwhile文を繰り返す。
- *<BR>   ・while文から抜け出した後、通信終了の処理を行う。（課題①－７）
+ *<BR>   ・while文から抜け出した後、通信終了の処理を行う。（課題1－７）
  *<BR>   ・tryのスコープで例外(IOException )が発生した場合は、その時点から強制的にcatchへ飛ぶ。
  */
 	public void run(){
@@ -251,7 +251,7 @@ public class SimpleServer extends Thread {
 				}
 			}
 			
-			this.close();  //課題①－７
+			this.close();  //課題1－７
 		}
 		catch(IOException e){
 			System.err.println(""+e+":クライアントとの接続に失敗しました。<run>");
@@ -259,7 +259,7 @@ public class SimpleServer extends Thread {
 	}
 	
 /**
- *<BR> 課題①－７：　プログラムの終了処理【確認作業】
+ *<BR> 課題1－７：　プログラムの終了処理【確認作業】
  *<BR>   ・入出力オブジェクトの終了
  *<BR>   ・スレッド(ServerSocketとSocket)の終了
  */
