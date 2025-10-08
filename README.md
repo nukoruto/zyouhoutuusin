@@ -1,1 +1,1 @@
-# zyouhoutuusin
+# 情報通信実験をやりたい
