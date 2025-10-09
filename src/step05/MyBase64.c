@@ -4,101 +4,101 @@
 #include <math.h>
 #include <time.h>
 
-/* Base64�̕ϊ��e�[�u�� */
+/* Base64の変換テーブル */
 static char TABLE[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-/* Base64�̏����ߒ���2�i���̕�������쐬����ꍇ */
-char* encode(char *str, int len, int *len2); /* �G���R�[�_�[�i�����ߒ���2�i���̕�������쐬����ϊ��j */
-char* decode(char *str2, int len2, int *len3); /* �f�R�[�_�[�i�����ߒ���2�i���̕�������쐬����ϊ��j */
-char* toBary1(char c, int bit); /* 1�����萔��2�i���̕�����ɕϊ� */
-char* toBaryN(char *str, int len, int bit); /* N�����̕������2�i���̕�����ɕϊ� */
-int toDec(char *b, int bit); /* 2�i���̕������10�i����int�^�ɕϊ� */
+/* Base64の処理過程で2進数の文字列を作成する場合 */
+char* encode(char *str, int len, int *len2); /* エンコーダー（処理過程で2進数の文字列を作成する変換） */
+char* decode(char *str2, int len2, int *len3); /* デコーダー（処理過程で2進数の文字列を作成する変換） */
+char* toBary1(char c, int bit); /* 1文字定数を2進数の文字列に変換 */
+char* toBaryN(char *str, int len, int bit); /* N文字の文字列を2進数の文字列に変換 */
+int toDec(char *b, int bit); /* 2進数の文字列を10進数のint型に変換 */
 
-/* �f�o�b�O�p */
-void printArray(char *s, int len); /* �k�������̂Ȃ�������̕W���o�� */
+/* デバッグ用 */
+void printArray(char *s, int len); /* ヌル文字のない文字列の標準出力 */
 
-/* ��Փx���� */
-/* Base64�̏����ߒ���2�i���̕�������쐬���Ȃ��ꍇ�i�V�t�g���Z���g���j */
-char* encode2(char *str, int len, int *len2); /* �G���R�[�_�[�i�����ߒ���2�i���̕�������쐬���Ȃ��ϊ��j */
-char* decode2(char *str2, int len2, int *len3); /* �f�R�[�_�[�i�����ߒ���2�i���̕�������쐬���Ȃ��ϊ��j */
+/* 難易度高め */
+/* Base64の処理過程で2進数の文字列を作成しない場合（シフト演算を使う） */
+char* encode2(char *str, int len, int *len2); /* エンコーダー（処理過程で2進数の文字列を作成しない変換） */
+char* decode2(char *str2, int len2, int *len3); /* デコーダー（処理過程で2進数の文字列を作成しない変換） */
 
 
 
 
 int main(void){
-    char target[303200]; //="kurume kosen";/* ���̕�����i�k����������j */
-    char *str1;/* ���̕����z��i�k�������Ȃ��̕����萔�̔z��j */
-    char *str2;/* �G���R�[�h */
-    char *str3;/* �f�R�[�h */
-    int len1,len2, len3; /* �e������̒��� */
+    char target[303200]; //="kurume kosen";/* 元の文字列（ヌル文字あり） */
+    char *str1;/* 元の文字配列（ヌル文字なしの文字定数の配列） */
+    char *str2;/* エンコード */
+    char *str3;/* デコード */
+    int len1,len2, len3; /* 各文字列の長さ */
     int i;
     clock_t t1, t2;
 
     fgets(target, sizeof(target)-1, stdin);
 
-    t1 = clock(); /* �v���J�n */
-    /* str1�̍쐬�B�k������������char�z��Ƃ��Ċi�[���� */
+    t1 = clock(); /* 計測開始 */
+    /* str1の作成。ヌル文字無しのchar配列として格納する */
     str1 = (char*)malloc(strlen(target)*sizeof(char));
-    len1 = strlen(target)-1; //fgets���g���ꍇ�͉��s�����̂���-1����Bprintf�����̏ꍇ��-1���Ȃ��B
-    printf("len1=%d\n", len1);
+    len1 = strlen(target)-1; //fgetsを使う場合は改行除去のため-1する。printfや代入の場合は-1しない。
+    printf("len1=%d¥n", len1);
     for(i=0; i<len1; i++){
         *(str1+i) = *(target+i);
     }
 
-//    for(i=0; i<100; i++){ //�v���pfor���̊J�n
-    /* �G���R�[�h */
+//    for(i=0; i<100; i++){ //計測用for文の開始
+    /* エンコード */
     str2 = encode(str1, len1, &len2);
 //    str2 = encode2(str1, len1, &len2);
     printArray(str1, len1);
     printf(" => ");
     printArray(str2, len2);
-    printf("\n");
+    printf("¥n");
 
 
-    /* �f�R�[�h */
+    /* デコード */
     str3 = decode(str2, len2, &len3);
     str3 = decode2(str2, len2, &len3);
     printArray(str2, len2);
     printf(" => ");
     printArray(str3, len3);
-    printf("\n");
-//    } //�v���pfor���̏I��
-    t2 = clock(); /* �v���I�� */
-    printf("run time: %f(sec)\n", (double)(t2-t1)/CLOCKS_PER_SEC);
+    printf("¥n");
+//    } //計測用for文の終了
+    t2 = clock(); /* 計測終了 */
+    printf("run time: %f(sec)¥n", (double)(t2-t1)/CLOCKS_PER_SEC);
 
-    //free(target); //���I�Ɋ��蓖�Ă��Ă��Ȃ��̂�free�͕s�v
-    free(str1); //�֐����œ��I�Ɋ��蓖�Ă��Ă���̂�free�����s
-    free(str2); //�֐����œ��I�Ɋ��蓖�Ă��Ă���̂�free�����s
-    free(str3); //�֐����œ��I�Ɋ��蓖�Ă��Ă���̂�free�����s
+    //free(target); //動的に割り当てられていないのでfreeは不要
+    free(str1); //関数内で動的に割り当てられているのでfreeを実行
+    free(str2); //関数内で動的に割り当てられているのでfreeを実行
+    free(str3); //関数内で動的に割り当てられているのでfreeを実行
     return 0;
 }
 
 
 
 /**
-  �G���R�[�h����֐�
-  str1: ���̕�����i�k�������Ȃ��j
-  len1: ���̕�����̒���
-  *len2: �G���R�[�h��̕�����̒���
-  �߂�l: �G���R�[�h��̕�����(str2)
+  エンコードする関数
+  str1: 元の文字列（ヌル文字なし）
+  len1: 元の文字列の長さ
+  *len2: エンコード後の文字列の長さ
+  戻り値: エンコード後の文字列(str2)
 
-  �A���S���Y��
-  �����P�Dstr1��2�i���̕�����istrB�j�ɂ���i1�����萔��8bit��2�i���ɕϊ��j
-  �����Q�DstrB��6bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr2�j�����
-      �ϊ��ɂ�char�z���TABLE���g���A6bit��2�i���𐮐��l(10�i��)�ɂ��āA�z��TABLE�̓Y�����Ɏg���B
-      ���̔z��TABLE�̒l���A�ϊ���̕����萔�B
-  �����R�Dstr2�̒�����4�̔{���ɂȂ�悤�ɒ�������B�s���́u=�v�Ŗ��߂�B
+  アルゴリズム
+  処理１．str1を2進数の文字列（strB）にする（1文字定数は8bitの2進数に変換）
+  処理２．strBを6bit刻みで文字定数に変換し、新たな文字列（str2）を作る
+      変換にはchar配列のTABLEを使い、6bitの2進数を整数値(10進数)にして、配列TABLEの添え字に使う。
+      その配列TABLEの値が、変換後の文字定数。
+  処理３．str2の長さは4の倍数になるように調整する。不足は「=」で埋める。
 */
 char* encode(char *str1, int len1, int *len2){
-    char *strB; /* 2�i���̕����� */
-    char *str2; /* �G���R�[�h��̕����� */
-    int lenB = len1*8; /* 2�i���̕�����̒����i�k�����������j */
-    char tmp[6]; /* 6bit���Ƃɐ؂蕪����ۂɁA���̔z��Ɉꎞ�I�Ɋi�[���� */
+    char *strB; /* 2進数の文字列 */
+    char *str2; /* エンコード後の文字列 */
+    int lenB = len1*8; /* 2進数の文字列の長さ（ヌル文字無し） */
+    char tmp[6]; /* 6bitごとに切り分ける際に、この配列に一時的に格納する */
     int i, j, k;
 
-    /* �O���� */
-    /* �܂��͏����R����Ή� */
-    /* �G���R�[�h��̕�����̒������v�Z�A4�̔{���ɂȂ�悤�ɉ��Z�Œ��� */
+    /* 前準備 */
+    /* まずは処理３から対応 */
+    /* エンコード後の文字列の長さを計算、4の倍数になるように加算で調整 */
     *len2 = (lenB/6);
     if(lenB%6 > 0){
         (*len2)++;
@@ -107,46 +107,46 @@ char* encode(char *str1, int len1, int *len2){
         *len2 += 4 - (*len2)%4;
     }
 
-    /* �G���R�[�h��̕�����̗̈�m�� */
+    /* エンコード後の文字列の領域確保 */
     str2 = (char*)malloc((*len2)*sizeof(char));
 
-    /* �G���R�[�h��̕�����Ɋւ��āA��ɖ���4�����Ɂu=�v���p�f�B���O���Ă����i���X�璷�j */
+    /* エンコード後の文字列に関して、先に末尾4文字に「=」をパディングしておく（少々冗長） */
     for(i=0; i<4; i++){
         *(str2+((*len2)-i)) = '=';
     }
 
-    /* �G���R�[�h�̏����J�n */
-    /* �����P�Dstr1��2�i���̕�����istrB�j�ɂ��� */
+    /* エンコードの処理開始 */
+    /* 処理１．str1を2進数の文字列（strB）にする */
     strB = toBaryN(str1, len1, 8);
-    /* �m�F */
-//    printf("[�r���o��]");
+    /* 確認 */
+//    printf("[途中経過]");
 //    printArray(str1, len1);
 //    printf(" => ", str1);
 //    printArray(strB, lenB);
-//    printf("\n");
+//    printf("¥n");
 
-    /* �����Q�DstrB��6bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr2�j����� */
-    /* 6bit���Ƃɐ����l�ɕϊ����A�ϊ��e�[�u���iTABLE�j�̓Y�����Ƃ��Ďg�p���邱�ƂŎ��� */
+    /* 処理２．strBを6bit刻みで文字定数に変換し、新たな文字列（str2）を作る */
+    /* 6bitごとに整数値に変換し、変換テーブル（TABLE）の添え字として使用することで実現 */
     for(i=0,k=0; (i+6)<lenB; i+=6,k++){
         strncpy(tmp, strB+i, 6);
-        *(str2+k) = TABLE[toDec(tmp,6)];  /* �ϊ��e�[�u�����g�����ϊ� */
-        /* �m�F */
+        *(str2+k) = TABLE[toDec(tmp,6)];  /* 変換テーブルを使った変換 */
+        /* 確認 */
 //        printArray(tmp, 6);
-//        printf("=>%c\n",*(str2+k));
+//        printf("=>%c¥n",*(str2+k));
     }
-    /* 6bit���݂ŁA�]�肪�o���ꍇ�̏��� */
+    /* 6bit刻みで、余りが出た場合の処理 */
     for(j=0; (i+j)<lenB; j++){
         tmp[j] = *(strB+(i+j));
     }
     for(i=j; i<6; i++){
-        tmp[i]='0'; /* 6bit�ɖ����Ȃ��ꍇ�̓[���p�f�B���O */
+        tmp[i]='0'; /* 6bitに満たない場合はゼロパディング */
     }
-    *(str2+k) = TABLE[toDec(tmp,6)];  /* �ϊ��e�[�u�����g�����ϊ� */
-    /* �m�F */
+    *(str2+k) = TABLE[toDec(tmp,6)];  /* 変換テーブルを使った変換 */
+    /* 確認 */
 //    printArray(tmp, 6);
-//    printf("=>%c\n",*(str2+k));
+//    printf("=>%c¥n",*(str2+k));
 
-    free(strB); //�֐����œ��I�Ɋ��蓖�Ă��Ă���̂�free�����s
+    free(strB); //関数内で動的に割り当てられているのでfreeを実行
 
     return str2;
 }
@@ -154,28 +154,28 @@ char* encode(char *str1, int len1, int *len2){
 
 
 /**
-  �f�R�[�h����֐�
-  str2: ���̕�����i�k�������Ȃ��j
-  len2: ���̕�����̒���
-  *len3: �f�R�[�h��̕�����̒���
-  �߂�l: �f�R�[�h��̕�����(str3)
+  デコードする関数
+  str2: 元の文字列（ヌル文字なし）
+  len2: 元の文字列の長さ
+  *len3: デコード後の文字列の長さ
+  戻り値: デコード後の文字列(str3)
 
-  �A���S���Y��
-  �����P�Dstr2�ɂ̓p�f�B���O�u=�v������̂ŏ���
-  �����Q�Dstr2��2�i���̕�����istrB�j�ɂ���i1�����萔��6bit��2�i���ɕϊ��j
-  �����R�DstrB��8bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr3�j�����
+  アルゴリズム
+  処理１．str2にはパディング「=」があるので除去
+  処理２．str2を2進数の文字列（strB）にする（1文字定数は6bitの2進数に変換）
+  処理３．strBを8bit刻みで文字定数に変換し、新たな文字列（str3）を作る
 */
 char* decode(char *str2, int len2, int *len3){
-    char *strB; /* 2�i���̕����� */
-    char *str3; /* �f�R�[�h��̕����� */
-    int len2a=0; /* str2�ɂ�����p�f�B���O��������������̒������ϊ��Ώۂ̒��� */
+    char *strB; /* 2進数の文字列 */
+    char *str3; /* デコード後の文字列 */
+    int len2a=0; /* str2におけるパディングを除いた文字列の長さ＝変換対象の長さ */
     int i, j, k;
-    char *tmp; /* �z��TABLE�̓Y������6bit��2�i���\�L�̕�����ɕϊ�����ۂɎg�p���� */
-    char tmp1[8]; /* 8bit���Ƃɐ؂蕪����ۂɁA���̔z��Ɉꎞ�I�Ɋi�[���� */
+    char *tmp; /* 配列TABLEの添え字を6bitの2進数表記の文字列に変換する際に使用する */
+    char tmp1[8]; /* 8bitごとに切り分ける際に、この配列に一時的に格納する */
 
-    /* �O���� */
-    /* �����P�Dstr2�ɂ̓p�f�B���O�u=�v������̂ŏ��� */
-    /* str2�ɂ�����p�f�B���O��������������̒����ilen2a�j�����߂� */
+    /* 前処理 */
+    /* 処理１．str2にはパディング「=」があるので除去 */
+    /* str2におけるパディングを除いた文字列の長さ（len2a）を求める */
     for(i=0; i<len2; i++){
         if(*(str2+i) != '='){
             len2a++;
@@ -184,54 +184,54 @@ char* decode(char *str2, int len2, int *len3){
             break;
         }
     }
-    /* �ϊ�����2�i���̕�����(strB)�ƁA�f�R�[�h��̕�����(str3)�̗̈�m�ہB */
+    /* 変換する2進数の文字列(strB)と、デコード後の文字列(str3)の領域確保。 */
     strB = (char*)malloc((len2a*6)*sizeof(char));
-    /* strB�̒�������len3�i�f�R�[�h��̕�����̒����j���v�Z�\ */
-    *len3 = len2a*6/8; /* 6bit�̃f�[�^��8bit�ɐ؂�Ȃ����ĕ����ɕϊ��A���̎��̒��� */
+    /* strBの長さからlen3（デコード後の文字列の長さ）が計算可能 */
+    *len3 = len2a*6/8; /* 6bitのデータを8bitに切りなおして文字に変換、その時の長さ */
     str3 = (char*)malloc((*len3)*sizeof(char));
-//    printf("len3=%d\n", *len3);
+//    printf("len3=%d¥n", *len3);
 
-    /* �f�R�[�h�̏����J�n */
-    /* �����Q�Dstr2��2�i���̕�����istrB�j�ɂ���i1�����萔��6bit��2�i���ɕϊ��j */
-    k=0; /* k��strB�̓Y�����BstrB��6bit���ϊ������i���܂��Ă����j */
+    /* デコードの処理開始 */
+    /* 処理２．str2を2進数の文字列（strB）にする（1文字定数は6bitの2進数に変換） */
+    k=0; /* kはstrBの添え字。strBは6bitずつ変換される（埋まっていく） */
     for(i=0; i<len2a; i++){
-        /* �ϊ��e�[�u���iTABLE�j�̒l�i�����萔�j�ƈ�v�����ۂ́u�Y�����ij�j�v�����߂� */
+        /* 変換テーブル（TABLE）の値（文字定数）と一致した際の「添え字（j）」を求める */
         for(j=0; j<sizeof(TABLE); j++){
             if(TABLE[j] == *(str2+i)){
                 break;
             }
         }
-//        printf("%c => %d\n", *(str2+i), TABLE[j]);
+//        printf("%c => %d¥n", *(str2+i), TABLE[j]);
 
-        /* �Y�����ij�j��6bit��2�i���̕�����ɕϊ� */
+        /* 添え字（j）を6bitの2進数の文字列に変換 */
         tmp = toBary1(j, 6);
 //        printf("%c=>", TABLE[j]);
 //        printArray(tmp, 6);
-//        printf("\n");
-        /* �ϊ�����������itmp�j�����Ɍq����strB����� */
+//        printf("¥n");
+        /* 変換した文字列（tmp）を順に繋げてstrBを作る */
         for(j=0; j<6; j++){
             *(strB+k) = *(tmp+j);
             k++;
         }
-        free(tmp); /* for�����J��Ԃ��x�ɁA�V����tmp�̗̈�m�ۂ�toBary1�֐��ōs����̂ŁA�����ŉ�� */
+        free(tmp); /* for文を繰り返す度に、新しいtmpの領域確保がtoBary1関数で行われるので、ここで解放 */
     }
 
-    /* �m�F */
-//    printf("[�r���o��]");
+    /* 確認 */
+//    printf("[途中経過]");
 //    printArray(str2, len2);
 //    printf(" => ");
 //    printArray(strB, len2a*6);
-//    printf("\n");
+//    printf("¥n");
 
 
-    /* �����R�DstrB��8bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr3�j����� */
-    /* 8bit���Ƃɕϊ� */
+    /* 処理３．strBを8bit刻みで文字定数に変換し、新たな文字列（str3）を作る */
+    /* 8bitごとに変換 */
     for(i=0; i<*len3; i++){
-        strncpy(tmp1, strB+i*8, 8); /* ����������tmp1����� */
+        strncpy(tmp1, strB+i*8, 8); /* 部分文字列tmp1を作る */
 //        printf("[%d]=",i);
 //        printArray(tmp1, 8);
-//        printf("\n");
-        *(str3+i) = toDec(tmp1,8);  /* 10�i���i�A�X�L�[�R�[�h�j�ɕϊ� */
+//        printf("¥n");
+        *(str3+i) = toDec(tmp1,8);  /* 10進数（アスキーコード）に変換 */
     }
 
     free(strB);
@@ -239,46 +239,46 @@ char* decode(char *str2, int len2, int *len3){
 }
 
 /**
-    1�����萔(c)���w��r�b�g��(bit)��2�i���\�L�̕�����ɕϊ�����֐�
+    1文字定数(c)を指定ビット長(bit)の2進数表記の文字列に変換する関数
 */
 char* toBary1(char c, int bit){
     char *bary;
     char tmp[10];
     int len, i, j;
 
-    /* �߂�l�p�̃|�C���^���������A�E�l�߂Ȃ̂ŁA���Ɂu0�v���p�f�B���O����Ӗ������˂� */
+    /* 戻り値用のポインタを初期化、右詰めなので、左に「0」をパディングする意味も兼ねる */
     bary = (char*)malloc(bit*sizeof(char));
     for(i=0; i<bit; i++){
         *(bary+i) = '0';
     }
 
-    /* ������2�i���̕\�L�ɂ���������ɕϊ��A�y���Ӂz�ŏ�ʂ̃r�b�g��0�̂Ƃ��A����0���������y���Ӂz */
+    /* 文字を2進数の表記にした文字列に変換、【注意】最上位のビットが0のとき、その0が略される【注意】 */
     itoa(c,tmp,2);
 
-    /* �w�肵���r�b�g���i����bit�j�ȏ�͖����Ƃ͎v�����O�̂��߃`�F�b�N */
+    /* 指定したビット長（引数bit）以上は無いとは思うが念のためチェック */
     len = strlen(tmp);
     if(len>bit){
-        printf("error at toBary()!\n");
+        printf("error at toBary()!¥n");
         exit(1);
     }
 
-    /* �w�肵���r�b�g���i����bit�j�����̏ꍇ�ɔ����āA�E�l�߂Ŋi�[ */
+    /* 指定したビット長（引数bit）未満の場合に備えて、右詰めで格納 */
     j=0;
     for(i=bit-len; i<bit; i++,j++){
         *(bary+i) = *(tmp+j);
     }
 
-    /* �m�F */
-//    printf("%c=>",c); /* %c�ŏo�͂ł��Ȃ��f�[�^������̂Œ��� */
+    /* 確認 */
+//    printf("%c=>",c); /* %cで出力できないデータもあるので注意 */
 //    printArray(bary, bit);
-//    printf("\n");
+//    printf("¥n");
 
     return bary;
 }
 
 /**
-  ����len�̕�����(str)���A2�i���\�L�̕�����ɕϊ�����֐�
-  ���̍ہA1�����萔�͎w��r�b�g��(bit)�ɕϊ�����B
+  長さlenの文字列(str)を、2進数表記の文字列に変換する関数
+  その際、1文字定数は指定ビット長(bit)に変換する。
 */
 char* toBaryN(char *str, int len, int bit){
     char *str2;
@@ -286,9 +286,9 @@ char* toBaryN(char *str, int len, int bit){
     int i, j;
     str2 = (char *)malloc(len*bit);
 
-    /* len�̕��������ԂɁAN�r�b�g(bit)��2�i���̕�����ɕϊ����� */
+    /* len個の文字を順番に、Nビット(bit)の2進数の文字列に変換する */
     for(i=0; i<len; i++){
-        tmp = toBary1(*(str+i), bit); /* ������2�i���̕�����ɕϊ� */
+        tmp = toBary1(*(str+i), bit); /* ここで2進数の文字列に変換 */
         for(j=0; j<bit; j++){
             *(str2+i*bit+j) = *(tmp+j);
         }
@@ -298,7 +298,7 @@ char* toBaryN(char *str, int len, int bit){
 }
 
 /**
-  �w��r�b�g��(bit)��2�i���\�L�̕������10�i����int�^�ɕϊ�����֐�
+  指定ビット長(bit)の2進数表記の文字列を10進数のint型に変換する関数
 */
 int toDec(char *b, int bit){
     int i, n=0;
@@ -312,7 +312,7 @@ int toDec(char *b, int bit){
 }
 
 /**
-  �I�[�����i�k�������j�̂Ȃ������̔z��̏o��
+  終端文字（ヌル文字）のない文字の配列の出力
 */
 void printArray(char *s, int len){
     int i;
@@ -325,34 +325,34 @@ void printArray(char *s, int len){
 
 
 /**
-  ��Փx����***************************************************************
+  難易度高め***************************************************************
 */
 
 /**
-  �G���R�[�h����֐�
-  �V�t�g���Z�𗘗p���āA2�i���\�L�̕���������Ȃ��B
+  エンコードする関数
+  シフト演算を利用して、2進数表記の文字列を作らない。
 
-  str1: ���̕�����i�k�������Ȃ��j
-  len1: ���̕�����̒���
-  *len2: �G���R�[�h��̕�����̒���
-  �߂�l: �G���R�[�h��̕�����(str2)
+  str1: 元の文字列（ヌル文字なし）
+  len1: 元の文字列の長さ
+  *len2: エンコード後の文字列の長さ
+  戻り値: エンコード後の文字列(str2)
 
-  �A���S���Y��
-  �����P�Dstr1��1����(8bit)�����ԂɃV�t�g���Z���g���Ďw�肵�����̒l�𒲂ׂ�B
-  �����Q�D6��(6bit)���Ƃɐ����l�ɂ���B
-  �����R�D���̒l��z��TABLE�̓Y�����ɂ��ĕ����萔���m��B�����P�ɖ߂�J��Ԃ��B
-  �����S�Dstr2�̒�����4�̔{���ɂȂ�悤�ɒ�������B�s���́u=�v�Ŗ��߂�B
+  アルゴリズム
+  処理１．str1を1文字(8bit)ずつ順番にシフト演算を使って指定した桁の値を調べる。
+  処理２．6桁(6bit)ごとに整数値にする。
+  処理３．その値を配列TABLEの添え字にして文字定数を確定。処理１に戻り繰り返す。
+  処理４．str2の長さは4の倍数になるように調整する。不足は「=」で埋める。
 */
 char* encode2(char *str1, int len1, int *len2){
-    char *str2; /* �G���R�[�h��̕����� */
-    char c; /* str1����1���������o�����ۂɎg�p */
-    int x; /* �����萔c��i�Ԗڂ̃r�b�g�̒l */
+    char *str2; /* エンコード後の文字列 */
+    char c; /* str1から1文字ずつ取り出した際に使用 */
+    int x; /* 文字定数cのi番目のビットの値 */
     int num, cnt, k;
     int i,j;
 
-    /* �O���� */
-    /* �܂��͏����S����Ή� */
-    /* �G���R�[�h��̕�����̒������v�Z�A4�̔{���ɂȂ�悤�ɉ��Z�Œ��� */
+    /* 前準備 */
+    /* まずは処理４から対応 */
+    /* エンコード後の文字列の長さを計算、4の倍数になるように加算で調整 */
     *len2 = (len1*8/6);
     if((len1*8)%6 > 0){
         (*len2)++;
@@ -360,76 +360,76 @@ char* encode2(char *str1, int len1, int *len2){
     if((*len2)%4 != 0){
         *len2 += 4 - (*len2)%4;
     }
-    /* �G���R�[�h��̕�����̗̈�m�� */
+    /* エンコード後の文字列の領域確保 */
     str2 = (char*)malloc((*len2)*sizeof(char));
 
-    /* �G���R�[�h��̕�����Ɋւ��āA��ɖ���4�����Ɂu=�v���p�f�B���O���Ă����i���X�璷�j */
+    /* エンコード後の文字列に関して、先に末尾4文字に「=」をパディングしておく（少々冗長） */
     for(i=0; i<4; i++){
         *(str2+((*len2)-i)) = '=';
     }
 
 
-    /* �G���R�[�h�̏����J�n */
-    /* �����P�{�����Q�{�����R */
-    num=0; /* �u6���̃r�b�g�v���狁�߂�l */
-    cnt=5; /* �u6���̃r�b�g�v�̂ǂ̈ʒu���v�Z���Ă��邩�̏�񁁌��̏�� */
-    k=0; /* �G���R�[�h��̕�����̓Y���� */
+    /* エンコードの処理開始 */
+    /* 処理１＋処理２＋処理３ */
+    num=0; /* 「6桁のビット」から求める値 */
+    cnt=5; /* 「6桁のビット」のどの位置を計算しているかの情報＝桁の情報 */
+    k=0; /* エンコード後の文字列の添え字 */
     for(i=0; i<len1; i++){
         c = *(str1+i);
-        /* �����P�F1�����萔��8bit�Ƃ��āi7���ڂ���0���ڂ܂ł��A���Ԃɒ��ׂ�j */
+        /* 処理１：1文字手数を8bitとして（7桁目から0桁目までを、順番に調べる） */
         for(j=7; j>=0; j--){
-            x = (c>>j)&1; /* j���ڂ̒l��1�Ȃ�x�ɂ�1���i�[����� */
+            x = (c>>j)&1; /* j桁目の値が1ならxには1が格納される */
 //            printf("%d", x);
-            /* �����Q�D6��(6bit)���Ƃɐ����l�ɂ���B6����5���`0���Ȃ̂ɒ��ӁBcnt���g���Ăǂ̌��Ȃ̂��c���B */
+            /* 処理２．6桁(6bit)ごとに整数値にする。6桁＝5桁〜0桁なのに注意。cntを使ってどの桁なのか把握。 */
             if(x == 1){
-                num += pow(2,cnt); //�ϊ��Ώۂ́u6���̃r�b�g�v���Ƃ̐����l���v�Z
+                num += pow(2,cnt); //変換対象の「6桁のビット」ごとの整数値を計算
             }
             cnt--;
-            /* �����R�D���̒l��z��TABLE�̓Y�����ɂ��ĕ����萔���m��B */
+            /* 処理３．その値を配列TABLEの添え字にして文字定数を確定。 */
             if(cnt<0){
-//                printf(" => %d\n", num);
-                *(str2+k) = TABLE[num]; //�ϊ�
+//                printf(" => %d¥n", num);
+                *(str2+k) = TABLE[num]; //変換
                 num=0;
                 cnt=5;
                 k++;
             }
         }
-//        printf("\n");
+//        printf("¥n");
     }
-    if(num >0){ //n��0���傫����6�Ŋ���؂�Ȃ������ꍇ�A���ʂ̃r�b�g��0�Ƃ݂Ȃ��āi�[���p�f�B���O�j�A���ϊ�
-        *(str2+k) = TABLE[num]; //�ϊ�
+    if(num >0){ //nが0より大きい＝6で割り切れなかった場合、下位のビットは0とみなして（ゼロパディング）、即変換
+        *(str2+k) = TABLE[num]; //変換
     }
 
     return str2;
 }
 
 /**
-  �G���R�[�h����֐�
-  �V�t�g���Z�𗘗p���āA2�i���\�L�̕���������Ȃ��B
+  エンコードする関数
+  シフト演算を利用して、2進数表記の文字列を作らない。
 
-  str2: ���̕�����i�k�������Ȃ��j
-  len2: ���̕�����̒���
-  *len3: �f�R�[�h��̕�����̒���
-  �߂�l: �f�R�[�h��̕�����(str3)
+  str2: 元の文字列（ヌル文字なし）
+  len2: 元の文字列の長さ
+  *len3: デコード後の文字列の長さ
+  戻り値: デコード後の文字列(str3)
 
-  �A���S���Y��
-  �����P�Dstr2�ɂ̓p�f�B���O�u=�v������̂ŏ���
-  �����Q�D�z��TABLE�̓Y����(6bit�ȓ��ŕ\�L�\�Ȓl)��������B
-  �����R�D�Y�������V�t�g���Z���g���Ďw�肵�����̒l�𒲂ׂ�B
-  �����S�D8��(8bit)���Ƃɐ����l�ɂ���B���̒l���A�X�L�[�R�[�h�B�����Q�ɖ߂�J��Ԃ��B
+  アルゴリズム
+  処理１．str2にはパディング「=」があるので除去
+  処理２．配列TABLEの添え字(6bit以内で表記可能な値)を見つける。
+  処理３．添え字をシフト演算を使って指定した桁の値を調べる。
+  処理４．8桁(8bit)ごとに整数値にする。この値がアスキーコード。処理２に戻り繰り返す。
 
 */
 char* decode2(char *str2, int len2, int *len3){
-    char *str3; /* �f�R�[�h��̕����� */
-    int len2a=0; /* str2�ɂ�����p�f�B���O��������������̒������ϊ��Ώۂ̒��� */
-    int n; //str2����1���������o���������ƈ�v�����z��TALBE�̓Y�����B���̓Y�����̒l���r�b�g�ɒ����čČv�Z����B
-    int x; //���ln��i�Ԗڂ̃r�b�g�̒l
+    char *str3; /* デコード後の文字列 */
+    int len2a=0; /* str2におけるパディングを除いた文字列の長さ＝変換対象の長さ */
+    int n; //str2から1文字ずつ取り出した文字と一致した配列TALBEの添え字。この添え字の値をビットに直して再計算する。
+    int x; //数値nのi番目のビットの値
     int num, cnt, k;
     int i, j;
 
-    /* �O���� */
-    /* �����P�Dstr2�ɂ̓p�f�B���O�u=�v������̂ŏ��� */
-    /* str2�ɂ�����p�f�B���O��������������̒����ilen2a�j�����߂� */
+    /* 前処理 */
+    /* 処理１．str2にはパディング「=」があるので除去 */
+    /* str2におけるパディングを除いた文字列の長さ（len2a）を求める */
     for(i=0; i<len2; i++){
         if(*(str2+i) != '='){
             len2a++;
@@ -438,45 +438,45 @@ char* decode2(char *str2, int len2, int *len3){
             break;
         }
     }
-    /* len3�i�f�R�[�h��̕�����̒����j���v�Z�\ */
-    *len3 = len2a*6/8; /* 6bit�̃f�[�^��8bit�ɐ؂�Ȃ����ĕ����ɕϊ��A���̎��̒��� */
+    /* len3（デコード後の文字列の長さ）が計算可能 */
+    *len3 = len2a*6/8; /* 6bitのデータを8bitに切りなおして文字に変換、その時の長さ */
     str3 = (char*)malloc((*len3)*sizeof(char));
 
-    /* �f�R�[�h�̏����J�n */
-    /* �����Q�{�����R�{�����S */
-    num=0; /* �u8���̃r�b�g�v���狁�߂�l */
-    cnt=7; /* �u8���̃r�b�g�v�̂ǂ̈ʒu���v�Z���Ă��邩�̏�񁁌��̏�� */
-    k=0; //�f�R�[�h��̕�����̓Y����
+    /* デコードの処理開始 */
+    /* 処理２＋処理３＋処理４ */
+    num=0; /* 「8桁のビット」から求める値 */
+    cnt=7; /* 「8桁のビット」のどの位置を計算しているかの情報＝桁の情報 */
+    k=0; //デコード後の文字列の添え字
     for(i=0; i<len2a; i++){
-        /* �����Q�D�z��TABLE�̓Y����(6bit�ȓ��ŕ\�L�\�Ȓl)��������B�Y������n�Ɋi�[����B */
+        /* 処理２．配列TABLEの添え字(6bit以内で表記可能な値)を見つける。添え字はnに格納する。 */
         for(n=0; n<strlen(TABLE); n++){
             if(TABLE[n] == *(str2+i)){
                 break;
             }
         }
 
-        /* �����R�D�Y������6bit�Ƃ��āi5���ڂ���0���ڂ܂ł��A���Ԃɒ��ׂ�j */
+        /* 処理３．添え字を6bitとして（5桁目から0桁目までを、順番に調べる） */
         for(j=5; j>=0; j--){
-            x = (n>>j)&1; /* j���ڂ̒l��1�Ȃ�x�ɂ�1���i�[����� */
+            x = (n>>j)&1; /* j桁目の値が1ならxには1が格納される */
 //            printf("%d", x);
-            /* �����S�D8��(8bit)���Ƃɐ����l�ɂ���B8����7���`0���Ȃ̂ɒ��ӁBcnt���g���Ăǂ̌��Ȃ̂��c���B */
+            /* 処理４．8桁(8bit)ごとに整数値にする。8桁＝7桁〜0桁なのに注意。cntを使ってどの桁なのか把握。 */
             if(x == 1){
-                num += pow(2,cnt); //�ϊ��Ώۂ́u8���̃r�b�g�v���Ƃ̐����l���v�Z
+                num += pow(2,cnt); //変換対象の「8桁のビット」ごとの整数値を計算
             }
             cnt--;
-            /* �����S�D�v�Z�����l�́A�A�X�L�[�R�[�h�Ȃ̂ŁA���̂܂�str3�ɑ������΃f�R�[�h�����B */
+            /* 処理４．計算した値は、アスキーコードなので、そのままstr3に代入すればデコード完了。 */
             if(cnt<0){
-//                printf(" => %d\n", num);
-                *(str3+k) = num; //�ϊ�
+//                printf(" => %d¥n", num);
+                *(str3+k) = num; //変換
                 num=0;
                 cnt=7;
                 k++;
             }
         }
-//        printf("\n");
+//        printf("¥n");
     }
-    if(num >0){ //n��0���傫����8�Ŋ���؂�Ȃ������r�b�g������A�A�A���Ԃ񑶍݂��Ȃ��̂ł́H
-        *(str2+k) = num; //�ϊ�
+    if(num >0){ //nが0より大きい＝8で割り切れなかったビットがある、、、たぶん存在しないのでは？
+        *(str2+k) = num; //変換
     }
 
     return str3;
