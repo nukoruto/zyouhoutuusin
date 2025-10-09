@@ -9,22 +9,22 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 /**
- *  �N���C�A���g�v���O�������N�������郁�C���v���O����
+ *  クライアントプログラムを起動させるメインプログラム
  *<BR>  
- *<BR>  �����F
- *<BR>  �E�\�P�b�g�ʐM���s���N���C�A���g�𗧂��グ��B
- *<BR>  �E�T�[�o�Ƃ̐ڑ���́A�W�����͂ɂĕ��������͂��A�T�[�o�ɑ��M����B
- *<BR>  �E��������T�[�o�ɑ��M������́A�T�[�o����̕ԓ���҂B
- *<BR>  �E�T�[�o����̕ԓ�����M������A���̂܂܂��̕������W���o�͂���B
+ *<BR>  役割：
+ *<BR>  ・ソケット通信を行うクライアントを立ち上げる。
+ *<BR>  ・サーバとの接続後は、標準入力にて文字列を入力し、サーバに送信する。
+ *<BR>  ・文字列をサーバに送信した後は、サーバからの返答を待つ。
+ *<BR>  ・サーバからの返答を受信したら、そのままその文字列を標準出力する。
  *<BR>
- *<BR>  �Ǘ����Ă����ȃt�B�[���h
- *<BR>  �Ehost:  �\�P�b�g�ʐM���s���z�X�g���B�����l��""�i��j�B
- *<BR>  �Eport1:  �\�P�b�g�ʐM���s���|�[�g�ԍ��B�����l��999�B
- *<BR>  �Eport2:  �\�P�b�g�ʐM���s���|�[�g�ԍ��B�����l��888�B
- *<BR>  �Esocket: �T�[�o�ƒʐM���邽�߂̃\�P�b�g�B
- *<BR>  �Ein: �\�P�b�g�̐ڑ����肩�當�������M����I�u�W�F�N�g�Bclient_socket����ɍ����B
- *<BR>  �Eout:�\�P�b�g�̐ڑ�����ɕ�����𑗐M����I�u�W�F�N�g�Bclient_socket����ɍ����B 
- *<BR>  �Estd_in: �W�����͂���镶������󂯎��I�u�W�F�N�g�BSystem.in����ɍ����B
+ *<BR>  管理している主なフィールド
+ *<BR>  ・host:  ソケット通信を行うホスト名。初期値は""（空）。
+ *<BR>  ・port1:  ソケット通信を行うポート番号。初期値は999。
+ *<BR>  ・port2:  ソケット通信を行うポート番号。初期値は888。
+ *<BR>  ・socket: サーバと通信するためのソケット。
+ *<BR>  ・in: ソケットの接続相手から文字列を受信するオブジェクト。client_socketを基に作られる。
+ *<BR>  ・out:ソケットの接続相手に文字列を送信するオブジェクト。client_socketを基に作られる。 
+ *<BR>  ・std_in: 標準入力される文字列を受け取るオブジェクト。System.inを基に作られる。
  */
 
 /**
@@ -33,62 +33,62 @@ import java.net.Socket;
  *	last change: Oct 2014
  */
 public class SimpleClient extends Thread {
-	/** �z�X�g�� */
-	private String host = "10.20.24.1"; //�T�[�o��IP�A�h���X
-	/** �|�[�g�ԍ�(1000�Ԉȉ��y�d�v�z) */
-	private int port1 = 999; //�y�d�v�z�T�[�o�֑��M����|�[�g
-	private int port2 = 888; //�y�d�v�z�T�[�o�����M����|�[�g
+	/** ホスト名 */
+	private String host = "10.20.24.1"; //サーバのIPアドレス
+	/** ポート番号(1000番以下【重要】) */
+	private int port1 = 999; //【重要】サーバへ送信するポート
+	private int port2 = 888; //【重要】サーバから受信するポート
 
-	/** �N���C�A���g�̃\�P�b�g */
+	/** クライアントのソケット */
 	private Socket socket;
-	/** �\�P�b�g���當�������M���邽�߂̃I�u�W�F�N�g */
+	/** ソケットから文字列を受信するためのオブジェクト */
 	protected BufferedReader in;
-	/** �\�P�b�g���當����𑗐M���邽�߂̃I�u�W�F�N�g */
+	/** ソケットから文字列を送信するためのオブジェクト */
 	protected PrintWriter out;
 	
-	/** �W�����͂��當������󂯎�邽�߂̃I�u�W�F�N�g */
+	/** 標準入力から文字列を受け取るためのオブジェクト */
 	private BufferedReader std_in;
 
 /**
- *<BR> ���C�����\�b�h
+ *<BR> メインメソッド
  */
 	public static void main(String[] args) {
 		new SimpleClient(args);
 	}
 
 /**
- *<BR> �ۑ�@�|�O�F�@�R���X�g���N�^�y�m�F��Ɓz
- *<BR>   �E�N���C�A���g�̏����̗�����m�F���邱�ƁB
+ *<BR> 課題①－０：　コンストラクタ【確認作業】
+ *<BR>   ・クライアントの処理の流れを確認すること。
  */
 	public SimpleClient(String[] args) {
 		super();
 		
-		//IP�ƃ|�[�g�ԍ��̊m��
-		boolean f1 = this.analizeCommandline(args); //�ۑ�A�|�P
+		//IPとポート番号の確定
+		boolean f1 = this.analizeCommandline(args); //課題②－１
 		if(!f1){
 			System.exit(1);
 		}
 		
-		//�\�P�b�g�̐����ƃT�[�o�ւ̐ڑ�
-		boolean f2 = this.setSocket(); //�ۑ�A�|�Q
+		//ソケットの生成とサーバへの接続
+		boolean f2 = this.setSocket(); //課題②－２
 		if(!f2){
 			System.exit(1);
 		}
 		
-		//�T�[�o�Ɛڑ������\�P�b�g����A���o�̓I�u�W�F�N�g�̐���
-		boolean f3 = this.setIO(); //�ۑ�A�|�R
+		//サーバと接続したソケットから、入出力オブジェクトの生成
+		boolean f3 = this.setIO(); //課題②－３
 		if(!f3){
 			System.exit(1);
 		}
 		
-		//�`���b�g�N���C�A���g�̋@�\�n���ƏI��
+		//チャットクライアントの機能始動と終了
 		if(f1 && f2 && f3){
 			System.out.println("\n/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/");
 			System.out.println("SimpleClient (Ver 1.00)");
 			System.out.println("  connectTo: "+host+":"+port1);
 			System.out.println("/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/");
 			
-			this.start(); //�ۑ�A�|�S
+			this.start(); //課題②－４
 		}
 		else{
 			System.exit(1);
@@ -96,11 +96,11 @@ public class SimpleClient extends Thread {
 	}
 	
 /**
- *<BR> �ۑ�A�|�P�F�@�R�}���h���C����͏���
- *<BR>   �EAPI�ɂ�Integer�N���X��parseInt���\�b�h���m�F���邱�ƁB
- *<BR>   �E������2�ŁA�������������A�������������Ȃ�΁A���ꂼ��A�z�X�g���A�|�[�g�ԍ��Ƃ��Đݒ肷��B
- *<BR>   �E��������q�ȊO�̏ꍇ�ɂ́Afalse��Ԃ��B
- *<BR>   �E��O�������̏�����false��Ԃ��B
+ *<BR> 課題②－１：　コマンドライン解析処理
+ *<BR>   ・APIにてIntegerクラスのparseIntメソッドを確認すること。
+ *<BR>   ・引数が2つで、第一引数が文字、第二引数が数字ならば、それぞれ、ホスト名、ポート番号として設定する。
+ *<BR>   ・引数が上述以外の場合には、falseを返す。
+ *<BR>   ・例外発生時の処理もfalseを返す。
  */
 	public boolean analizeCommandline(String[] args){
 		if(args.length == 2){
@@ -109,26 +109,26 @@ public class SimpleClient extends Thread {
 				port1 = Integer.parseInt(args[1]);
 			}
 			catch(NumberFormatException e){
-				System.err.println(""+e+":�����������ł͂���܂���B<analizeCommandline>");
-				System.out.println("Client> �|�[�g�ԍ��͔��p�����œ��͂��Ă��������B<analizeCommandline>");
+				System.err.println(""+e+":引数が数字ではありません。<analizeCommandline>");
+				System.out.println("Client> ポート番号は半角数字で入力してください。<analizeCommandline>");
 				return false;
 			}
 			
-			System.out.println("Client> �ڑ�����T�[�o�̃z�X�g����"+host+"�A�|�[�g�ԍ���"+port1+"�Ƃ��܂��B<analizeCommandline>");
+			System.out.println("Client> 接続するサーバのホスト名は"+host+"、ポート番号は"+port1+"とします。<analizeCommandline>");
 			return true;
 		}
 		
-		System.out.println("Client> ������2�w�肵�Ă��������B<analizeCommandline>");
-		System.out.println("Client>  �������F�T�[�o�̃z�X�g��(IP�A�h���X)<analizeCommandline>");
-		System.out.println("Client>  �������F�ʐM�p�̃|�[�g�ԍ�<analizeCommandline>");
+		System.out.println("Client> 引数を2つ指定してください。<analizeCommandline>");
+		System.out.println("Client>  第一引数：サーバのホスト名(IPアドレス)<analizeCommandline>");
+		System.out.println("Client>  第二引数：通信用のポート番号<analizeCommandline>");
 		return false;
 	}
 	
 /**
- *<BR> �ۑ�A�|�Q�F�@�\�P�b�g�̐�������
- *<BR>   �EAPI�ɂ�Socket�N���X�̃R���X�g���N�^�����m�F���邱�ƁB
- *<BR>   �E�I�u�W�F�N�g�̐����A�|�[�g�ԍ��̐ݒ������isocket��bind�j�B
- *<BR>   �E��O�������̏�����false��Ԃ��B
+ *<BR> 課題②－２：　ソケットの生成処理
+ *<BR>   ・APIにてSocketクラスのコンストラクタ等を確認すること。
+ *<BR>   ・オブジェクトの生成、ポート番号の設定をする（socketとbind）。
+ *<BR>   ・例外発生時の処理はfalseを返す。
  */
 	public boolean setSocket(){
 		try{
@@ -141,20 +141,20 @@ public class SimpleClient extends Thread {
 			
 			
 			
-			System.out.println("Clien> �T�[�o�Ƃ̐ڑ��ɐ������܂����B<setSocket>");
+			System.out.println("Clien> サーバとの接続に成功しました。<setSocket>");
 			return true;
 		}
 		catch(Exception e){ //IOException
-			System.err.println(""+e+":�T�[�o�Ƃ̐ڑ��Ɏ��s���܂����B<setSocket>");
+			System.err.println(""+e+":サーバとの接続に失敗しました。<setSocket>");
 			return false;
 		}
 	}
 	
 /**
- *<BR> �ۑ�A�|�R�F�@���o�̓I�u�W�F�N�g�̐�������
- *<BR>   �EAPI�ɂ�BufferedReader�N���X�APrintWriter�N���X�𒲂ׂ邱�ƁB
- *<BR>   �E�����R�[�h��SJIS���w�肷��B
- *<BR>   �E��O�������̏�����false��Ԃ��B
+ *<BR> 課題②－３：　入出力オブジェクトの生成処理
+ *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
+ *<BR>   ・文字コードはSJISを指定する。
+ *<BR>   ・例外発生時の処理はfalseを返す。
  */
 	public boolean setIO(){
 		try{
@@ -170,11 +170,11 @@ public class SimpleClient extends Thread {
 			
 			
 			
-			System.out.println("Client> ���o�̓I�u�W�F�N�g�𐶐����܂����B<setIO>");
+			System.out.println("Client> 入出力オブジェクトを生成しました。<setIO>");
 			return true;
 		}
 		catch(Exception e){ //IOException
-			System.err.println(""+e+":���o�̓I�u�W�F�N�g�̐����Ɏ��s���܂����B<setIO>");
+			System.err.println(""+e+":入出力オブジェクトの生成に失敗しました。<setIO>");
 			return false;
 		}
 	}
@@ -182,12 +182,12 @@ public class SimpleClient extends Thread {
 
 
 /**
- *<BR> �ۑ�A�|�S�F�@�X���b�h�̎��́i�T�[�o�Ƃ̒ʐM�����j
- *<BR>   �E�W�����͂����������msg1�Ɋi�[���āA�T�[�o�ɑ��M����B
- *<BR>   �E��M�����������msg2�Ɋi�[����B
- *<BR>   �Emsg2�i��M����������j��null�Ȃ�΁A�ʐM���ɃG���[���N�������Ɣ��f���A�ʐM���I��������B
- *<BR>   �Emsg2�i��M����������j����L�ȊO�Ȃ�΁A�W���o�͂��A�ȏ�̏������J��Ԃ��B
- *<BR>   �E�ʐM�I���̏���������B�i�ۑ�A�|�T�j
+ *<BR> 課題②－４：　スレッドの実体（サーバとの通信処理）
+ *<BR>   ・標準入力した文字列はmsg1に格納して、サーバに送信する。
+ *<BR>   ・受信した文字列はmsg2に格納する。
+ *<BR>   ・msg2（受信した文字列）がnullならば、通信中にエラーが起こったと判断し、通信を終了させる。
+ *<BR>   ・msg2（受信した文字列）が上記以外ならば、標準出力し、以上の処理を繰り返す。
+ *<BR>   ・通信終了の処理をする。（課題②－５）
  */
 	public void run(){
 		String msg1 = "";
@@ -205,16 +205,16 @@ public class SimpleClient extends Thread {
 				
 				
 				if(msg2 == null){
-					System.out.println("Client> �T�[�o�Ƃ̐ڑ����؂�Ă��܂��B<run>");
+					System.out.println("Client> サーバとの接続が切れています。<run>");
 					done = true;
 				}
 				else{
-					System.out.println("Client> �T�[�o����̕�������󂯎��܂����B<run>");
+					System.out.println("Client> サーバからの文字列を受け取りました。<run>");
 					System.out.println(msg2);
 				}
 			}
 			
-			this.close();  //�ۑ�A�|�T
+			this.close();  //課題②－５
 		}
 		catch (Exception e) { //IOException
 			System.out.println(e);
@@ -223,9 +223,9 @@ public class SimpleClient extends Thread {
 	}
 	
 /**
- *<BR> �ۑ�A�|�T�F�@�v���O�����̏I������
- *<BR>   �E���o�̓I�u�W�F�N�g�̏I��
- *<BR>   �E�X���b�h(Socket)�̏I��
+ *<BR> 課題②－５：　プログラムの終了処理
+ *<BR>   ・入出力オブジェクトの終了
+ *<BR>   ・スレッド(Socket)の終了
  */
 	public void close(){
 		try{
@@ -233,14 +233,14 @@ public class SimpleClient extends Thread {
 			out.close();
 			std_in.close();
 			
-			System.out.println("Client> socket�̏I�������܂��B<close>");
+			System.out.println("Client> socketの終了させます。<close>");
 			socket.close();
-			System.out.println("Client> socket�̏I�����܂����B<close>");
-			System.out.println("Client> �v���O�������I�������܂��B<close>");
+			System.out.println("Client> socketの終了しました。<close>");
+			System.out.println("Client> プログラムを終了させます。<close>");
 			System.exit(0);
 		}
 		catch(Exception e){
-			System.err.println(""+e+":�I�u�W�F�N�g�̏I���Ɏ��s���܂����B<close>");
+			System.err.println(""+e+":オブジェクトの終了に失敗しました。<close>");
 		}
 	}
 }
