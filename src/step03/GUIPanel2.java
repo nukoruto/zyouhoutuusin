@@ -1,6 +1,6 @@
 package step03;
 
-//‹Lqiimportj///////////////////////////////////
+//è¨˜è¿°ï¼ˆimportï¼‰///////////////////////////////////
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -8,16 +8,16 @@ import javax.swing.JTextField;
 
 
 /**
- *  GUIPanel‚ðŒp³‚µ‚½ƒvƒƒOƒ‰ƒ€
+ *  GUIPanelã‚’ç¶™æ‰¿ã—ãŸãƒ—ãƒ­ã‚°ãƒ©ãƒ 
  *<BR>
- *<BR>  –ðŠ„F
- *<BR>  E•\Ž¦—pƒvƒƒOƒ‰ƒ€‚Æ‚µ‚Ä‚Ì–ðŠ„‚ð’S‚¢A’ÊM—pƒvƒƒOƒ‰ƒ€‚Æ‚Ì˜AŒg‚ðs‚¤B
- *<BR>  E’ÊM—pƒvƒƒOƒ‰ƒ€‚Ö‚Ìˆ—ˆË—Š‚ÍƒtƒB[ƒ‹ƒhcon‚É‚æ‚Á‚Äs‚¤B
- *<BR>  E•\Ž¦—pƒvƒƒOƒ‰ƒ€‚ÌŽå—v‚È‹Lq‚ÍAŒp³‚É‚æ‚Á‚ÄŽÀ‘•Ï‚ÝB
- *<BR>  E’ÊM—pƒvƒƒOƒ‰ƒ€‚Ö‚Ìˆ—ˆË—Š‚ª”­¶‚·‚éƒƒ\ƒbƒh‚Ì‚ÝƒI[ƒo[ƒ‰ƒCƒh‚ðs‚¤B
+ *<BR>  å½¹å‰²ï¼š
+ *<BR>  ãƒ»è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ã—ã¦ã®å½¹å‰²ã‚’æ‹…ã„ã€é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ã®é€£æºã‚’è¡Œã†ã€‚
+ *<BR>  ãƒ»é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¸ã®å‡¦ç†ä¾é ¼ã¯ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰conã«ã‚ˆã£ã¦è¡Œã†ã€‚
+ *<BR>  ãƒ»è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä¸»è¦ãªè¨˜è¿°ã¯ã€ç¶™æ‰¿ã«ã‚ˆã£ã¦å®Ÿè£…æ¸ˆã¿ã€‚
+ *<BR>  ãƒ»é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¸ã®å‡¦ç†ä¾é ¼ãŒç™ºç”Ÿã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã®ã¿ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã‚’è¡Œã†ã€‚
  *<BR>
- *<BR>  ŠÇ—‚µ‚Ä‚¢‚éŽå‚ÈƒtƒB[ƒ‹ƒh
- *<BR>  Econ:  ’ÊM—pƒvƒƒOƒ‰ƒ€‚Öˆ—‚ðˆË—Š‚µ‚½‚¢ê‡‚É—p‚¢‚éƒIƒuƒWƒFƒNƒgB
+ *<BR>  ç®¡ç†ã—ã¦ã„ã‚‹ä¸»ãªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+ *<BR>  ãƒ»con:  é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¸å‡¦ç†ã‚’ä¾é ¼ã—ãŸã„å ´åˆã«ç”¨ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
  */
 
 /**
@@ -25,19 +25,19 @@ import javax.swing.JTextField;
  *	Version: 1.00
  *	last change: Mar 2012
  */
-public class GUIPanel2 extends JPanel{//C³iJPanel‚Å‚Íƒ_ƒB•\Ž¦—pƒvƒƒOƒ‰ƒ€‚ÌŒp³AƒpƒbƒP[ƒWgui‚É‚ ‚éBj///////////////////////////////////
-	private Connector con; //’†Œp—pƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg
+public class GUIPanel2 extends JPanel{//ä¿®æ­£ï¼ˆJPanelã§ã¯ãƒ€ãƒ¡ã€‚è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ç¶™æ‰¿ã€ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸guiã«ã‚ã‚‹ã€‚ï¼‰///////////////////////////////////
+	private Connector con; //ä¸­ç¶™ç”¨ã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 * ƒX[ƒp[ƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ðŒÄ‚Ño‚·‚Ì‚ÝB
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	 * ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‘¼ã³å‡ºã™ã®ã¿ã€‚
 	 */
 	public GUIPanel2(){
-		//‹Lq///////////////////////////////////
+		//è¨˜è¿°///////////////////////////////////
 	}
 
 	/**
-	 * ’ÊM—pƒvƒƒOƒ‰ƒ€iSimpleClient2j‚Æ‚Ì’†Œp‚ðs‚¤‚½‚ß‚ÌConnectorƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg‚ðƒZƒbƒg‚·‚éB
+	 * é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ï¼ˆSimpleClient2ï¼‰ã¨ã®ä¸­ç¶™ã‚’è¡Œã†ãŸã‚ã®Connectorã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	 * @param con
 	 */
 	public void setConnector(Connector con){
@@ -45,19 +45,19 @@ public class GUIPanel2 extends JPanel{//C³iJPanel‚Å‚Íƒ_ƒB•\Ž¦—pƒvƒƒOƒ‰ƒ€‚Ì
 	}
 
 	/**
-	 * ‚±‚Ìƒƒ\ƒbƒh‚Å‚ÍAƒX[ƒp[ƒNƒ‰ƒX‚ÌƒtƒB[ƒ‹ƒhjta‚ÉAˆø”msg‚Ì’l‚ð’Ç‹L‚·‚éˆ—‚ð‹Lq‚·‚éB
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍAŠO•”ƒNƒ‰ƒXiSimpleClient2j‚ÌƒtƒB[ƒ‹ƒhcon‚©‚çAConnectorƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ðŒo—R‚µ‚ÄŒÄ‚Ño‚³‚ê‚éB
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯ã€ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰jtaã«ã€å¼•æ•°msgã®å€¤ã‚’è¿½è¨˜ã™ã‚‹å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€å¤–éƒ¨ã‚¯ãƒ©ã‚¹ï¼ˆSimpleClient2ï¼‰ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰conã‹ã‚‰ã€Connectorã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’çµŒç”±ã—ã¦å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚
 	 * @param msg
 	 */
 	public void displayMessage(String msg){
-		//‹Lq///////////////////////////////////
+		//è¨˜è¿°///////////////////////////////////
 	}
 
 	/**
-	 *<BR> yOverridezActionEvent‚ÌƒCƒxƒ“ƒgˆ—
+	 *<BR> ã€Overrideã€‘ActionEventã®ã‚¤ãƒ™ãƒ³ãƒˆå‡¦ç†
 	 */
 	public void actionPerformed(ActionEvent e) {
-		//‹Lq///////////////////////////////////
+		//è¨˜è¿°///////////////////////////////////
 	}
 
 }
