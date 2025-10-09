@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- *  ライブラリを使用したBase64の変換を試すクラス
+ *  繝ｩ繧､繝悶Λ繝ｪ繧剃ｽｿ逕ｨ縺励◆Base64縺ｮ螟画鋤繧定ｩｦ縺吶け繝ｩ繧ｹ
  */
 public class UseBase64 {
 
