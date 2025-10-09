@@ -3,13 +3,13 @@ package step03;
 import javax.swing.JFrame;
 
 /**
- *  GUI‚ğ‰î‚µ‚ÄSimpleServer‚Æ‚Ì’ÊM‚ğs‚¤ƒvƒƒOƒ‰ƒ€‚Ì‹N“®
+ *  GUIã‚’ä»‹ã—ã¦SimpleServerã¨ã®é€šä¿¡ã‚’è¡Œã†ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®èµ·å‹•
  *<BR>
- *<BR>  –ğŠ„F
- *<BR>  E•\¦—pƒvƒƒOƒ‰ƒ€‚ÌƒIƒuƒWƒFƒNƒg‚Ì¶¬‚ÆA•\¦—pJFrame‚Ìİ’èB
- *<BR>  EIPƒAƒhƒŒƒX‚Æƒ|[ƒg”Ô†‚Ìw’è‚µA’ÊM—pƒvƒƒOƒ‰ƒ€‚ÌƒIƒuƒWƒFƒNƒg‚Ì¶¬B
- *<BR>  E’†Œp—pƒvƒƒOƒ‰ƒ€‚ÌƒIƒuƒWƒFƒNƒg‚Ì¶¬B
- *<BR>  E•\¦—pƒvƒƒOƒ‰ƒ€‚Æ’ÊM—pƒvƒƒOƒ‰ƒ€‚ÌƒIƒuƒWƒFƒNƒg‚»‚ê‚¼‚ê‚ÉA’†Œp—pƒvƒƒOƒ‰ƒ€‚ÌƒIƒuƒWƒFƒNƒg‚ğİ’èB
+ *<BR>  å½¹å‰²ï¼š
+ *<BR>  ãƒ»è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã¨ã€è¡¨ç¤ºç”¨JFrameã®è¨­å®šã€‚
+ *<BR>  ãƒ»IPã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ãƒãƒ¼ãƒˆç•ªå·ã®æŒ‡å®šã—ã€é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã€‚
+ *<BR>  ãƒ»ä¸­ç¶™ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã€‚
+ *<BR>  ãƒ»è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãã‚Œãã‚Œã«ã€ä¸­ç¶™ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¨­å®šã€‚
  *<BR>
  */
 
@@ -20,28 +20,28 @@ import javax.swing.JFrame;
  */
 public class Main {
 	/**
-	 * ƒƒCƒ“ƒƒ\ƒbƒh
+	 * ãƒ¡ã‚¤ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	public static void main(String[] args){
-		Connector con; //’†Œp—pƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg
-		GUIPanel2 gui; //•\¦—pƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg
-		SimpleClient2 client; //’ÊM—pƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg
+		Connector con; //ä¸­ç¶™ç”¨ã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		GUIPanel2 gui; //è¡¨ç¤ºç”¨ã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		SimpleClient2 client; //é€šä¿¡ç”¨ã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
-		//GUI‚Ì•\¦
+		//GUIã®è¡¨ç¤º
 		gui = new GUIPanel2();
 		JFrame frame = new JFrame("SampleAppletcation");
 		frame.setSize(500, 300);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(gui);
-		//ƒpƒlƒ‹‚ÌÄ”z’u
+		//ãƒ‘ãƒãƒ«ã®å†é…ç½®
 		gui.revalidate();
 
-		//ƒNƒ‰ƒCƒAƒ“ƒg‚Ì‹N“®
-		String[] data = {"127.0.0.1", "4000"}; //IPƒAƒhƒŒƒX‚Æƒ|[ƒg”Ô†yd—vz
+		//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®èµ·å‹•
+		String[] data = {"127.0.0.1", "4000"}; //IPã‚¢ãƒ‰ãƒ¬ã‚¹ã¨ãƒãƒ¼ãƒˆç•ªå·ã€é‡è¦ã€‘
 		client = new SimpleClient2(data);
 
-		//GUI‚ÆƒNƒ‰ƒCƒAƒ“ƒg‚ğŒq‚°‚é
+		//GUIã¨ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚’ç¹‹ã’ã‚‹
 		con = new Connector(gui, client);
 		gui.setConnector(con);
 		client.setConnector(con);

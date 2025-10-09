@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * ƒƒCƒ“ƒƒ\ƒbƒhF
- * Ž©ì‚µ‚½Base64‚ÌÃ“Iƒƒ\ƒbƒhiencode‚Ædecodej‚Ì“®ìŠm”F‚ðs‚¤ƒƒ\ƒbƒh
- * •W€“ü—Í‚µ‚½•¶Žš—ñ‚ðABase64‚ÅˆÃ†‰»‚µA‚»‚ÌŒãA•œ†‚·‚éB
+ * ãƒ¡ã‚¤ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰ï¼š
+ * è‡ªä½œã—ãŸBase64ã®é™çš„ãƒ¡ã‚½ãƒƒãƒ‰ï¼ˆencodeã¨decodeï¼‰ã®å‹•ä½œç¢ºèªã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
+ * æ¨™æº–å…¥åŠ›ã—ãŸæ–‡å­—åˆ—ã‚’ã€Base64ã§æš—å·åŒ–ã—ã€ãã®å¾Œã€å¾©å·ã™ã‚‹ã€‚
  */
 public class Main {
 
