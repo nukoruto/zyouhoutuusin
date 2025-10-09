@@ -13,7 +13,7 @@ package gui;
  *
  **************************************************/
 
-//�����̃p�b�P�[�W�̗��p
+//既存のパッケージの利用
 //import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -33,62 +33,62 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
 /**
- *  �`���b�g�N���C�A���g�̂��߂�GUI�v���O����
+ *  チャットクライアントのためのGUIプログラム
  *<BR>  
- *<BR>  �����F
- *<BR>  �E�`���b�g�N���C�A���g�Ƃ��Ă�GUI��񋟂���B
- *<BR>  �E�e�L�X�g�t�B�[���h�ɂāA�������ł�����Enter�L�[�������΁A�ł����񂾕�������e�L�X�g�G���A�ɒǋL�����A�����ɁA�T�[�o�֑��M����B
- *<BR>  �E�T�[�o����󂯎�����������\������e�L�X�g�G���A��ݒu���Ă���B
+ *<BR>  役割：
+ *<BR>  ・チャットクライアントとしてのGUIを提供する。
+ *<BR>  ・テキストフィールドにて、文字列を打ち込みEnterキーを押せば、打ち込んだ文字列をテキストエリアに追記させ、同時に、サーバへ送信する。
+ *<BR>  ・サーバから受け取った文字列を表示するテキストエリアを設置している。
  *<BR>
- *<BR>  �Ǘ����Ă����ȃt�B�[���h
- *<BR>  �Eparent: ����GUIPanel�N���X�̃I�u�W�F�N�g�𐶐������N���X�B���̃I�u�W�F�N�g��ʂ��āA�t�B�[���h�⃁�\�b�h�𗘗p����B
- *<BR>  �Ejta:  �������\������e�L�X�g�G���A�B���N���X���痘�p�ł���悤protected�錾�Ƃ��Ă���B
- *<BR>  �Ejtf:  ���������͂���e�L�X�g�t�B�[���h�B���N���X���痘�p�ł���悤protected�錾�Ƃ��Ă���B
+ *<BR>  管理している主なフィールド
+ *<BR>  ・parent: このGUIPanelクラスのオブジェクトを生成したクラス。このオブジェクトを通じて、フィールドやメソッドを利用する。
+ *<BR>  ・jta:  文字列を表示するテキストエリア。他クラスから利用できるようprotected宣言としている。
+ *<BR>  ・jtf:  文字列を入力するテキストフィールド。他クラスから利用できるようprotected宣言としている。
  */
 public class GUIPanel extends JPanel implements ActionListener, ItemListener{
-	/** actionPerformed���\�b�h��AitemStateChanged�ŎQ�Ƃ���̂Ń����o�ϐ��Ƃ��Đ錾 */
+	/** actionPerformedメソッドや、itemStateChangedで参照するのでメンバ変数として宣言 */
 	protected JTextArea jta;
 	
-	/** actionPerformed���\�b�h��AitemStateChanged�ŎQ�Ƃ���̂Ń����o�ϐ��Ƃ��Đ錾 */
+	/** actionPerformedメソッドや、itemStateChangedで参照するのでメンバ変数として宣言 */
 	protected JTextField jtf;
 	
 
 /**
- *<BR> �R���X�g���N�^
- *<BR> �E�R���|�[�l���g�̔z�u
- *<BR> �EJButton�N���X�̃I�u�W�F�N�g�ɑ΂��ăC�x���g���X�i�̓o�^
- *<BR> �EChoice�N���X�̃I�u�W�F�N�g�ɑ΂��ăC�x���g���X�i�̓o�^
+ *<BR> コンストラクタ
+ *<BR> ・コンポーネントの配置
+ *<BR> ・JButtonクラスのオブジェクトに対してイベントリスナの登録
+ *<BR> ・Choiceクラスのオブジェクトに対してイベントリスナの登録
  */
 	public GUIPanel(){
 		super();
 	
-		//�R���|�[�l���g�n�N���X�̃I�u�W�F�N�g�̍쐬
-		//���x��
-		JLabel jl = new JLabel("�R���|�[�l���g�̘A�g", JLabel.CENTER);
-		//�{�^��
-		JButton jb = new JButton("������");
-		//�e�L�X�g�G���A
+		//コンポーネント系クラスのオブジェクトの作成
+		//ラベル
+		JLabel jl = new JLabel("コンポーネントの連携", JLabel.CENTER);
+		//ボタン
+		JButton jb = new JButton("初期化");
+		//テキストエリア
 		jta = new JTextArea("JTextArea\n");
-		//�e�L�X�g�t�B�[���h
+		//テキストフィールド
 		jtf = new JTextField("JTextField");
-		//�|�b�v�A�b�v���j���[
+		//ポップアップメニュー
 		Choice choice = new Choice();
 		choice.add("Black");
 		choice.add("Red");
 		choice.add("Green");
 		choice.add("Blue");
 		
-		//�R���|�[�l���g�̔z�u
-		//���C�A�E�g�̐ݒ�
+		//コンポーネントの配置
+		//レイアウトの設定
 		this.setLayout(new BorderLayout());
-		//�z�u
+		//配置
 		this.add(jl, BorderLayout.NORTH);
 		this.add(jb, BorderLayout.WEST);
 		this.add(choice, BorderLayout.EAST);
 		this.add(jta, BorderLayout.CENTER);
 		this.add(jtf, BorderLayout.SOUTH);
 		
-		//�{�^���ɃC�x���g
+		//ボタンにイベント
 		jb.addActionListener(this);
 		jtf.addActionListener(this);
 		
@@ -96,17 +96,17 @@ public class GUIPanel extends JPanel implements ActionListener, ItemListener{
 	}
 	
 /**
- *<BR> ActionEvent�̃C�x���g����
- *<BR> �E���ۃN���XActionListener�ɋL����Ă��郁�\�b�hactionPerformed�̃I�[�o�[���C�h
- *<BR> �E�{�^�����N���b�N������A�e�L�X�g�G���A�ɁA�e�L�X�g�t�B�[���h�ɓ��͂���Ă��镶����ǋL���A�e�L�X�g�t�B�[���h�̓��͂��󔒂ɂ���B
+ *<BR> ActionEventのイベント処理
+ *<BR> ・抽象クラスActionListenerに記されているメソッドactionPerformedのオーバーライド
+ *<BR> ・ボタンをクリックしたら、テキストエリアに、テキストフィールドに入力されている文字を追記し、テキストフィールドの入力を空白にする。
  */
 	public void actionPerformed(ActionEvent e){
 		System.out.println("ActionEvent");
 		if(e.getSource() instanceof JButton){
 			String str = e.getActionCommand();
 			System.out.println("> "+str);
-			if("������".equals(str)){
-				jta.setText("���������܂����B\n");
+			if("初期化".equals(str)){
+				jta.setText("初期化しました。\n");
 				jtf.setText("");
 			}
 		}
@@ -124,9 +124,9 @@ public class GUIPanel extends JPanel implements ActionListener, ItemListener{
 	}
 	
 /**
- *<BR> ItemEvent�̃C�x���g����
- *<BR> �E���ۃN���XItemListener�ɋL����Ă��郁�\�b�hitemStateChanged�̃I�[�o�[���C�h
- *<BR> �E�`���C�X�̑I���A�C�e����I�񂾂�A�I�������A�C�e���i�F���j�ɂ��������āA�e�L�X�g�G���A�̐F�̐ݒ��ς���B
+ *<BR> ItemEventのイベント処理
+ *<BR> ・抽象クラスItemListenerに記されているメソッドitemStateChangedのオーバーライド
+ *<BR> ・チョイスの選択アイテムを選んだら、選択したアイテム（色名）にしたがって、テキストエリアの色の設定を変える。
  */
 	public void itemStateChanged(ItemEvent e){
 		if(e.getSource() instanceof Choice){
