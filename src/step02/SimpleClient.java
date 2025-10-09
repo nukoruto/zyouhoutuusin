@@ -126,69 +126,69 @@ public class SimpleClient extends Thread {
 	}
 
 /**
- *<BR> ۑA|RF@o̓IuWFNg̐
- *<BR>   EAPIɂBufferedReaderNXAPrintWriterNX𒲂ׂ邱ƁB
- *<BR>   ER[hSJISw肷B
- *<BR>   EȌfalseԂB
+ *<BR> 課題②－３：　入出力オブジェクトの生成
+ *<BR>   ・APIを用いてBufferedReaderおよびPrintWriterを生成すること。
+ *<BR>   ・文字コードはSJISを指定する。
+ *<BR>   ・失敗時はfalseを返す。
  */
-	public boolean setIO(){
-		try{
-			std_in = new BufferedReader(new InputStreamReader(System.in));
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "SJIS"));
-			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "SJIS"), true);
-			System.out.println("Client> o̓IuWFNg𐶐܂B<setIO>");
-			return true;
-		}
-		catch(Exception e){ //IOException
-			System.err.println(""+e+":o̓IuWFNg̐Ɏs܂B<setIO>");
-			return false;
-		}
-	}
+        public boolean setIO(){
+                try{
+                        std_in = new BufferedReader(new InputStreamReader(System.in));
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "SJIS"));
+                        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "SJIS"), true);
+                        System.out.println("Client> 入出力オブジェクトを生成します。<setIO>");
+                        return true;
+                }
+                catch(Exception e){ //IOException
+                        System.err.println(""+e+":入出力オブジェクトの生成に失敗しました。<setIO>");
+                        return false;
+                }
+        }
 
 /**
- *<BR> ۑA|SF@Xbh̎́iT[oƂ̒ʐMj
- *<BR>   EW͂msg1Ɋi[āAT[oɑMB
- *<BR>   EMmsg2Ɋi[B
- *<BR>   Emsg2iMjnullȂ΁AʐMɃG[NƔfAʐMIB
- *<BR>   Emsg2iMjLȊOȂ΁AWo͂Aȏ̏JԂB
- *<BR>   EʐMȈBiۑA|Tj
+ *<BR> 課題②－４：　スレッド（run）の処理
+ *<BR>   ・標準入力からmsg1を読み取り、サーバへ送信する。
+ *<BR>   ・サーバからmsg2を受信する。
+ *<BR>   ・msg2がnullであれば、通信エラーとして終了処理を行う。
+ *<BR>   ・msg2がnull以外であれば、標準出力へ表示する。
+ *<BR>   ・通信が終わったら課題②－５へ移行する。
  */
-	public void run(){
-		String msg1 = "";
-		String msg2 = "";
-		boolean done = false;
-		try{
-			while(!done){
-				System.out.println("");
-				System.out.print("Client> T[o֑镶͂ĂB<run>");
-				msg1 = std_in.readLine();
-				if(msg1 == null){
-					System.out.println("Client> W͂當擾ł܂B<run>");
-					done = true;
-					continue;
-				}
-				out.println(msg1);
-				out.flush();
-				System.out.println("Client> T[oփbZ[W𑗂܂B<run>");
-				msg2 = in.readLine();
-				if(msg2 == null){
-					System.out.println("Client> T[oƂ̐ڑ؂Ă܂B<run>");
-					done = true;
-				}
-				else{
-					System.out.println("Client> T[o̕󂯎܂B<run>");
-					System.out.println(msg2);
-					if(msg1.equals("bye")){
-						System.out.println("Client> T[oƂ̒ʐMI܂B<run>");
-						done = true;
-					}
-				}
-			}
-			this.close();  //ۑA|T
-		}
-		catch (Exception e) { //IOException
-			System.out.println(e);
-			System.exit(1);
+        public void run(){
+                String msg1 = "";
+                String msg2 = "";
+                boolean done = false;
+                try{
+                        while(!done){
+                                System.out.println("");
+                                System.out.print("Client> サーバへ送る文字列を入力してください。<run>");
+                                msg1 = std_in.readLine();
+                                if(msg1 == null){
+                                        System.out.println("Client> 標準入力が終了しました。<run>");
+                                        done = true;
+                                        continue;
+                                }
+                                out.println(msg1);
+                                out.flush();
+                                System.out.println("Client> サーバへ文字列を送信しました。<run>");
+                                msg2 = in.readLine();
+                                if(msg2 == null){
+                                        System.out.println("Client> サーバとの接続が切断されました。<run>");
+                                        done = true;
+                                }
+                                else{
+                                        System.out.println("Client> サーバから応答を受け取りました。<run>");
+                                        System.out.println(msg2);
+                                        if(msg1.equals("bye")){
+                                                System.out.println("Client> サーバとの通信を終了します。<run>");
+                                                done = true;
+                                        }
+                                }
+                        }
+                        this.close();  //課題②－５
+                }
+                catch (Exception e) { //IOException
+                        System.out.println(e);
+                        System.exit(1);
 		}
 	}
 
