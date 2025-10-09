@@ -10,19 +10,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- *  ƒT[ƒoƒvƒƒOƒ‰ƒ€‚ğ‹N“®‚³‚¹‚éƒƒCƒ“ƒvƒƒOƒ‰ƒ€
+ *  ã‚µãƒ¼ãƒãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’èµ·å‹•ã•ã›ã‚‹ãƒ¡ã‚¤ãƒ³ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
  *<BR>  
- *<BR>  –ğŠ„F
- *<BR>  Eƒ\ƒPƒbƒg’ÊM‚ğs‚¤ƒT[ƒo‚ğ—§‚¿ã‚°‚éB
- *<BR>  EƒNƒ‰ƒCƒAƒ“ƒg‚PŒÂ‚Ì‚İ‚ğó‚¯•t‚¯‚éB
- *<BR>  EƒNƒ‰ƒCƒAƒ“ƒg‚Æ‚ÌÚ‘±Œã‚ÍAƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç‚Ì•¶š—ñ‚ğó‚¯æ‚èA•Ô“š‚ğ‚·‚éB
+ *<BR>  å½¹å‰²ï¼š
+ *<BR>  ãƒ»ã‚½ã‚±ãƒƒãƒˆé€šä¿¡ã‚’è¡Œã†ã‚µãƒ¼ãƒã‚’ç«‹ã¡ä¸Šã’ã‚‹ã€‚
+ *<BR>  ãƒ»ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆï¼‘å€‹ã®ã¿ã‚’å—ã‘ä»˜ã‘ã‚‹ã€‚
+ *<BR>  ãƒ»ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¨ã®æ¥ç¶šå¾Œã¯ã€ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‹ã‚‰ã®æ–‡å­—åˆ—ã‚’å—ã‘å–ã‚Šã€è¿”ç­”ã‚’ã™ã‚‹ã€‚
  *<BR>
- *<BR>  ŠÇ—‚µ‚Ä‚¢‚éå‚ÈƒtƒB[ƒ‹ƒh
- *<BR>  Eport:  ƒ\ƒPƒbƒg’ÊM‚ğs‚¤ƒ|[ƒg”Ô†B‰Šú’l‚Í4000B
- *<BR>  Eserver_socket: ƒT[ƒo—p‚Ìƒ\ƒPƒbƒgBƒNƒ‰ƒCƒAƒ“ƒg‚ÌÚ‘±‚ğ‘Ò‚ÂB
- *<BR>  Eclient_socket: ƒT[ƒo‚ÉÚ‘±‚ª‚ ‚Á‚½Û‚Éì‚ç‚ê‚éƒIƒuƒWƒFƒNƒgB
- *<BR>  Ein: ƒ\ƒPƒbƒg‚ÌÚ‘±‘Šè‚©‚ç•¶š—ñ‚ğóM‚·‚éƒIƒuƒWƒFƒNƒgBclient_socket‚ğŠî‚Éì‚ç‚ê‚éB
- *<BR>  Eout:ƒ\ƒPƒbƒg‚ÌÚ‘±‘Šè‚É•¶š—ñ‚ğ‘—M‚·‚éƒIƒuƒWƒFƒNƒgBclient_socket‚ğŠî‚Éì‚ç‚ê‚éB 
+ *<BR>  ç®¡ç†ã—ã¦ã„ã‚‹ä¸»ãªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+ *<BR>  ãƒ»port:  ã‚½ã‚±ãƒƒãƒˆé€šä¿¡ã‚’è¡Œã†ãƒãƒ¼ãƒˆç•ªå·ã€‚åˆæœŸå€¤ã¯4000ã€‚
+ *<BR>  ãƒ»server_socket: ã‚µãƒ¼ãƒç”¨ã®ã‚½ã‚±ãƒƒãƒˆã€‚ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã®æ¥ç¶šã‚’å¾…ã¤ã€‚
+ *<BR>  ãƒ»client_socket: ã‚µãƒ¼ãƒã«æ¥ç¶šãŒã‚ã£ãŸéš›ã«ä½œã‚‰ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
+ *<BR>  ãƒ»in: ã‚½ã‚±ãƒƒãƒˆã®æ¥ç¶šç›¸æ‰‹ã‹ã‚‰æ–‡å­—åˆ—ã‚’å—ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚client_socketã‚’åŸºã«ä½œã‚‰ã‚Œã‚‹ã€‚
+ *<BR>  ãƒ»out:ã‚½ã‚±ãƒƒãƒˆã®æ¥ç¶šç›¸æ‰‹ã«æ–‡å­—åˆ—ã‚’é€ä¿¡ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚client_socketã‚’åŸºã«ä½œã‚‰ã‚Œã‚‹ã€‚ 
  */
 
 /**
@@ -31,41 +31,41 @@ import java.net.Socket;
  *	last change: Mar 2012
  */
 public class SimpleServer extends Thread {
-	/** ƒ|[ƒg”Ô†(1000”ÔˆÈ‰º) */
-	private int port = 999; //ƒNƒ‰ƒCƒAƒ“ƒg‚©‚çóM‚·‚éƒ|[ƒg
+	/** ãƒãƒ¼ãƒˆç•ªå·(1000ç•ªä»¥ä¸‹) */
+	private int port = 999; //ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‹ã‚‰å—ä¿¡ã™ã‚‹ãƒãƒ¼ãƒˆ
 	
-	/** ƒT[ƒo—p‚Ìƒ\ƒPƒbƒg */
+	/** ã‚µãƒ¼ãƒç”¨ã®ã‚½ã‚±ãƒƒãƒˆ */
 	private ServerSocket listen_socket;
-	/** ƒNƒ‰ƒCƒAƒ“ƒg‚©‚çƒT[ƒo‚ÉÚ‘±‚ª‚ ‚Á‚½Û‚Éì‚ç‚ê‚éƒIƒuƒWƒFƒNƒg */
+	/** ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‹ã‚‰ã‚µãƒ¼ãƒã«æ¥ç¶šãŒã‚ã£ãŸéš›ã«ä½œã‚‰ã‚Œã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
 	private Socket client_socket;
 	
-	/** ƒ\ƒPƒbƒg‚©‚ç•¶š—ñ‚ğóM‚·‚é‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg */
+	/** ã‚½ã‚±ãƒƒãƒˆã‹ã‚‰æ–‡å­—åˆ—ã‚’å—ä¿¡ã™ã‚‹ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
 	private BufferedReader in;
-	/** ƒ\ƒPƒbƒg‚©‚ç•¶š—ñ‚ğ‘—M‚·‚é‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg */
+	/** ã‚½ã‚±ãƒƒãƒˆã‹ã‚‰æ–‡å­—åˆ—ã‚’é€ä¿¡ã™ã‚‹ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ */
 	private PrintWriter out;
 	
 /**
- *<BR> ƒƒCƒ“ƒƒ\ƒbƒh
+ *<BR> ãƒ¡ã‚¤ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰
  */
 	public static void main(String[] args) {
 		new SimpleServer(args);
 	}
 	
 /**
- *<BR> ‰Û‘è1|‚OF@ƒRƒ“ƒXƒgƒ‰ƒNƒ^yŠm”Fì‹Æz
- *<BR>   EƒT[ƒo‚Ìˆ—‚Ì—¬‚ê‚ğŠm”F‚·‚é‚±‚ÆB
+ *<BR> èª²é¡Œ1ï¼ï¼ï¼šã€€ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã€ç¢ºèªä½œæ¥­ã€‘
+ *<BR>   ãƒ»ã‚µãƒ¼ãƒã®å‡¦ç†ã®æµã‚Œã‚’ç¢ºèªã™ã‚‹ã“ã¨ã€‚
  */
 	public SimpleServer(String[] args){
 		super();
 		
-		//ƒ|[ƒg”Ô†‚ÌŠm’è
-		boolean f1 = this.analizeCommandline(args);//‰Û‘è1|‚P
+		//ãƒãƒ¼ãƒˆç•ªå·ã®ç¢ºå®š
+		boolean f1 = this.analizeCommandline(args);//èª²é¡Œ1ï¼ï¼‘
 		if(!f1){
 			System.exit(1);
 		}
 		
-		//ƒ\ƒPƒbƒg‚Ì¶¬‚Æbindˆ—
-		boolean f2 = this.setSocket();//‰Û‘è1|‚Q
+		//ã‚½ã‚±ãƒƒãƒˆã®ç”Ÿæˆã¨bindå‡¦ç†
+		boolean f2 = this.setSocket();//èª²é¡Œ1ï¼ï¼’
 		
 		if(!f2){
 			System.exit(1);
@@ -77,27 +77,27 @@ public class SimpleServer extends Thread {
 			System.out.println("/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/\n");
 		}
 		
-		//ó“®“IƒI[ƒvƒ“ˆ—‚Æacceptˆ—
-		boolean f3 = this.waitClient();//‰Û‘è1|‚R
+		//å—å‹•çš„ã‚ªãƒ¼ãƒ—ãƒ³å‡¦ç†ã¨acceptå‡¦ç†
+		boolean f3 = this.waitClient();//èª²é¡Œ1ï¼ï¼“
 		if(!f3){
 			System.exit(1);
 		}
 		
-		//ƒNƒ‰ƒCƒAƒ“ƒg‚ÆÚ‘±‚µ‚½ƒ\ƒPƒbƒg‚©‚çA“üo—ÍƒIƒuƒWƒFƒNƒg‚Ì¶¬
-		boolean f4 = this.setIO();//‰Û‘è1|‚S
+		//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¨æ¥ç¶šã—ãŸã‚½ã‚±ãƒƒãƒˆã‹ã‚‰ã€å…¥å‡ºåŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
+		boolean f4 = this.setIO();//èª²é¡Œ1ï¼ï¼”
 		if(!f4){
 			System.exit(1);
 		}
 		
-		//ƒT[ƒoî•ñAƒNƒ‰ƒCƒAƒ“ƒgî•ñ‚Ì•\¦
-		boolean f5 = this.printSocketInfo(); //‰Û‘è1|‚T
+		//ã‚µãƒ¼ãƒæƒ…å ±ã€ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆæƒ…å ±ã®è¡¨ç¤º
+		boolean f5 = this.printSocketInfo(); //èª²é¡Œ1ï¼ï¼•
 		if(!f5){
 			System.exit(1);
 		}
 		
-		//ƒ`ƒƒƒbƒgƒT[ƒo‚Ì‹@”\n“®‚ÆI—¹
+		//ãƒãƒ£ãƒƒãƒˆã‚µãƒ¼ãƒã®æ©Ÿèƒ½å§‹å‹•ã¨çµ‚äº†
 		if(f3 && f4 && f5){
-			start(); //‰Û‘è1|‚U
+			start(); //èª²é¡Œ1ï¼ï¼–
 		}
 		else{
 			System.exit(1);
@@ -106,75 +106,72 @@ public class SimpleServer extends Thread {
 	
 	
 /**
- *<BR> ‰Û‘è1|‚PF@ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‰ğÍˆ—yŠm”Fì‹Æz
- *<BR>   EAPI‚É‚ÄIntegerƒNƒ‰ƒX‚ÌparseIntƒƒ\ƒbƒh‚ğŠm”F‚·‚é‚±‚ÆB
- *<BR>   Eˆø”‚ª1‚Â‚ÅA”š‚È‚ç‚ÎAƒ|[ƒg”Ô†‚Æ‚µ‚Äİ’è‚·‚éB
- *<BR>   Eˆø”‚ªãqˆÈŠO‚Ìê‡‚É‚ÍAƒ|[ƒg”Ô†‚Í‰Šú’l‚Ì‚Ü‚Ü‚Æ‚·‚éB
- */
-	public boolean analizeCommandline(String[] args){
-		if(args.length > 0){
-			try{
-				port = Integer.parseInt(args[0]);
-			}
-			catch(NumberFormatException e){
-				System.err.println(""+e+":ˆø”‚ª”š‚Å‚Í‚ ‚è‚Ü‚¹‚ñB<analizeCommandline>");
-				System.out.println("Server> “ü—Í‚Í–³‹‚µ‚Ü‚·B<analizeCommandline>");
-			}
-		}
-		
-		System.out.println("Server> ƒ|[ƒg”Ô†‚Í"+port+"‚Æ‚µ‚Ü‚·B<analizeCommandline>");
-		return true;
-	}
-	
+ *<BR> èª²é¡Œ1ï¼ï¼‘ï¼šã€€ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³è§£æå‡¦ç†ã€ç¢ºèªä½œæ¥­ã€‘
+ *<BR>   ãƒ»APIã«ã¦Integerã‚¯ãƒ©ã‚¹ã®parseIntãƒ¡ã‚½ãƒƒãƒ‰ã‚’ç¢ºèªã™ã‚‹ã“ã¨ã€‚
+ *<BR>   ãƒ»å¼•æ•°ãŒ1ã¤ã§ã€æ•°å­—ãªã‚‰ã°ã€ãƒãƒ¼ãƒˆç•ªå·ã¨ã—ã¦è¨­å®šã™ã‚‹ã€‚
+			listen_socket = new ServerSocket();
+			listen_socket.setReuseAddress(true);
+			InetSocketAddress endpoint = new InetSocketAddress(port);
+			listen_socket.bind(endpoint);
+			client_socket = listen_socket.accept();
+			in = new BufferedReader(
+				new InputStreamReader(
+					client_socket.getInputStream(),
+					java.nio.charset.Charset.forName("MS932")));
+			out = new PrintWriter(
+				new OutputStreamWriter(
+					client_socket.getOutputStream(),
+					java.nio.charset.Charset.forName("MS932")),
+				true);
 /**
- *<BR> ‰Û‘è1|‚QF@ƒT[ƒoƒ\ƒPƒbƒg‚Ì¶¬ˆ—yƒ\[ƒXƒR[ƒh’Ç‹Lì‹Æz
- *<BR>   EAPI‚É‚ÄServerSocketƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^“™‚ğŠm”F‚·‚é‚±‚ÆB
- *<BR>   EƒIƒuƒWƒFƒNƒg‚Ì¶¬Aƒ|[ƒg”Ô†‚Ìİ’è‚ğ‚·‚éisocket‚ÆbindjB
- *<BR>   E—áŠO”­¶‚Ìˆ—‚Ífalse‚ğ•Ô‚·B
- */
-	public boolean setSocket(){
-		try{
+					out.println("bye");
+					done = true;
+					out.println("ECHO: " + msg);
 			
-			
-			
-			
-			
-			System.out.println("Server> ƒT[ƒoƒ\ƒPƒbƒg‚Ì¶¬‚É¬Œ÷‚µ‚Ü‚µ‚½B<setSocket>");
-			return true;
-		}
-		catch(Exception e){ //IOException: ƒ\ƒPƒbƒg‚Ì¶¬‚É¸”s
-			System.err.println(""+e+":ƒT[ƒoƒ\ƒPƒbƒg‚Ì¶¬‚É¸”s‚µ‚Ü‚µ‚½B<setSocket>");
+			if(in != null){
+				in.close();
+			}
+			if(out != null){
+				out.close();
+			}
+			if(listen_socket != null && !listen_socket.isClosed()){
+				listen_socket.close();
+			}
+			if(client_socket != null && !client_socket.isClosed()){
+				client_socket.close();
+			}
+			System.err.println(""+e+":ã‚µãƒ¼ãƒã‚½ã‚±ãƒƒãƒˆã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚<setSocket>");
 			return false;
 		}
 	}
 	
 /**
- *<BR> ‰Û‘è1|‚RF@ƒ\ƒPƒbƒgó•t‘Ò‚¿ˆ—yƒ\[ƒXƒR[ƒh’Ç‹Lì‹Æz
- *<BR>   EAPI‚É‚ÄServerSocketƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ğ’²‚×‚é‚±‚ÆB
- *<BR>   E—áŠO”­¶‚Ìˆ—‚Ífalse‚ğ•Ô‚·B
+ *<BR> èª²é¡Œ1ï¼ï¼“ï¼šã€€ã‚½ã‚±ãƒƒãƒˆå—ä»˜å¾…ã¡å‡¦ç†ã€ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰è¿½è¨˜ä½œæ¥­ã€‘
+ *<BR>   ãƒ»APIã«ã¦ServerSocketã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’èª¿ã¹ã‚‹ã“ã¨ã€‚
+ *<BR>   ãƒ»ä¾‹å¤–ç™ºç”Ÿæ™‚ã®å‡¦ç†ã¯falseã‚’è¿”ã™ã€‚
  */
 	public boolean waitClient(){
 		try{
-			System.out.println("Server> ƒT[ƒoƒ\ƒPƒbƒg‚ÉƒAƒNƒZƒX‚ª‚ ‚é‚Ü‚Å‘Ò‹@‚µ‚Ü‚·B<waitClient>");
+			System.out.println("Server> ã‚µãƒ¼ãƒã‚½ã‚±ãƒƒãƒˆã«ã‚¢ã‚¯ã‚»ã‚¹ãŒã‚ã‚‹ã¾ã§å¾…æ©Ÿã—ã¾ã™ã€‚<waitClient>");
 			
 			
 			
 			
 			
-			System.out.println("Server> ƒT[ƒoƒ\ƒPƒbƒg‚ÉƒAƒNƒZƒX‚ª‚ ‚è‚Ü‚µ‚½B<waitClient>");
+			System.out.println("Server> ã‚µãƒ¼ãƒã‚½ã‚±ãƒƒãƒˆã«ã‚¢ã‚¯ã‚»ã‚¹ãŒã‚ã‚Šã¾ã—ãŸã€‚<waitClient>");
 			return true;
 		}
 		catch(Exception e){ //IOException
-			System.err.println(""+e+":ƒNƒ‰ƒCƒAƒ“ƒg‚Æ‚ÌÚ‘±‚É¸”s‚µ‚Ü‚µ‚½B<waitClient>");
+			System.err.println(""+e+":ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¨ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚<waitClient>");
 			return false;
 		}
 	}
 	
 /**
- *<BR> ‰Û‘è1|‚SF@“üo—ÍƒIƒuƒWƒFƒNƒg‚Ì¶¬ˆ—yƒ\[ƒXƒR[ƒh’Ç‹Lì‹Æz
- *<BR>   EAPI‚É‚ÄBufferedReaderƒNƒ‰ƒXAPrintWriterƒNƒ‰ƒX‚ğ’²‚×‚é‚±‚ÆB
- *<BR>   E•¶šƒR[ƒh‚ÍSJIS‚ğw’è‚·‚éB
- *<BR>   E—áŠO”­¶‚Ìˆ—‚Ífalse‚ğ•Ô‚·B
+ *<BR> èª²é¡Œ1ï¼ï¼”ï¼šã€€å…¥å‡ºåŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆå‡¦ç†ã€ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰è¿½è¨˜ä½œæ¥­ã€‘
+ *<BR>   ãƒ»APIã«ã¦BufferedReaderã‚¯ãƒ©ã‚¹ã€PrintWriterã‚¯ãƒ©ã‚¹ã‚’èª¿ã¹ã‚‹ã“ã¨ã€‚
+ *<BR>   ãƒ»æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯SJISã‚’æŒ‡å®šã™ã‚‹ã€‚
+ *<BR>   ãƒ»ä¾‹å¤–ç™ºç”Ÿæ™‚ã®å‡¦ç†ã¯falseã‚’è¿”ã™ã€‚
  */
 	public boolean setIO(){
 		try{
@@ -185,40 +182,40 @@ public class SimpleServer extends Thread {
 			
 			
 			
-			System.out.println("Server> “üo—ÍƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µ‚Ü‚µ‚½B<setIO>");
+			System.out.println("Server> å…¥å‡ºåŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã—ãŸã€‚<setIO>");
 			return true;
 		}
 		catch(Exception e){ //IOException
-			System.err.println(""+e+":“üo—ÍƒIƒuƒWƒFƒNƒg‚Ì¶¬‚É¸”s‚µ‚Ü‚µ‚½B<setIO>");
+			System.err.println(""+e+":å…¥å‡ºåŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚<setIO>");
 			return false;
 		}
 	}
 	
 /**
- *<BR> ‰Û‘è1|‚TF@ƒ\ƒPƒbƒg‚ÌÚ‘±æ‚ÆÚ‘±Œ³‚Ìî•ñ‚ğclient_socket‚©‚çæ‚èo‚µ‚Ä•W€o—ÍByƒ\[ƒXƒR[ƒh•ÏXì‹Æz
- *<BR>   EAPI‚É‚ÄSocketƒNƒ‰ƒX‚ğ’²‚×‚é‚±‚ÆB
+ *<BR> èª²é¡Œ1ï¼ï¼•ï¼šã€€ã‚½ã‚±ãƒƒãƒˆã®æ¥ç¶šå…ˆã¨æ¥ç¶šå…ƒã®æƒ…å ±ã‚’client_socketã‹ã‚‰å–ã‚Šå‡ºã—ã¦æ¨™æº–å‡ºåŠ›ã€‚ã€ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰å¤‰æ›´ä½œæ¥­ã€‘
+ *<BR>   ãƒ»APIã«ã¦Socketã‚¯ãƒ©ã‚¹ã‚’èª¿ã¹ã‚‹ã“ã¨ã€‚
  */
 	public boolean printSocketInfo(){
-		System.out.println("Server> Socket‚Ìî•ñ‚ğ•\¦‚µ‚Ü‚·B<printSocketInfo>");
-		System.out.println(" yƒT[ƒoz");
-		System.out.println("   ƒzƒXƒg–¼: "                                     );
-		System.out.println("   ƒ|[ƒg”Ô†: "                                   );
-		System.out.println("   ƒ\ƒPƒbƒgƒAƒhƒŒƒX: "                             );
-		System.out.println(" yƒNƒ‰ƒCƒAƒ“ƒgz");
-		System.out.println("   ƒzƒXƒg–¼: "                                     );
-		System.out.println("   ƒ|[ƒg”Ô†: "                                   );
-		System.out.println("   ƒ\ƒPƒbƒgƒAƒhƒŒƒX: "                             );
+		System.out.println("Server> Socketã®æƒ…å ±ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚<printSocketInfo>");
+		System.out.println(" ã€ã‚µãƒ¼ãƒã€‘");
+		System.out.println("   ãƒ›ã‚¹ãƒˆå: "                                     );
+		System.out.println("   ãƒãƒ¼ãƒˆç•ªå·: "                                   );
+		System.out.println("   ã‚½ã‚±ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹: "                             );
+		System.out.println(" ã€ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã€‘");
+		System.out.println("   ãƒ›ã‚¹ãƒˆå: "                                     );
+		System.out.println("   ãƒãƒ¼ãƒˆç•ªå·: "                                   );
+		System.out.println("   ã‚½ã‚±ãƒƒãƒˆã‚¢ãƒ‰ãƒ¬ã‚¹: "                             );
 		
 		return true;
 	}
 	
 /**
- *<BR> ‰Û‘è1|‚UF@ƒXƒŒƒbƒh‚ÌÀ‘ÌiƒNƒ‰ƒCƒAƒ“ƒg‚Æ‚Ì’ÊMˆ—jyƒ\[ƒXƒR[ƒh’Ç‹Lì‹Æz
- *<BR>   EóM‚µ‚½•¶š—ñ‚ªnull‚È‚ç‚ÎA’ÊM’†‚ÉƒGƒ‰[‚ª‹N‚±‚Á‚½‚Æ”»’f‚µAwhile•¶‚©‚ç”²‚¯‚éB
- *<BR>   EóM‚µ‚½•¶š—ñ‚ªubyev‚È‚ç‚ÎA’ÊM‚ÌI—¹‚Æ”»’f‚µAwhile•¶‚©‚ç”²‚¯‚éB
- *<BR>   EóM‚µ‚½•¶š‚ªã‹LˆÈŠO‚È‚ç‚ÎA•¶š—ñ‚Ìæ“ª‚ÉuECHO: v‚ğ•t—^‚µ‚ÄAClient‚É‘—M‚µwhile•¶‚ğŒJ‚è•Ô‚·B
- *<BR>   Ewhile•¶‚©‚ç”²‚¯o‚µ‚½ŒãA’ÊMI—¹‚Ìˆ—‚ğs‚¤Bi‰Û‘è1|‚Vj
- *<BR>   Etry‚ÌƒXƒR[ƒv‚Å—áŠO(IOException )‚ª”­¶‚µ‚½ê‡‚ÍA‚»‚Ì“_‚©‚ç‹­§“I‚Écatch‚Ö”ò‚ÔB
+ *<BR> èª²é¡Œ1ï¼ï¼–ï¼šã€€ã‚¹ãƒ¬ãƒƒãƒ‰ã®å®Ÿä½“ï¼ˆã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¨ã®é€šä¿¡å‡¦ç†ï¼‰ã€ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰è¿½è¨˜ä½œæ¥­ã€‘
+ *<BR>   ãƒ»å—ä¿¡ã—ãŸæ–‡å­—åˆ—ãŒnullãªã‚‰ã°ã€é€šä¿¡ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒèµ·ã“ã£ãŸã¨åˆ¤æ–­ã—ã€whileæ–‡ã‹ã‚‰æŠœã‘ã‚‹ã€‚
+ *<BR>   ãƒ»å—ä¿¡ã—ãŸæ–‡å­—åˆ—ãŒã€Œbyeã€ãªã‚‰ã°ã€é€šä¿¡ã®çµ‚äº†ã¨åˆ¤æ–­ã—ã€whileæ–‡ã‹ã‚‰æŠœã‘ã‚‹ã€‚
+ *<BR>   ãƒ»å—ä¿¡ã—ãŸæ–‡å­—ãŒä¸Šè¨˜ä»¥å¤–ãªã‚‰ã°ã€æ–‡å­—åˆ—ã®å…ˆé ­ã«ã€ŒECHO: ã€ã‚’ä»˜ä¸ã—ã¦ã€Clientã«é€ä¿¡ã—whileæ–‡ã‚’ç¹°ã‚Šè¿”ã™ã€‚
+ *<BR>   ãƒ»whileæ–‡ã‹ã‚‰æŠœã‘å‡ºã—ãŸå¾Œã€é€šä¿¡çµ‚äº†ã®å‡¦ç†ã‚’è¡Œã†ã€‚ï¼ˆèª²é¡Œ1ï¼ï¼—ï¼‰
+ *<BR>   ãƒ»tryã®ã‚¹ã‚³ãƒ¼ãƒ—ã§ä¾‹å¤–(IOException )ãŒç™ºç”Ÿã—ãŸå ´åˆã¯ã€ãã®æ™‚ç‚¹ã‹ã‚‰å¼·åˆ¶çš„ã«catchã¸é£›ã¶ã€‚
  */
 	public void run(){
 		String msg = "";
@@ -229,17 +226,17 @@ public class SimpleServer extends Thread {
 				msg = in.readLine();
 				
 				if(msg == null){
-					System.out.println("Server> ƒNƒ‰ƒCƒAƒ“ƒg‚Æ‚ÌÚ‘±‚ªØ‚ê‚Ä‚¢‚Ü‚·B<run>");
+					System.out.println("Server> ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¨ã®æ¥ç¶šãŒåˆ‡ã‚Œã¦ã„ã¾ã™ã€‚<run>");
 					done = true;
 				}
 				else if(msg.equals("bye")){
-					System.out.println("Server> ƒNƒ‰ƒCƒAƒ“ƒg‚©‚çÚ‘±I—¹‚Ì‡Œ¾—t‚ª‚«‚Ü‚µ‚½B<run>");
+					System.out.println("Server> ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‹ã‚‰æ¥ç¶šçµ‚äº†ã®åˆè¨€è‘‰ãŒãã¾ã—ãŸã€‚<run>");
 					
 					
 					
 				}
 				else{
-					System.out.println("Server> ƒNƒ‰ƒCƒAƒ“ƒg‚©‚ç‚Ì•¶š—ñ‚ğó‚¯æ‚è‚Ü‚µ‚½B<run>");
+					System.out.println("Server> ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‹ã‚‰ã®æ–‡å­—åˆ—ã‚’å—ã‘å–ã‚Šã¾ã—ãŸã€‚<run>");
 					System.out.println(msg);
 					
 					
@@ -247,38 +244,38 @@ public class SimpleServer extends Thread {
 					
 					
 					
-					System.out.println("Server> ƒNƒ‰ƒCƒAƒ“ƒg‚ÖƒƒbƒZ[ƒW‚ğ‘—‚è‚Ü‚µ‚½B<run>");
+					System.out.println("Server> ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¸ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚Šã¾ã—ãŸã€‚<run>");
 				}
 			}
 			
-			this.close();  //‰Û‘è1|‚V
+			this.close();  //èª²é¡Œ1ï¼ï¼—
 		}
 		catch(IOException e){
-			System.err.println(""+e+":ƒNƒ‰ƒCƒAƒ“ƒg‚Æ‚ÌÚ‘±‚É¸”s‚µ‚Ü‚µ‚½B<run>");
+			System.err.println(""+e+":ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã¨ã®æ¥ç¶šã«å¤±æ•—ã—ã¾ã—ãŸã€‚<run>");
 		}
 	}
 	
 /**
- *<BR> ‰Û‘è1|‚VF@ƒvƒƒOƒ‰ƒ€‚ÌI—¹ˆ—yŠm”Fì‹Æz
- *<BR>   E“üo—ÍƒIƒuƒWƒFƒNƒg‚ÌI—¹
- *<BR>   EƒXƒŒƒbƒh(ServerSocket‚ÆSocket)‚ÌI—¹
+ *<BR> èª²é¡Œ1ï¼ï¼—ï¼šã€€ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®çµ‚äº†å‡¦ç†ã€ç¢ºèªä½œæ¥­ã€‘
+ *<BR>   ãƒ»å…¥å‡ºåŠ›ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çµ‚äº†
+ *<BR>   ãƒ»ã‚¹ãƒ¬ãƒƒãƒ‰(ServerSocketã¨Socket)ã®çµ‚äº†
  */
 	public void close(){
 		try{
-			System.out.println("Server> “üo—Í—p‚ÌƒIƒuƒWƒFƒNƒgin‚Æout‚ğI—¹‚³‚¹‚Ü‚·B<close>");
+			System.out.println("Server> å…¥å‡ºåŠ›ç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆinã¨outã‚’çµ‚äº†ã•ã›ã¾ã™ã€‚<close>");
 			in.close();
 			out.close();
-			System.out.println("Server> listen_socket‚Æclient_socket‚ğI—¹‚³‚¹‚Ü‚µ‚½B<close>");
+			System.out.println("Server> listen_socketã¨client_socketã‚’çµ‚äº†ã•ã›ã¾ã—ãŸã€‚<close>");
 			
-			System.out.println("Server> listen_socket‚Æclient_socket‚ğI—¹‚³‚¹‚Ü‚·B<close>");
+			System.out.println("Server> listen_socketã¨client_socketã‚’çµ‚äº†ã•ã›ã¾ã™ã€‚<close>");
 			listen_socket.close();
 			client_socket.close();
-			System.out.println("Server> listen_socket‚Æclient_socket‚ğI—¹‚³‚¹‚Ü‚µ‚½B<close>");
-			System.out.println("Server> ƒvƒƒOƒ‰ƒ€‚ğI—¹‚³‚¹‚Ü‚·B<close>");
+			System.out.println("Server> listen_socketã¨client_socketã‚’çµ‚äº†ã•ã›ã¾ã—ãŸã€‚<close>");
+			System.out.println("Server> ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’çµ‚äº†ã•ã›ã¾ã™ã€‚<close>");
 			System.exit(0);
 		}
 		catch(Exception e){
-			System.err.println(""+e+":ƒIƒuƒWƒFƒNƒg‚ÌI—¹‚É¸”s‚µ‚Ü‚µ‚½B<close>");
+			System.err.println(""+e+":ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çµ‚äº†ã«å¤±æ•—ã—ã¾ã—ãŸã€‚<close>");
 			System.exit(1);
 		}
 	}
