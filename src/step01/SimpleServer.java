@@ -109,41 +109,51 @@ public class SimpleServer extends Thread {
  *<BR> 課題1－１：　コマンドライン解析処理【確認作業】
  *<BR>   ・APIにてIntegerクラスのparseIntメソッドを確認すること。
  *<BR>   ・引数が1つで、数字ならば、ポート番号として設定する。
-			listen_socket = new ServerSocket();
-			listen_socket.setReuseAddress(true);
-			InetSocketAddress endpoint = new InetSocketAddress(port);
-			listen_socket.bind(endpoint);
-			client_socket = listen_socket.accept();
-			in = new BufferedReader(
-				new InputStreamReader(
-					client_socket.getInputStream(),
-					java.nio.charset.Charset.forName("MS932")));
-			out = new PrintWriter(
-				new OutputStreamWriter(
-					client_socket.getOutputStream(),
-					java.nio.charset.Charset.forName("MS932")),
-				true);
+ */
+        public boolean analizeCommandline(String[] args){
+                if(args == null || args.length == 0){
+                        return true;
+                }
+
+                if(args.length != 1){
+                        System.err.println("Server> コマンドライン引数の個数が正しくありません。<analizeCommandline>");
+                        return false;
+                }
+
+                try{
+                        int parsedPort = Integer.parseInt(args[0]);
+                        if(parsedPort < 0 || parsedPort > 65535){
+                                System.err.println("Server> ポート番号が範囲外です。0-65535 を指定してください。<analizeCommandline>");
+                                return false;
+                        }
+                        port = parsedPort;
+                        return true;
+                }
+                catch(NumberFormatException e){
+                        System.err.println(""+e+":ポート番号の解析に失敗しました。<analizeCommandline>");
+                        return false;
+                }
+        }
+
 /**
-					out.println("bye");
-					done = true;
-					out.println("ECHO: " + msg);
-			
-			if(in != null){
-				in.close();
-			}
-			if(out != null){
-				out.close();
-			}
-			if(listen_socket != null && !listen_socket.isClosed()){
-				listen_socket.close();
-			}
-			if(client_socket != null && !client_socket.isClosed()){
-				client_socket.close();
-			}
-			System.err.println(""+e+":サーバソケットの生成に失敗しました。<setSocket>");
-			return false;
-		}
-	}
+ *<BR> 課題1－２：　サーバソケット生成処理【ソースコード追記作業】
+ *<BR>   ・ServerSocketクラスのAPIを確認すること。
+ *<BR>   ・例外発生時の処理はfalseを返す。
+ */
+        public boolean setSocket(){
+                try{
+                        listen_socket = new ServerSocket();
+                        listen_socket.setReuseAddress(true);
+                        InetSocketAddress endpoint = new InetSocketAddress(port);
+                        listen_socket.bind(endpoint);
+                        System.out.println("Server> サーバソケットを生成しました。<setSocket>");
+                        return true;
+                }
+                catch(IOException e){
+                        System.err.println(""+e+":サーバソケットの生成に失敗しました。<setSocket>");
+                        return false;
+                }
+        }
 	
 /**
  *<BR> 課題1－３：　ソケット受付待ち処理【ソースコード追記作業】
