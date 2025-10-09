@@ -130,25 +130,18 @@ public class SimpleClient extends Thread {
  *<BR>   ・オブジェクトの生成、ポート番号の設定をする（socketとbind）。
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
-	public boolean setSocket(){
-		try{
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			System.out.println("Clien> サーバとの接続に成功しました。<setSocket>");
-			return true;
-		}
-		catch(Exception e){ //IOException
-			System.err.println(""+e+":サーバとの接続に失敗しました。<setSocket>");
-			return false;
-		}
-	}
+        public boolean setSocket(){
+                try{
+                        InetAddress address = InetAddress.getByName(host);
+                        socket = new Socket(address, port1);
+                        System.out.println("Clien> サーバとの接続に成功しました。<setSocket>");
+                        return true;
+                }
+                catch(Exception e){ //IOException
+                        System.err.println(""+e+":サーバとの接続に失敗しました。<setSocket>");
+                        return false;
+                }
+        }
 	
 /**
  *<BR> 課題②－３：　入出力オブジェクトの生成処理
@@ -156,28 +149,19 @@ public class SimpleClient extends Thread {
  *<BR>   ・文字コードはSJISを指定する。
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
-	public boolean setIO(){
-		try{
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			System.out.println("Client> 入出力オブジェクトを生成しました。<setIO>");
-			return true;
-		}
-		catch(Exception e){ //IOException
-			System.err.println(""+e+":入出力オブジェクトの生成に失敗しました。<setIO>");
-			return false;
-		}
-	}
+        public boolean setIO(){
+                try{
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "SJIS"));
+                        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "SJIS"), true);
+                        std_in = new BufferedReader(new InputStreamReader(System.in, "SJIS"));
+                        System.out.println("Client> 入出力オブジェクトを生成しました。<setIO>");
+                        return true;
+                }
+                catch(Exception e){ //IOException
+                        System.err.println(""+e+":入出力オブジェクトの生成に失敗しました。<setIO>");
+                        return false;
+                }
+        }
 
 
 
@@ -189,38 +173,41 @@ public class SimpleClient extends Thread {
  *<BR>   ・msg2（受信した文字列）が上記以外ならば、標準出力し、以上の処理を繰り返す。
  *<BR>   ・通信終了の処理をする。（課題②－５）
  */
-	public void run(){
-		String msg1 = "";
-		String msg2 = "";
-		boolean done = false;
-		try{
-			while(!done){
-				System.out.println("");
-				
-				
-				
-				
-				
-				
-				
-				
-				if(msg2 == null){
-					System.out.println("Client> サーバとの接続が切れています。<run>");
-					done = true;
-				}
-				else{
-					System.out.println("Client> サーバからの文字列を受け取りました。<run>");
-					System.out.println(msg2);
-				}
-			}
-			
-			this.close();  //課題②－５
-		}
-		catch (Exception e) { //IOException
-			System.out.println(e);
-			System.exit(1);
-		}
-	}
+        public void run(){
+                String msg1 = "";
+                String msg2 = "";
+                boolean done = false;
+                try{
+                        while(!done){
+                                System.out.println("");
+                                System.out.print("Client> サーバに送信する文字列を入力してください。<run>\n");
+                                msg1 = std_in.readLine();
+                                if(msg1 == null){
+                                        System.out.println("Client> 入力が確認できないため終了します。<run>");
+                                        done = true;
+                                        continue;
+                                }
+                                out.println(msg1);
+                                out.flush();
+                                System.out.println("Client> サーバからの応答を待ちます。<run>");
+                                msg2 = in.readLine();
+                                if(msg2 == null){
+                                        System.out.println("Client> サーバとの接続が切れています。<run>");
+                                        done = true;
+                                }
+                                else{
+                                        System.out.println("Client> サーバからの文字列を受け取りました。<run>");
+                                        System.out.println(msg2);
+                                }
+                        }
+
+                        this.close();  //課題②－５
+                }
+                catch (Exception e) { //IOException
+                        System.out.println(e);
+                        System.exit(1);
+                }
+        }
 	
 /**
  *<BR> 課題②－５：　プログラムの終了処理
