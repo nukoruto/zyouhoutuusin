@@ -5,46 +5,46 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- *  �����Base64�̕ϊ����s���N���X
+ *  自作のBase64の変換を行うクラス
  *<BR>
- *<BR>  �����F
- *<BR>  �E�ϊ��͐ÓI�ȃ��\�b�h���ōs�����߁A�I�u�W�F�N�g�̐����͕s�v�B
+ *<BR>  特徴：
+ *<BR>  ・変換は静的なメソッド内で行うため、オブジェクトの生成は不要。
  *<BR>
- *<BR>  �Ǘ����Ă����ȃt�B�[���h
- *<BR>  �Estatic String TABLE:  Base64�̕ϊ��e�[�u��
+ *<BR>  管理している主なフィールド
+ *<BR>  ・static String TABLE:  Base64の変換テーブル
  *<BR>
- *<BR>  �Ǘ����Ă����ȃ��\�b�h
- *<BR>  �Estatic String encode(String str1):  Base64�̃G���R�[�h�ϊ�
- *<BR>  �Estatic String decode(String str1):  Base64�̃f�R�[�h�ϊ�
+ *<BR>  管理している主なメソッド
+ *<BR>  ・static String encode(String str1):  Base64のエンコード変換
+ *<BR>  ・static String decode(String str1):  Base64のデコード変換
  */
 public class MyBase64 {
-    /** Base64�̕ϊ��e�[�u�� */
+    /** Base64の変換テーブル */
     public static String TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /**
-  �G���R�[�h���郁�\�b�h
-  str1: ���̕�����
-  �߂�l: �G���R�[�h��̕�����(str2)
+  エンコードするメソッド
+  str1: 元の文字列
+  戻り値: エンコード後の文字列(str2)
 
-  �A���S���Y��
-  �����P�Dstr1��2�i���̕�����istrB�j�ɂ���i1�����萔��8bit��2�i���ɕϊ��j
-  �����Q�DstrB��6bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr2�j�����B
-      �ϊ��ɂ�String�N���X�̃I�u�W�F�N�gTABLE���g���B
-      6bit��2�i���𐮐��l(10�i��)�ɂ��āA���̒l�𕶎���TABLE��index�Ɏg���B
-      ���̕�����TABLE��index�Ԗڂ̒l���A�ϊ���̕����萔�B
-  �����R�Dstr2�̒�����4�̔{���ɂȂ�悤�ɒ�������B�s���́u=�v�Ŗ��߂�B
+  アルゴリズム
+  処理１．str1を2進数の文字列（strB）にする（1文字定数は8bitの2進数に変換）
+  処理２．strBを6bit刻みで文字定数に変換し、新たな文字列（str2）を作る。
+      変換にはStringクラスのオブジェクトTABLEを使う。
+      6bitの2進数を整数値(10進数)にして、その値を文字列TABLEのindexに使う。
+      その文字列TABLEのindex番目の値が、変換後の文字定数。
+  処理３．str2の長さは4の倍数になるように調整する。不足は「=」で埋める。
 */
     public static String encode(String str1){
-        String str2 = ""; //Base64�ɃG���R�[�h��̕�����
-        String strB = ""; //2�i���̕�����ɕϊ���̕�����
+        String str2 = ""; //Base64にエンコード後の文字列
+        String strB = ""; //2進数の文字列に変換後の文字列
 
-        //�����P�Dstr1��2�i���̕�����istrB�j�ɂ���i1�����萔��8bit��2�i���ɕϊ��j
-        //�����Ƃ��ẮA1��������������strB�ɘA�������Ă����B
+        //処理１．str1を2進数の文字列（strB）にする（1文字定数は8bitの2進数に変換）
+        //処理としては、1文字ずつ処理してstrBに連結させていく。
 		for(int i=0; i<str1.length(); i++){
-            String tmp = ""; //str1��2�i���̕�����ɕϊ�����tmp�Ɋi�[����B�y�P�D�E�ӕύX�z
+            String tmp = ""; //str1を2進数の文字列に変換してtmpに格納する。【１．右辺変更】
 
-            //tmp��8���ɂȂ��Ă��Ȃ��ꍇ�A��ʃr�b�g�̏ꏊ��0�����8���ɂ���B
-            //for���Ȃǂ��g���āA������O����0������B�i4�s���炢�j�y�Q�D�쐬�z
+            //tmpが8桁になっていない場合、上位ビットの場所に0を入れ8桁にする。
+            //for文などを使って、文字列前方に0を入れる。（4行くらい）【２．作成】
 
 
 
@@ -52,24 +52,24 @@ public class MyBase64 {
 
 		}
 
-		//�o����������strB�̒�����6�̔{���łȂ��ꍇ�A�����Ƀ[���p�f�B���O�i3�s���炢�j�y�R�D�쐬�z�����R���Q�l
+		//出来あたっがstrBの長さが6の倍数でない場合、末尾にゼロパディング（3行くらい）【３．作成】処理３を参考
 
 
 
 
 
-        //�����Q�DstrB��6bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr2�j�����
+        //処理２．strBを6bit刻みで文字定数に変換し、新たな文字列（str2）を作る
 		for(int i=0; (i+6)<=strB.length(); i+=6){
-            String substr = ""; //6���i6�r�b�g�Ԃ�j�����o���B      �y�S�D�E�ӕύX�z
-            int num = 0;  //2�i���̕������10�i���̐����ɕϊ�         �y�T�D�E�ӕύX�z
+            String substr = ""; //6桁（6ビットぶん）を取り出す。      【４．右辺変更】
+            int num = 0;  //2進数の文字列を10進数の整数に変換         【５．右辺変更】
             System.out.println(substr+">>"+num);
 
-            str2 += ""; //�ϊ����������i������TABLE��num�Ԗڂ̕����j��str2�ɘA��������B�y�U�D�E�ӕύX�z
+            str2 += ""; //変換した文字（文字列TABLEのnum番目の文字）をstr2に連結させる。【６．右辺変更】
 		}
 
-		//�����R�Dstr2�̒�����4�̔{���ɂȂ�悤�ɒ�������B�s���́u=�v�Ŗ��߂�B�y�m�F�̂݁z
+		//処理３．str2の長さが4の倍数になるように調整する。不足は「=」で埋める。【確認のみ】
 		while(str2.length()%4 != 0){
-            str2 +="="; //�u=�v�p�f�B���O
+            str2 +="="; //「=」パディング
 		}
 
         return str2;
@@ -77,32 +77,32 @@ public class MyBase64 {
 
 
 /**
-  �f�R�[�h����֐�
-  str2: ���̕�����
-  �߂�l: �f�R�[�h��̕�����(str3)
+  デコードする関数
+  str2: 元の文字列
+  戻り値: デコード後の文字列(str3)
 
-  �A���S���Y��
-  �����P�Dstr2�ɂ̓p�f�B���O�u=�v������̂ŏ���
-  �����Q�Dstr2��2�i���̕�����istrB�j�ɂ���i1�����萔��6bit��2�i���ɕϊ��j
-  �����R�DstrB��8bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr3�j�����
+  アルゴリズム
+  処理１．str2にはパディング「=」があるので除去
+  処理２．str2を2進数の文字列（strB）にする（1文字定数は6bitの2進数に変換）
+  処理３．strBを8bit刻みで文字定数に変換し、新たな文字列（str3）を作る
 */
     public static String decode(String str2){
-        String str3 = ""; //Base64�Ƀf�R�[�h��̕�����
-        String strB = ""; //2�i���̕�����ɕϊ���̕�����
-        int len2; //�p�f�B���O�u=�v���������������̌�
+        String str3 = ""; //Base64にデコード後の文字列
+        String strB = ""; //2進数の文字列に変換後の文字列
+        int len2; //パディング「=」を除去した文字の個数
 
-        //�����P�Dstr2�̃p�f�B���O�u=�v���������������̌���c���Blen2�����߂�B
+        //処理１．str2のパディング「=」を除去した文字の個数を把握。len2を求める。
         len2 = str2.indexOf("=");
         if(len2<0){
             len2 = str2.length();
         }
 
-        //�����Q�Dstr2��2�i���̕�����istrB�j�ɂ���i1�����萔��6bit��2�i���ɕϊ��j
-		for(int i=0; i<len2; i++){ //�u=�v��������I��
-            int n = 0; //�ustr2��i�Ԗڂ̕����v���i�[����Ă��镶����TABLE�̏ꏊ�iindex�j�����߂�B�y�P�D�E�ӕύX�z
-            String tmp = ""; //���ln��2�i���̕�����ɕϊ�����tmp�Ɋi�[�B�y�P�D�E�ӕύX�z
-            //tmp��6���ɂȂ��Ă��Ȃ��ꍇ�A��ʃr�b�g�̏ꏊ��0�����6���ɂ���B
-            //for���Ȃǂ��g���āA������O����0������B�i4�s���炢�j�y�R�D�쐬�z�G���R�[�h�łقړ������������Ă���B
+        //処理２．str2を2進数の文字列（strB）にする（1文字定数は6bitの2進数に変換）
+		for(int i=0; i<len2; i++){ //「=」が来たら終了
+            int n = 0; //「str2のi番目の文字」が格納されている文字列TABLEの場所（index）を求める。【１．右辺変更】
+            String tmp = ""; //数値nを2進数の文字列に変換してtmpに格納。【１．右辺変更】
+            //tmpが6桁になっていない場合、上位ビットの場所に0を入れ6桁にする。
+            //for文などを使って、文字列前方に0を入れる。（4行くらい）【３．作成】エンコードでほぼ同じ処理をしている。
 
 
 
@@ -110,21 +110,21 @@ public class MyBase64 {
 
 		}
 
-        //�����R�DstrB��8bit���݂ŕ����萔�ɕϊ����A�V���ȕ�����istr3�j�����
+        //処理３．strBを8bit刻みで文字定数に変換し、新たな文字列（str3）を作る
 		for(int i=0; (i+8)<=strB.length(); i+=8){
-            String substr = ""; //8���i8�r�b�g�Ԃ�j�����o���B�y�S�D�E�ӕύX�z
-            int num = 0; //2�i���̕������10�i���̐����ɕϊ�    �y�T�D�E�ӕύX�z
+            String substr = ""; //8桁（8ビットぶん）を取り出す。【４．右辺変更】
+            int num = 0; //2進数の文字列を10進数の整数に変換    【５．右辺変更】
             System.out.println(substr+">>"+num);
-            str3 += (char)num; //num�̓A�X�L�[�R�[�h�̐����ɂȂ��Ă���̂ŁAchar�^�ɕϊ��i�L���X�g�j���ĕ�����str3�ɘA���B
+            str3 += (char)num; //numはアスキーコードの数字になっているので、char型に変換（キャスト）して文字列str3に連結。
 		}
 
         return str3;
     }
 
 /**
- * ���C�����\�b�h�F
- * ���삵��Base64�̓���m�F���s�����\�b�h
- * �W�����͂�����������ABase64�ňÍ������A���̌�A��������B
+ * メインメソッド：
+ * 自作したBase64の動作確認を行うメソッド
+ * 標準入力した文字列を、Base64で暗号化し、その後、復号する。
  */
 	public static void main(String[] args) {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
