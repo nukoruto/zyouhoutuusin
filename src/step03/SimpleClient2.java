@@ -1,21 +1,21 @@
 package step03;
 
-//‹Lqiimportj///////////////////////////////////
+//è¨˜è¿°ï¼ˆimportï¼‰///////////////////////////////////
 import java.io.IOException;
 
 
 
 /**
- *  SimpleClient‚ðŒp³‚µ‚½ƒvƒƒOƒ‰ƒ€
+ *  SimpleClientã‚’ç¶™æ‰¿ã—ãŸãƒ—ãƒ­ã‚°ãƒ©ãƒ 
  *<BR>
- *<BR>  –ðŠ„F
- *<BR>  E’ÊM—pƒvƒƒOƒ‰ƒ€‚Æ‚µ‚Ä‚Ì–ðŠ„‚ð’S‚¢A•\Ž¦—pƒvƒƒOƒ‰ƒ€‚Æ‚Ì˜AŒg‚ðs‚¤B
- *<BR>  E•\Ž¦—pƒvƒƒOƒ‰ƒ€‚Ö‚Ìˆ—ˆË—Š‚ÍƒtƒB[ƒ‹ƒhcon‚É‚æ‚Á‚Äs‚¤B
- *<BR>  E’ÊM—pƒvƒƒOƒ‰ƒ€‚ÌŽå—v‚È‹Lq‚ÍAŒp³‚É‚æ‚Á‚ÄŽÀ‘•Ï‚ÝB
- *<BR>  E•\Ž¦—pƒvƒƒOƒ‰ƒ€‚Ö‚Ìˆ—ˆË—Š‚ª”­¶‚·‚éƒƒ\ƒbƒh‚Ì‚ÝƒI[ƒo[ƒ‰ƒCƒh‚ðs‚¤B
+ *<BR>  å½¹å‰²ï¼š
+ *<BR>  ãƒ»é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ã—ã¦ã®å½¹å‰²ã‚’æ‹…ã„ã€è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¨ã®é€£æºã‚’è¡Œã†ã€‚
+ *<BR>  ãƒ»è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¸ã®å‡¦ç†ä¾é ¼ã¯ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰conã«ã‚ˆã£ã¦è¡Œã†ã€‚
+ *<BR>  ãƒ»é€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ä¸»è¦ãªè¨˜è¿°ã¯ã€ç¶™æ‰¿ã«ã‚ˆã£ã¦å®Ÿè£…æ¸ˆã¿ã€‚
+ *<BR>  ãƒ»è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¸ã®å‡¦ç†ä¾é ¼ãŒç™ºç”Ÿã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã®ã¿ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã‚’è¡Œã†ã€‚
  *<BR>
- *<BR>  ŠÇ—‚µ‚Ä‚¢‚éŽå‚ÈƒtƒB[ƒ‹ƒh
- *<BR>  Econ:  •\Ž¦—pƒvƒƒOƒ‰ƒ€‚Öˆ—‚ðˆË—Š‚µ‚½‚¢ê‡‚É—p‚¢‚éƒIƒuƒWƒFƒNƒgB
+ *<BR>  ç®¡ç†ã—ã¦ã„ã‚‹ä¸»ãªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+ *<BR>  ãƒ»con:  è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¸å‡¦ç†ã‚’ä¾é ¼ã—ãŸã„å ´åˆã«ç”¨ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€‚
  */
 
 /**
@@ -23,20 +23,20 @@ import java.io.IOException;
  *	Version: 1.00
  *	last change: Mar 2012
  */
-public class SimpleClient2 {//‹Lqi’ÊM—pƒvƒƒOƒ‰ƒ€‚ÌŒp³AƒpƒbƒP[ƒWstep02‚É‚ ‚éj///////////////////////////////////
-	private Connector con; //’†Œp—pƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg
+public class SimpleClient2 {//è¨˜è¿°ï¼ˆé€šä¿¡ç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã®ç¶™æ‰¿ã€ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸step02ã«ã‚ã‚‹ï¼‰///////////////////////////////////
+	private Connector con; //ä¸­ç¶™ç”¨ã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	 * ƒX[ƒp[ƒNƒ‰ƒX‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ðŒÄ‚Ño‚·‚Ì‚ÝB
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	 * ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’å‘¼ã³å‡ºã™ã®ã¿ã€‚
 	 * @param args
 	 */
 	public SimpleClient2(String[] args) {
-		//‹Lq///////////////////////////////////
+		//è¨˜è¿°///////////////////////////////////
 	}
 
 	/**
-	 * •\Ž¦—pƒvƒƒOƒ‰ƒ€iGUIPanel2j‚Æ‚Ì’†Œp‚ðs‚¤ConnectorƒNƒ‰ƒX‚ÌƒIƒuƒWƒFƒNƒg‚ðƒZƒbƒg‚·‚éB
+	 * è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ï¼ˆGUIPanel2ï¼‰ã¨ã®ä¸­ç¶™ã‚’è¡Œã†Connectorã‚¯ãƒ©ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã€‚
 	 * @param con
 	 */
 	public void setConnector(Connector con){
@@ -44,22 +44,22 @@ public class SimpleClient2 {//‹Lqi’ÊM—pƒvƒƒOƒ‰ƒ€‚ÌŒp³AƒpƒbƒP[ƒWstep02‚É‚ 
 	}
 
 	/**
-	 * ‚±‚Ìƒƒ\ƒbƒh‚Å‚ÍAƒX[ƒp[ƒNƒ‰ƒX‚ÌƒtƒB[ƒ‹ƒhout‚ð—p‚¢‚½ƒT[ƒo[‚Ö‚Ì‘—Mˆ—‚ð‹Lq‚·‚éB
-	 * ‚±‚Ìƒƒ\ƒbƒh‚ÍAŠO•”ƒNƒ‰ƒXiGUIPanel2j‚ÌƒtƒB[ƒ‹ƒhcon‚©‚çAConnectorƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ðŒo—R‚µ‚ÄŒÄ‚Ño‚³‚ê‚éB
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã§ã¯ã€ã‚¹ãƒ¼ãƒ‘ãƒ¼ã‚¯ãƒ©ã‚¹ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰outã‚’ç”¨ã„ãŸã‚µãƒ¼ãƒãƒ¼ã¸ã®é€ä¿¡å‡¦ç†ã‚’è¨˜è¿°ã™ã‚‹ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ã€å¤–éƒ¨ã‚¯ãƒ©ã‚¹ï¼ˆGUIPanel2ï¼‰ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰conã‹ã‚‰ã€Connectorã‚¯ãƒ©ã‚¹ã®ãƒ¡ã‚½ãƒƒãƒ‰ã‚’çµŒç”±ã—ã¦å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚
 	 * @param con
 	 */
 	public void sendMessage(String msg){
-		//‹Lq///////////////////////////////////
+		//è¨˜è¿°///////////////////////////////////
 	}
 
 	/**
-	 * yOverridez@ƒXƒŒƒbƒh‚ÌŽÀ‘ÌiƒT[ƒo‚Æ‚Ì’ÊMˆ—j
-	 * ‚±‚Ìƒƒ\ƒbƒh“à‚Å‚ÍAƒT[ƒo[‚©‚ç‚ÌƒƒbƒZ[ƒW‚ðŽóM‚µA•\Ž¦—pƒvƒƒOƒ‰ƒ€‚É‚Ä•\Ž¦‚³‚¹‚éB
-	 * ‚±‚Ìƒƒ\ƒbƒh“à‚Å‚ÍAƒT[ƒo[‚Ö‚ÌƒƒbƒZ[ƒW‚Ì‘—M‚Ís‚í‚È‚¢B
-	 * ŽóM‚µ‚½•¶Žš—ñ‚ÍAƒtƒB[ƒ‹ƒhcon‚Ìƒƒ\ƒbƒhdisplayMessageƒƒ\ƒbƒh‚Å•\Ž¦—pƒvƒƒOƒ‰ƒ€iGUIPanel2j‚É“n‚·B
+	 * ã€Overrideã€‘ã€€ã‚¹ãƒ¬ãƒƒãƒ‰ã®å®Ÿä½“ï¼ˆã‚µãƒ¼ãƒã¨ã®é€šä¿¡å‡¦ç†ï¼‰
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§ã¯ã€ã‚µãƒ¼ãƒãƒ¼ã‹ã‚‰ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å—ä¿¡ã—ã€è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã«ã¦è¡¨ç¤ºã•ã›ã‚‹ã€‚
+	 * ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰å†…ã§ã¯ã€ã‚µãƒ¼ãƒãƒ¼ã¸ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€ä¿¡ã¯è¡Œã‚ãªã„ã€‚
+	 * å—ä¿¡ã—ãŸæ–‡å­—åˆ—ã¯ã€ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰conã®ãƒ¡ã‚½ãƒƒãƒ‰displayMessageãƒ¡ã‚½ãƒƒãƒ‰ã§è¡¨ç¤ºç”¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ï¼ˆGUIPanel2ï¼‰ã«æ¸¡ã™ã€‚
 	 */
 	public void run(){
-		//‹Lq///////////////////////////////////
+		//è¨˜è¿°///////////////////////////////////
 	}
 
 
