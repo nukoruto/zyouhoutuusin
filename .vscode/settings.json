@@ -1,3 +1,7 @@
 {
-  "java.project.sourcePaths": ["src"]
+  "java.project.sourcePaths": [
+    "src"
+  ],
+  "python-envs.defaultEnvManager": "ms-python.python:system",
+  "python-envs.pythonProjects": []
 }
