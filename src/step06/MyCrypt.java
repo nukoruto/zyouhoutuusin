@@ -11,53 +11,53 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- *  ©ì‚ÌAES‚Ì•ÏŠ·‚ğs‚¤ƒNƒ‰ƒX
+ *  è‡ªä½œã®AESã®å¤‰æ›ã‚’è¡Œã†ã‚¯ãƒ©ã‚¹
  *<BR>
- *<BR>  “Á’¥F
- *<BR>  E•ÏŠ·‚ÍÃ“I‚Èƒƒ\ƒbƒh“à‚Ås‚¤‚½‚ßAƒIƒuƒWƒFƒNƒg‚Ì¶¬‚Í•s—vB
+ *<BR>  ç‰¹å¾´ï¼š
+ *<BR>  ãƒ»å¤‰æ›ã¯é™çš„ãªãƒ¡ã‚½ãƒƒãƒ‰å†…ã§è¡Œã†ãŸã‚ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆã¯ä¸è¦ã€‚
  *<BR>
- *<BR>  ŠÇ—‚µ‚Ä‚¢‚éå‚ÈƒtƒB[ƒ‹ƒh
- *<BR>  Estatic Charset charset:  •¶šƒR[ƒh‚ğw’è‚·‚é‚½‚ß‚Ì’l
+ *<BR>  ç®¡ç†ã—ã¦ã„ã‚‹ä¸»ãªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+ *<BR>  ãƒ»static Charset charset:  æ–‡å­—ã‚³ãƒ¼ãƒ‰ã‚’æŒ‡å®šã™ã‚‹ãŸã‚ã®å€¤
  *<BR>
- *<BR>  ŠÇ—‚µ‚Ä‚¢‚éå‚Èƒƒ\ƒbƒh
- *<BR>  Estatic String encode(String str,String strK,String strV):  AES‚ÌƒGƒ“ƒR[ƒh•ÏŠ·
- *<BR>  Estatic String decode(String str,String strK,String strV):  AES‚ÌƒfƒR[ƒh•ÏŠ·
+ *<BR>  ç®¡ç†ã—ã¦ã„ã‚‹ä¸»ãªãƒ¡ã‚½ãƒƒãƒ‰
+ *<BR>  ãƒ»static String encode(String str,String strK,String strV):  AESã®ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰å¤‰æ›
+ *<BR>  ãƒ»static String decode(String str,String strK,String strV):  AESã®ãƒ‡ã‚³ãƒ¼ãƒ‰å¤‰æ›
  */
 
 public class MyCrypt {
-    /** ƒ`ƒƒ[ƒZƒbƒgi•¶šƒR[ƒhj‚Ìw’è‚É—p‚¢‚é’l */
+    /** ãƒãƒ£ãƒ¼ã‚»ãƒƒãƒˆï¼ˆæ–‡å­—ã‚³ãƒ¼ãƒ‰ï¼‰ã®æŒ‡å®šã«ç”¨ã„ã‚‹å€¤ */
     public static Charset charset = StandardCharsets.UTF_8;
 
 /**
-  ƒGƒ“ƒR[ƒh‚·‚éƒƒ\ƒbƒh
-  str1: Œ³‚Ì•¶š—ñ
-  –ß‚è’l: ƒGƒ“ƒR[ƒhŒã‚Ì•¶š—ñ(str2)
+  ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+  str1: å…ƒã®æ–‡å­—åˆ—
+  æˆ»ã‚Šå€¤: ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰å¾Œã®æ–‡å­—åˆ—(str2)
 
-  ƒAƒ‹ƒSƒŠƒYƒ€
-@ˆ—‚PDŒ®‚Ìì¬
-@ˆ—‚QD‰Šú‰»ƒxƒNƒgƒ‹‚Ìì¬
-@ˆ—‚RD•ÏŠ·Ší‚Ìì¬
-@ˆ—‚SD•ÏŠ·Ší‚Ì‰Šúİ’èiƒ‚[ƒhiƒGƒ“ƒR[ƒh‚©ƒfƒR[ƒh‚©‚Ìî•ñj‚P‚Æ‚Q‚ÌƒIƒuƒWƒFƒNƒg‚ª•K—vj
-@ˆ—‚TD•ÏŠ·F•¶š—ñi•½•¶j¨byte”z—ñ¨‡C‚ğg‚Á‚Ä•ÏŠ·¨byte”z—ñ
-@ˆ—‚UD‡D‚ÉBase64‚ÅƒGƒ“ƒR[ƒh‚µ‚Ä•¶š—ñiˆÃ†•¶j
+  ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ 
+ã€€å‡¦ç†ï¼‘ï¼éµã®ä½œæˆ
+ã€€å‡¦ç†ï¼’ï¼åˆæœŸåŒ–ãƒ™ã‚¯ãƒˆãƒ«ã®ä½œæˆ
+ã€€å‡¦ç†ï¼“ï¼å¤‰æ›å™¨ã®ä½œæˆ
+ã€€å‡¦ç†ï¼”ï¼å¤‰æ›å™¨ã®åˆæœŸè¨­å®šï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼ˆã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‹ãƒ‡ã‚³ãƒ¼ãƒ‰ã‹ã®æƒ…å ±ï¼‰ï¼‘ã¨ï¼’ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¿…è¦ï¼‰
+ã€€å‡¦ç†ï¼•ï¼å¤‰æ›ï¼šæ–‡å­—åˆ—ï¼ˆå¹³æ–‡ï¼‰â†’byteé…åˆ—â†’â‘£ã‚’ä½¿ã£ã¦å¤‰æ›â†’byteé…åˆ—
+ã€€å‡¦ç†ï¼–ï¼â‘¤ã«Base64ã§ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã—ã¦æ–‡å­—åˆ—ï¼ˆæš—å·æ–‡ï¼‰
 */
 	public static String encode(String str1,String strK,String strV) {
 		try {
 		    String str2 = "";
 
-		    //ˆ—‚PDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼‘ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			SecretKeySpec key = null;
 
-		    //ˆ—‚QDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼’ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			IvParameterSpec iv = null;
 
-		    //ˆ—‚RDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼“ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			Cipher cipher = null;
 
-		    //ˆ—‚SDy1s’Ç‰Áz
+		    //å‡¦ç†ï¼”ï¼ã€1è¡Œè¿½åŠ ã€‘
 
 
-		    //ˆ—‚TDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼•ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			byte[] bary = null;
             System.out.print("AES >> ");
             for (byte b : bary) {
@@ -66,7 +66,7 @@ public class MyCrypt {
             System.out.println(" >> new String >> "+new String(bary, charset));
             System.out.println("");
 
-		    //ˆ—‚UDyŠm”F‚Ì‚İz
+		    //å‡¦ç†ï¼–ï¼ã€ç¢ºèªã®ã¿ã€‘
             str2 = Base64.getEncoder().encodeToString(bary);
 
 			return str2;
@@ -78,38 +78,38 @@ public class MyCrypt {
 	}
 
 /**
-  ƒfƒR[ƒh‚·‚éƒƒ\ƒbƒh
-  str2: Œ³‚Ì•¶š—ñ
-  –ß‚è’l: ƒfƒR[ƒhŒã‚Ì•¶š—ñ(str3)
+  ãƒ‡ã‚³ãƒ¼ãƒ‰ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+  str2: å…ƒã®æ–‡å­—åˆ—
+  æˆ»ã‚Šå€¤: ãƒ‡ã‚³ãƒ¼ãƒ‰å¾Œã®æ–‡å­—åˆ—(str3)
 
-  ƒAƒ‹ƒSƒŠƒYƒ€
-@ˆ—‚PDŒ®‚Ìì¬
-@ˆ—‚QD‰Šú‰»ƒxƒNƒgƒ‹‚Ìì¬
-@ˆ—‚RD•ÏŠ·Ší‚Ìì¬
-@ˆ—‚SD•ÏŠ·Ší‚Ì‰Šúİ’èiƒ‚[ƒhiƒGƒ“ƒR[ƒh‚©ƒfƒR[ƒh‚©‚Ìî•ñj‚P‚Æ‚Q‚ÌƒIƒuƒWƒFƒNƒg‚ª•K—vj
-@ˆ—‚TD•ÏŠ·F•¶š—ñi•½•¶j¨byte”z—ñ¨‡C‚ğg‚Á‚Ä•ÏŠ·¨byte”z—ñ
-@ˆ—‚UD‡D‚ÉBase64‚ÅƒGƒ“ƒR[ƒh‚µ‚Ä•¶š—ñiˆÃ†•¶j
+  ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ 
+ã€€å‡¦ç†ï¼‘ï¼éµã®ä½œæˆ
+ã€€å‡¦ç†ï¼’ï¼åˆæœŸåŒ–ãƒ™ã‚¯ãƒˆãƒ«ã®ä½œæˆ
+ã€€å‡¦ç†ï¼“ï¼å¤‰æ›å™¨ã®ä½œæˆ
+ã€€å‡¦ç†ï¼”ï¼å¤‰æ›å™¨ã®åˆæœŸè¨­å®šï¼ˆãƒ¢ãƒ¼ãƒ‰ï¼ˆã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã‹ãƒ‡ã‚³ãƒ¼ãƒ‰ã‹ã®æƒ…å ±ï¼‰ï¼‘ã¨ï¼’ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå¿…è¦ï¼‰
+ã€€å‡¦ç†ï¼•ï¼å¤‰æ›ï¼šæ–‡å­—åˆ—ï¼ˆå¹³æ–‡ï¼‰â†’byteé…åˆ—â†’â‘£ã‚’ä½¿ã£ã¦å¤‰æ›â†’byteé…åˆ—
+ã€€å‡¦ç†ï¼–ï¼â‘¤ã«Base64ã§ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã—ã¦æ–‡å­—åˆ—ï¼ˆæš—å·æ–‡ï¼‰
 */
 	public static String decode(String str2,String strK,String strV) {
 		try {
 		    String str3 = "";
 
-		    //ˆ—‚PDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼‘ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			SecretKeySpec key = null;
 
-		    //ˆ—‚QDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼’ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			IvParameterSpec iv = null;
 
-		    //ˆ—‚RDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼“ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			Cipher cipher = null;
 
-		    //ˆ—‚SDy1s’Ç‰Áz
+		    //å‡¦ç†ï¼”ï¼ã€1è¡Œè¿½åŠ ã€‘
 
 
-		    //ˆ—‚TDy‰E•Ó•ÏXz
+		    //å‡¦ç†ï¼•ï¼ã€å³è¾ºå¤‰æ›´ã€‘
 			byte[] bary = null;
 
-		    //ˆ—‚UDyŠm”F‚Ì‚İz
+		    //å‡¦ç†ï¼–ï¼ã€ç¢ºèªã®ã¿ã€‘
 			str3 = new String(bary, charset);
 
 			return str3;
@@ -122,15 +122,15 @@ public class MyCrypt {
 
 
 /**
- * ƒƒCƒ“ƒƒ\ƒbƒhF
- * AES‚É‚æ‚éˆÃ†‰»E•œ†‚Ì“®ìŠm”F‚ğs‚¤ƒƒ\ƒbƒh
- * •W€“ü—Í‚µ‚½•¶š—ñ‚ğAˆÃ†‰»‚µA‚»‚ÌŒãA•œ†‚·‚éB
+ * ãƒ¡ã‚¤ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰ï¼š
+ * AESã«ã‚ˆã‚‹æš—å·åŒ–ãƒ»å¾©å·ã®å‹•ä½œç¢ºèªã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
+ * æ¨™æº–å…¥åŠ›ã—ãŸæ–‡å­—åˆ—ã‚’ã€æš—å·åŒ–ã—ã€ãã®å¾Œã€å¾©å·ã™ã‚‹ã€‚
  */
 	public static void main(String[] args) {
 
-		String strK1 = "0123012301230123"; //Œ®i16bitj
+		String strK1 = "0123012301230123"; //éµï¼ˆ16bitï¼‰
 		String strK2 = "kurume-seigyo-5s";
-		String strV1 = "abcdefghijklmnop"; //‰Šú‰»ƒxƒNƒgƒ‹iŒ®‚Æ“¯‚¶bitj
+		String strV1 = "abcdefghijklmnop"; //åˆæœŸåŒ–ãƒ™ã‚¯ãƒˆãƒ«ï¼ˆéµã¨åŒã˜bitï¼‰
 		String strV2 = "0123012301230123";
 		String strV3 = " 1 2 3 4 5 6 7 8";
 
