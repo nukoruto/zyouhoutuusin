@@ -13,7 +13,7 @@ package gui;
  *
  **************************************************/
 
-//Šù‘¶‚ÌƒpƒbƒP[ƒW‚Ì—˜—p
+//æ—¢å­˜ã®ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã®åˆ©ç”¨
 //import javax.swing.*;
 import javax.swing.JFrame;
 
@@ -28,7 +28,7 @@ public class Main extends Applet{
 	protected static GUIPanel guiPanel;
 
 	/**
-	 * ƒƒCƒ“ƒƒ\ƒbƒh
+	 * ãƒ¡ã‚¤ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰
 	 */
 	public static void main(String[] args){
 		JFrame frame = new JFrame("SampleAppletcation");
@@ -38,7 +38,7 @@ public class Main extends Applet{
 		guiPanel = new GUIPanel();
 		frame.getContentPane().add(guiPanel);
 
-		//ƒpƒlƒ‹‚ÌÄ”z’u
+		//ãƒ‘ãƒãƒ«ã®å†é…ç½®
 		guiPanel.revalidate();
 	
 		System.out.println("\n/_/_/_/_/_/_/_/_/_/_/_/_/");
@@ -47,7 +47,7 @@ public class Main extends Applet{
 	}
 
 	/**
-	 * ƒAƒvƒŒƒbƒg—p‚Ìˆ—
+	 * ã‚¢ãƒ—ãƒ¬ãƒƒãƒˆç”¨ã®å‡¦ç†
 	 */
 	public void init(){
 		guiPanel = new GUIPanel();
