@@ -163,20 +163,20 @@ public class SimpleServer extends Thread {
 	public boolean waitClient(){
 		try{
 			System.out.println("Server> サーバソケットにアクセスがあるまで待機します。<waitClient>");
-			
-			
-			
-			
-			
+			client_socket = listen_socket.accept();
+			if(client_socket == null){
+				System.err.println("Server> クライアントソケットの生成に失敗しました。<waitClient>");
+				return false;
+			}
 			System.out.println("Server> サーバソケットにアクセスがありました。<waitClient>");
 			return true;
 		}
-		catch(Exception e){ //IOException
+		catch(IOException e){
 			System.err.println(""+e+":クライアントとの接続に失敗しました。<waitClient>");
 			return false;
 		}
 	}
-	
+
 /**
  *<BR> 課題1－４：　入出力オブジェクトの生成処理【ソースコード追記作業】
  *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
@@ -185,40 +185,40 @@ public class SimpleServer extends Thread {
  */
 	public boolean setIO(){
 		try{
-			
-			
-			
-			
-			
-			
-			
+			in = new BufferedReader(new InputStreamReader(client_socket.getInputStream(), "SJIS"));
+			out = new PrintWriter(new OutputStreamWriter(client_socket.getOutputStream(), "SJIS"), true);
 			System.out.println("Server> 入出力オブジェクトを生成しました。<setIO>");
 			return true;
 		}
-		catch(Exception e){ //IOException
+		catch(IOException e){
 			System.err.println(""+e+":入出力オブジェクトの生成に失敗しました。<setIO>");
 			return false;
 		}
 	}
-	
+
 /**
  *<BR> 課題1－５：　ソケットの接続先と接続元の情報をclient_socketから取り出して標準出力。【ソースコード変更作業】
  *<BR>   ・APIにてSocketクラスを調べること。
  */
 	public boolean printSocketInfo(){
 		System.out.println("Server> Socketの情報を表示します。<printSocketInfo>");
+		if(client_socket == null){
+			System.err.println("Server> クライアントソケットが初期化されていません。<printSocketInfo>");
+			return false;
+		}
+
 		System.out.println(" 【サーバ】");
-		System.out.println("   ホスト名: "                                     );
-		System.out.println("   ポート番号: "                                   );
-		System.out.println("   ソケットアドレス: "                             );
+		System.out.println("   ホスト名: " + client_socket.getLocalAddress().getHostName());
+		System.out.println("   ポート番号: " + client_socket.getLocalPort());
+		System.out.println("   ソケットアドレス: " + client_socket.getLocalSocketAddress());
 		System.out.println(" 【クライアント】");
-		System.out.println("   ホスト名: "                                     );
-		System.out.println("   ポート番号: "                                   );
-		System.out.println("   ソケットアドレス: "                             );
-		
+		System.out.println("   ホスト名: " + client_socket.getInetAddress().getHostName());
+		System.out.println("   ポート番号: " + client_socket.getPort());
+		System.out.println("   ソケットアドレス: " + client_socket.getRemoteSocketAddress());
+
 		return true;
 	}
-	
+
 /**
  *<BR> 課題1－６：　スレッドの実体（クライアントとの通信処理）【ソースコード追記作業】
  *<BR>   ・受信した文字列がnullならば、通信中にエラーが起こったと判断し、while文から抜ける。
@@ -234,37 +234,32 @@ public class SimpleServer extends Thread {
 			while(!done){
 				System.out.println("");
 				msg = in.readLine();
-				
+
 				if(msg == null){
 					System.out.println("Server> クライアントとの接続が切れています。<run>");
 					done = true;
 				}
 				else if(msg.equals("bye")){
 					System.out.println("Server> クライアントから接続終了の合言葉がきました。<run>");
-					
-					
-					
+					done = true;
 				}
 				else{
 					System.out.println("Server> クライアントからの文字列を受け取りました。<run>");
 					System.out.println(msg);
-					
-					
-					
-					
-					
-					
+					String response = "ECHO: " + msg;
+					out.println(response);
+					out.flush();
 					System.out.println("Server> クライアントへメッセージを送りました。<run>");
 				}
 			}
-			
+
 			this.close();  //課題1－７
 		}
 		catch(IOException e){
 			System.err.println(""+e+":クライアントとの接続に失敗しました。<run>");
 		}
 	}
-	
+
 /**
  *<BR> 課題1－７：　プログラムの終了処理【確認作業】
  *<BR>   ・入出力オブジェクトの終了
