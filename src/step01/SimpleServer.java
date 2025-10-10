@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 /**
  *  サーバプログラムを起動させるメインプログラム
@@ -74,6 +76,7 @@ public class SimpleServer extends Thread {
 			System.out.println("\n/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/");
 			System.out.println("SimpleServer (Ver 1.00)");
 			System.out.println("  Port : "+port);
+			System.out.println("  IP   : " + this.getLocalIpAddress());
 			System.out.println("/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/\n");
 		}
 		
@@ -176,6 +179,20 @@ public class SimpleServer extends Thread {
 			return false;
 		}
 	}
+
+		/**
+		 * サーバのローカルIPアドレスを取得する。
+		 */
+		private String getLocalIpAddress(){
+			try{
+				InetAddress localAddress = InetAddress.getLocalHost();
+				return localAddress.getHostAddress();
+			}
+			catch(UnknownHostException e){
+				System.err.println(""+e+":ローカルIPアドレスの取得に失敗しました。<getLocalIpAddress>");
+				return "Unknown";
+			}
+		}
 
 /**
  *<BR> 課題1－４：　入出力オブジェクトの生成処理【ソースコード追記作業】
