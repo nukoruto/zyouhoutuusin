@@ -53,20 +53,33 @@ public class GUIPanel2 extends GUIPanel{//修正（JPanelではダメ。表示�
                 if(msg == null){
                         return;
                 }
-                jta.append(msg + "\n");
+                jta.append(msg + System.lineSeparator());
         }
 
-	/**
-	 *<BR> 【Override】ActionEventのイベント処理
-	 */
+        /**
+         *<BR> 【Override】ActionEventのイベント処理
+         */
         public void actionPerformed(ActionEvent e) {
-                if(e.getSource() instanceof JTextField){
-                        String msg = jtf.getText();
-                        if(msg != null && con != null){
+                Object source = e.getSource();
+                if(source == jtf){
+                        System.out.println("ActionEvent");
+                        System.out.println("> TextField");
+
+                        String msg = e.getActionCommand();
+                        if(msg == null){
+                                msg = "";
+                        }
+
+                        jta.append(msg + System.lineSeparator());
+                        jtf.setText("");
+
+                        if(con != null && !msg.isEmpty()){
                                 con.sendMessage(msg);
                         }
                 }
-                super.actionPerformed(e);
+                else{
+                        super.actionPerformed(e);
+                }
         }
 
 }
