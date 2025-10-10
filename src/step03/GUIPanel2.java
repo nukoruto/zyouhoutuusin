@@ -3,6 +3,7 @@ package step03;
 //記述（import）///////////////////////////////////
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 import gui.GUIPanel;
 import javax.swing.JTextField;
 
@@ -34,6 +35,10 @@ public class GUIPanel2 extends GUIPanel{//修正（JPanelではダメ。表示�
 	 */
         public GUIPanel2(){
                 super();
+
+                jta.setEditable(false);
+
+                SwingUtilities.invokeLater(() -> jtf.requestFocusInWindow());
         }
 
 	/**
@@ -65,13 +70,12 @@ public class GUIPanel2 extends GUIPanel{//修正（JPanelではダメ。表示�
                         System.out.println("ActionEvent");
                         System.out.println("> TextField");
 
-                        String msg = e.getActionCommand();
+                        String msg = jtf.getText();
                         if(msg == null){
                                 msg = "";
                         }
 
-                        jta.append(msg + System.lineSeparator());
-                        jtf.setText("");
+                        super.actionPerformed(e);
 
                         if(con != null && !msg.isEmpty()){
                                 con.sendMessage(msg);
