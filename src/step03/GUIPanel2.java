@@ -32,9 +32,9 @@ public class GUIPanel2 extends GUIPanel{//修正（JPanelではダメ。表示�
 	 * コンストラクタ
 	 * スーパークラスのコンストラクタを呼び出すのみ。
 	 */
-	public GUIPanel2(){
-		//記述///////////////////////////////////
-	}
+        public GUIPanel2(){
+                super();
+        }
 
 	/**
 	 * 通信用プログラム（SimpleClient2）との中継を行うためのConnectorクラスのオブジェクトをセットする。
@@ -49,15 +49,37 @@ public class GUIPanel2 extends GUIPanel{//修正（JPanelではダメ。表示�
 	 * このメソッドは、外部クラス（SimpleClient2）のフィールドconから、Connectorクラスのメソッドを経由して呼び出される。
 	 * @param msg
 	 */
-	public void displayMessage(String msg){
-		//記述///////////////////////////////////
-	}
+        public void displayMessage(String msg){
+                if(msg == null){
+                        return;
+                }
+                jta.append(msg + System.lineSeparator());
+        }
 
-	/**
-	 *<BR> 【Override】ActionEventのイベント処理
-	 */
-	public void actionPerformed(ActionEvent e) {
-		//記述///////////////////////////////////
-	}
+        /**
+         *<BR> 【Override】ActionEventのイベント処理
+         */
+        public void actionPerformed(ActionEvent e) {
+                Object source = e.getSource();
+                if(source == jtf){
+                        System.out.println("ActionEvent");
+                        System.out.println("> TextField");
+
+                        String msg = e.getActionCommand();
+                        if(msg == null){
+                                msg = "";
+                        }
+
+                        jta.append(msg + System.lineSeparator());
+                        jtf.setText("");
+
+                        if(con != null && !msg.isEmpty()){
+                                con.sendMessage(msg);
+                        }
+                }
+                else{
+                        super.actionPerformed(e);
+                }
+        }
 
 }
