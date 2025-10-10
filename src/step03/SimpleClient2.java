@@ -3,6 +3,8 @@ package step03;
 //記述（import）///////////////////////////////////
 import java.io.IOException;
 
+import step02.SimpleClient;
+
 
 
 /**
@@ -23,7 +25,7 @@ import java.io.IOException;
  *	Version: 1.00
  *	last change: Mar 2012
  */
-public class SimpleClient2 {//記述（通信用プログラムの継承、パッケージstep02にある）///////////////////////////////////
+public class SimpleClient2 extends SimpleClient {//記述（通信用プログラムの継承、パッケージstep02にある）///////////////////////////////////
 	private Connector con; //中継用クラスのオブジェクト
 
 	/**
