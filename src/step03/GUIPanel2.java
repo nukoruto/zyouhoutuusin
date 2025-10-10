@@ -3,7 +3,7 @@ package step03;
 //記述（import）///////////////////////////////////
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import gui.GUIPanel;
 import javax.swing.JTextField;
 
 
@@ -25,7 +25,7 @@ import javax.swing.JTextField;
  *	Version: 1.00
  *	last change: Mar 2012
  */
-public class GUIPanel2 extends JPanel{//修正（JPanelではダメ。表示用プログラムの継承、パッケージguiにある。）///////////////////////////////////
+public class GUIPanel2 extends GUIPanel{//修正（JPanelではダメ。表示用プログラムの継承、パッケージguiにある。）///////////////////////////////////
 	private Connector con; //中継用クラスのオブジェクト
 
 	/**
