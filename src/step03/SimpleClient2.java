@@ -28,14 +28,14 @@ import step02.SimpleClient;
 public class SimpleClient2 extends SimpleClient {//記述（通信用プログラムの継承、パッケージstep02にある）///////////////////////////////////
 	private Connector con; //中継用クラスのオブジェクト
 
-	/**
-	 * コンストラクタ
-	 * スーパークラスのコンストラクタを呼び出すのみ。
-	 * @param args
-	 */
-	public SimpleClient2(String[] args) {
-		//記述///////////////////////////////////
-	}
+        /**
+         * コンストラクタ
+         * スーパークラスのコンストラクタを呼び出すのみ。
+         * @param args
+         */
+        public SimpleClient2(String[] args) {
+                super(args);
+        }
 
 	/**
 	 * 表示用プログラム（GUIPanel2）との中継を行うConnectorクラスのオブジェクトをセットする。
@@ -46,23 +46,40 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
 	}
 
 	/**
-	 * このメソッドでは、スーパークラスのフィールドoutを用いたサーバーへの送信処理を記述する。
-	 * このメソッドは、外部クラス（GUIPanel2）のフィールドconから、Connectorクラスのメソッドを経由して呼び出される。
-	 * @param con
-	 */
-	public void sendMessage(String msg){
-		//記述///////////////////////////////////
-	}
+         * このメソッドでは、スーパークラスのフィールドoutを用いたサーバーへの送信処理を記述する。
+         * このメソッドは、外部クラス（GUIPanel2）のフィールドconから、Connectorクラスのメソッドを経由して呼び出される。
+         * @param con
+         */
+        public void sendMessage(String msg){
+                if(out == null || msg == null){
+                        return;
+                }
+
+                out.println(msg);
+                out.flush();
+        }
 
 	/**
 	 * 【Override】　スレッドの実体（サーバとの通信処理）
 	 * このメソッド内では、サーバーからのメッセージを受信し、表示用プログラムにて表示させる。
-	 * このメソッド内では、サーバーへのメッセージの送信は行わない。
-	 * 受信した文字列は、フィールドconのメソッドdisplayMessageメソッドで表示用プログラム（GUIPanel2）に渡す。
-	 */
-	public void run(){
-		//記述///////////////////////////////////
-	}
+         * このメソッド内では、サーバーへのメッセージの送信は行わない。
+         * 受信した文字列は、フィールドconのメソッドdisplayMessageメソッドで表示用プログラム（GUIPanel2）に渡す。
+         */
+        public void run(){
+                try{
+                        String msg = null;
+                        while((msg = in.readLine()) != null){
+                                if(con != null){
+                                        con.displayMessage(msg);
+                                }
+                        }
+                        this.close();
+                }
+                catch(IOException e){
+                        System.err.println(""+e+":サーバとの通信に失敗しました。<run>");
+                        this.close();
+                }
+        }
 
 
 }
