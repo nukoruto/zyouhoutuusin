@@ -14,6 +14,8 @@ import java.nio.charset.StandardCharsets;
 
 import step06.MyCrypt;
 
+import step06.MyCrypt;
+
 /**
  *  サーバプログラムを起動させるメインプログラム
  *<BR>  
