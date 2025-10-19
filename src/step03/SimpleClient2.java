@@ -4,6 +4,7 @@ package step03;
 import java.io.IOException;
 
 import step02.SimpleClient;
+import step05.MyBase64;
 
 
 
@@ -55,7 +56,8 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
                         return;
                 }
 
-                out.println(msg);
+                String encoded = MyBase64.encode(msg, MyBase64.MESSAGE_CHARSET);
+                out.println(encoded);
                 out.flush();
         }
 
@@ -70,7 +72,15 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
                         String msg = null;
                         while((msg = in.readLine()) != null){
                                 if(con != null){
-                                        con.displayMessage(msg);
+                                        String decoded;
+                                        try{
+                                                decoded = MyBase64.decode(msg, MyBase64.MESSAGE_CHARSET);
+                                        }
+                                        catch(IllegalArgumentException e){
+                                                decoded = "<decode error> " + msg;
+                                                System.err.println(""+e+":サーバから受信したデータのBase64復号に失敗しました。<run>");
+                                        }
+                                        con.displayMessage(decoded);
                                 }
                         }
                         this.close();

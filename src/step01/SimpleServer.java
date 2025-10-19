@@ -10,6 +10,10 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.util.Base64;
+
+import step05.MyBase64;
 
 /**
  *  サーバプログラムを起動させるメインプログラム
@@ -33,6 +37,7 @@ import java.net.UnknownHostException;
  *	last change: Mar 2012
  */
 public class SimpleServer extends Thread {
+        private static final Charset BASE64_CHARSET = MyBase64.MESSAGE_CHARSET;
 	/** ポート番号(1000番以下) */
 	private int port = 999; //クライアントから受信するポート
 	
@@ -256,21 +261,37 @@ public class SimpleServer extends Thread {
 					System.out.println("Server> クライアントとの接続が切れています。<run>");
 					done = true;
 				}
-				else if(msg.equals("bye")){
-					System.out.println("Server> クライアントから接続終了の合言葉がきました。<run>");
-					done = true;
-				}
-				else{
-					System.out.println("Server> クライアントからの文字列を受け取りました。<run>");
-					System.out.println(msg);
-					String response = "ECHO: " + msg;
-					out.println(response);
-					out.flush();
-					System.out.println("Server> クライアントへメッセージを送りました。<run>");
-				}
-			}
+                                else{
+                                        String decoded;
+                                        try{
+                                                decoded = new String(Base64.getDecoder().decode(msg), BASE64_CHARSET);
+                                        }
+                                        catch(IllegalArgumentException e){
+                                                System.err.println("Server> Base64の復号に失敗しました。<run>");
+                                                System.err.println(e.getMessage());
+                                                String error = Base64.getEncoder().encodeToString("ERROR: Invalid Base64 message".getBytes(BASE64_CHARSET));
+                                                out.println(error);
+                                                out.flush();
+                                                continue;
+                                        }
 
-			this.close();  //課題1－７
+                                        if("bye".equals(decoded)){
+                                                System.out.println("Server> クライアントから接続終了の合言葉がきました。<run>");
+                                                done = true;
+                                        }
+                                        else{
+                                                System.out.println("Server> クライアントからの文字列を受け取りました。<run>");
+                                                System.out.println(decoded);
+                                                String response = "ECHO: " + decoded;
+                                                String encodedResponse = Base64.getEncoder().encodeToString(response.getBytes(BASE64_CHARSET));
+                                                out.println(encodedResponse);
+                                                out.flush();
+                                                System.out.println("Server> クライアントへメッセージを送りました。<run>");
+                                        }
+                                }
+                        }
+
+                        this.close();  //課題1－７
 		}
 		catch(IOException e){
 			System.err.println(""+e+":クライアントとの接続に失敗しました。<run>");

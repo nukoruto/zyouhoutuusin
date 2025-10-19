@@ -1,8 +1,11 @@
 package step05;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  *  自作のBase64の変換を行うクラス
@@ -19,7 +22,25 @@ import java.io.InputStreamReader;
  */
 public class MyBase64 {
     /** Base64の変換テーブル */
-    public static String TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    public static final String TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+    /**
+     * Base64変換時に使用する標準文字コード。
+     * <p>
+     * Windows環境の既存課題と互換性を保つためにMS932(SJIS互換)を優先し、
+     * 環境によって利用できない場合はUTF-8に自動でフォールバックする。
+     */
+    public static final Charset MESSAGE_CHARSET;
+
+    static {
+        Charset candidate;
+        try {
+            candidate = Charset.forName("MS932");
+        } catch (Exception ex) {
+            candidate = StandardCharsets.UTF_8;
+        }
+        MESSAGE_CHARSET = candidate;
+    }
 
 /**
   エンコードするメソッド
@@ -35,44 +56,40 @@ public class MyBase64 {
   処理３．str2の長さは4の倍数になるように調整する。不足は「=」で埋める。
 */
     public static String encode(String str1){
-        String str2 = ""; //Base64にエンコード後の文字列
-        String strB = ""; //2進数の文字列に変換後の文字列
+        return encode(str1, MESSAGE_CHARSET);
+    }
 
-        //処理１．str1を2進数の文字列（strB）にする（1文字定数は8bitの2進数に変換）
-        //処理としては、1文字ずつ処理してstrBに連結させていく。
-		for(int i=0; i<str1.length(); i++){
-            String tmp = ""; //str1を2進数の文字列に変換してtmpに格納する。【１．右辺変更】
+    /**
+     * 任意の文字コードを指定してエンコードするメソッド。
+     * @param str1 元の文字列
+     * @param charset 変換に利用する文字コード（nullの場合はMESSAGE_CHARSETを使用）
+     * @return エンコード後の文字列
+     */
+    public static String encode(String str1, Charset charset){
+        if(str1 == null || str1.isEmpty()){
+            return "";
+        }
 
-            //tmpが8桁になっていない場合、上位ビットの場所に0を入れ8桁にする。
-            //for文などを使って、文字列前方に0を入れる。（4行くらい）【２．作成】
+        Charset useCharset = (charset != null) ? charset : MESSAGE_CHARSET;
+        byte[] input = str1.getBytes(useCharset);
+        StringBuilder encoded = new StringBuilder(((input.length + 2) / 3) * 4);
 
+        for(int i = 0; i < input.length;){
+            int remaining = input.length - i;
 
+            int b0 = input[i++] & 0xff;
+            int b1 = (remaining > 1) ? (input[i++] & 0xff) : 0;
+            int b2 = (remaining > 2) ? (input[i++] & 0xff) : 0;
 
+            int combined = (b0 << 16) | (b1 << 8) | b2;
 
+            encoded.append(TABLE.charAt((combined >> 18) & 0x3f));
+            encoded.append(TABLE.charAt((combined >> 12) & 0x3f));
+            encoded.append(remaining > 1 ? TABLE.charAt((combined >> 6) & 0x3f) : '=');
+            encoded.append(remaining > 2 ? TABLE.charAt(combined & 0x3f) : '=');
+        }
 
-		}
-
-		//出来あたっがstrBの長さが6の倍数でない場合、末尾にゼロパディング（3行くらい）【３．作成】処理３を参考
-
-
-
-
-
-        //処理２．strBを6bit刻みで文字定数に変換し、新たな文字列（str2）を作る
-		for(int i=0; (i+6)<=strB.length(); i+=6){
-            String substr = ""; //6桁（6ビットぶん）を取り出す。      【４．右辺変更】
-            int num = 0;  //2進数の文字列を10進数の整数に変換         【５．右辺変更】
-            System.out.println(substr+">>"+num);
-
-            str2 += ""; //変換した文字（文字列TABLEのnum番目の文字）をstr2に連結させる。【６．右辺変更】
-		}
-
-		//処理３．str2の長さが4の倍数になるように調整する。不足は「=」で埋める。【確認のみ】
-		while(str2.length()%4 != 0){
-            str2 +="="; //「=」パディング
-		}
-
-        return str2;
+        return encoded.toString();
     }
 
 
@@ -87,38 +104,83 @@ public class MyBase64 {
   処理３．strBを8bit刻みで文字定数に変換し、新たな文字列（str3）を作る
 */
     public static String decode(String str2){
-        String str3 = ""; //Base64にデコード後の文字列
-        String strB = ""; //2進数の文字列に変換後の文字列
-        int len2; //パディング「=」を除去した文字の個数
+        return decode(str2, MESSAGE_CHARSET);
+    }
 
-        //処理１．str2のパディング「=」を除去した文字の個数を把握。len2を求める。
-        len2 = str2.indexOf("=");
-        if(len2<0){
-            len2 = str2.length();
+    /**
+     * 任意の文字コードを指定してデコードするメソッド。
+     * @param str2 Base64でエンコードされた文字列
+     * @param charset 変換に利用する文字コード（nullの場合はMESSAGE_CHARSETを使用）
+     * @return 復号後の文字列
+     */
+    public static String decode(String str2, Charset charset){
+        if(str2 == null || str2.isEmpty()){
+            return "";
         }
 
-        //処理２．str2を2進数の文字列（strB）にする（1文字定数は6bitの2進数に変換）
-		for(int i=0; i<len2; i++){ //「=」が来たら終了
-            int n = 0; //「str2のi番目の文字」が格納されている文字列TABLEの場所（index）を求める。【１．右辺変更】
-            String tmp = ""; //数値nを2進数の文字列に変換してtmpに格納。【１．右辺変更】
-            //tmpが6桁になっていない場合、上位ビットの場所に0を入れ6桁にする。
-            //for文などを使って、文字列前方に0を入れる。（4行くらい）【３．作成】エンコードでほぼ同じ処理をしている。
+        String clean = removeWhitespace(str2);
+        if(clean.length() % 4 != 0){
+            throw new IllegalArgumentException("Base64文字列の長さが4の倍数ではありません。");
+        }
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+        for(int i = 0; i < clean.length(); i += 4){
+            char c0 = clean.charAt(i);
+            char c1 = clean.charAt(i + 1);
+            char c2 = clean.charAt(i + 2);
+            char c3 = clean.charAt(i + 3);
 
+            int b0 = decodeChar(c0);
+            int b1 = decodeChar(c1);
+            int b2 = (c2 == '=') ? 0 : decodeChar(c2);
+            int b3 = (c3 == '=') ? 0 : decodeChar(c3);
 
+            int combined = (b0 << 18) | (b1 << 12) | (b2 << 6) | b3;
 
-		}
+            baos.write((combined >> 16) & 0xff);
+            if(c2 != '='){
+                baos.write((combined >> 8) & 0xff);
+            }
+            if(c3 != '='){
+                baos.write(combined & 0xff);
+            }
+        }
 
-        //処理３．strBを8bit刻みで文字定数に変換し、新たな文字列（str3）を作る
-		for(int i=0; (i+8)<=strB.length(); i+=8){
-            String substr = ""; //8桁（8ビットぶん）を取り出す。【４．右辺変更】
-            int num = 0; //2進数の文字列を10進数の整数に変換    【５．右辺変更】
-            System.out.println(substr+">>"+num);
-            str3 += (char)num; //numはアスキーコードの数字になっているので、char型に変換（キャスト）して文字列str3に連結。
-		}
+        Charset useCharset = (charset != null) ? charset : MESSAGE_CHARSET;
+        return new String(baos.toByteArray(), useCharset);
+    }
 
-        return str3;
+    /**
+     * Base64文字列中の空白文字を除去する。
+     * @param input Base64文字列
+     * @return 空白を除去した文字列
+     */
+    private static String removeWhitespace(String input){
+        StringBuilder builder = new StringBuilder(input.length());
+        for(int i = 0; i < input.length(); i++){
+            char c = input.charAt(i);
+            if(!Character.isWhitespace(c)){
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Base64文字を数値に変換するヘルパーメソッド。
+     * @param c Base64文字
+     * @return 6bitの数値
+     */
+    private static int decodeChar(char c){
+        if(c == '='){
+            return 0;
+        }
+        int index = TABLE.indexOf(c);
+        if(index < 0){
+            throw new IllegalArgumentException("Base64に含まれない文字が指定されました: " + c);
+        }
+        return index;
     }
 
 /**
@@ -126,8 +188,8 @@ public class MyBase64 {
  * 自作したBase64の動作確認を行うメソッド
  * 標準入力した文字列を、Base64で暗号化し、その後、復号する。
  */
-	public static void main(String[] args) {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    public static void main(String[] args) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
             String str1 = reader.readLine();
@@ -143,6 +205,6 @@ public class MyBase64 {
         } catch (IOException e){
             System.out.println(e.toString()+"<main@MyBase64>");
         }
-	}
+    }
 
 }
