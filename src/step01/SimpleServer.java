@@ -10,6 +10,9 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+
+import step06.MyCrypt;
 
 import step06.MyCrypt;
 
@@ -202,13 +205,13 @@ public class SimpleServer extends Thread {
 /**
  *<BR> 課題1－４：　入出力オブジェクトの生成処理【ソースコード追記作業】
  *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
- *<BR>   ・文字コードはSJISを指定する。
+ *<BR>   ・文字コードはSJISを指定する。（※本対応では日本語・記号への対応のためUTF-8を利用）
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
-	public boolean setIO(){
-		try{
-			in = new BufferedReader(new InputStreamReader(client_socket.getInputStream(), "SJIS"));
-			out = new PrintWriter(new OutputStreamWriter(client_socket.getOutputStream(), "SJIS"), true);
+        public boolean setIO(){
+                try{
+                        in = new BufferedReader(new InputStreamReader(client_socket.getInputStream(), StandardCharsets.UTF_8));
+                        out = new PrintWriter(new OutputStreamWriter(client_socket.getOutputStream(), StandardCharsets.UTF_8), true);
 			System.out.println("Server> 入出力オブジェクトを生成しました。<setIO>");
 			return true;
 		}

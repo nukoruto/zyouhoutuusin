@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import step06.MyCrypt;
 
@@ -151,14 +152,14 @@ public class SimpleClient extends Thread {
 /**
  *<BR> 課題②－３：　入出力オブジェクトの生成処理
  *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
- *<BR>   ・文字コードはSJISを指定する。
+ *<BR>   ・文字コードはSJISを指定する。（※本対応では日本語・記号への対応のためUTF-8を利用）
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
         public boolean setIO(){
                 try{
-                        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "SJIS"));
-                        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "SJIS"), true);
-                        std_in = new BufferedReader(new InputStreamReader(System.in, "SJIS"));
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+                        std_in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
                         System.out.println("Client> 入出力オブジェクトを生成しました。<setIO>");
                         return true;
                 }
