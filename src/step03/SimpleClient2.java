@@ -4,6 +4,7 @@ package step03;
 import java.io.IOException;
 
 import step02.SimpleClient;
+import step05.MyBase64;
 
 
 
@@ -55,7 +56,8 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
                         return;
                 }
 
-                out.println(msg);
+                String encoded = MyBase64.encode(msg);
+                out.println(encoded);
                 out.flush();
         }
 
@@ -70,7 +72,13 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
                         String msg = null;
                         while((msg = in.readLine()) != null){
                                 if(con != null){
-                                        con.displayMessage(msg);
+                                        try{
+                                                String decoded = MyBase64.decode(msg);
+                                                con.displayMessage(decoded);
+                                        }
+                                        catch(IllegalArgumentException e){
+                                                con.displayMessage(msg);
+                                        }
                                 }
                         }
                         this.close();

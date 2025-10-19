@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import step05.MyBase64;
+
 /**
  *  クライアントプログラムを起動させるメインプログラム
  *<BR>  
@@ -187,7 +189,8 @@ public class SimpleClient extends Thread {
                                         done = true;
                                         continue;
                                 }
-                                out.println(msg1);
+                                String encoded = MyBase64.encode(msg1);
+                                out.println(encoded);
                                 out.flush();
                                 System.out.println("Client> サーバからの応答を待ちます。<run>");
                                 msg2 = in.readLine();
@@ -197,7 +200,14 @@ public class SimpleClient extends Thread {
                                 }
                                 else{
                                         System.out.println("Client> サーバからの文字列を受け取りました。<run>");
-                                        System.out.println(msg2);
+                                        try{
+                                                String decoded = MyBase64.decode(msg2);
+                                                System.out.println(decoded);
+                                        }
+                                        catch(IllegalArgumentException e){
+                                                System.out.println("Client> 受信した文字列の復号に失敗しました。<run>");
+                                                System.out.println(msg2);
+                                        }
                                 }
                         }
 
