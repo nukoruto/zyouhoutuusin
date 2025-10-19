@@ -4,6 +4,7 @@ package step03;
 import java.io.IOException;
 
 import step02.SimpleClient;
+import step06.MyCrypt;
 
 
 
@@ -55,7 +56,13 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
                         return;
                 }
 
-                out.println(msg);
+                String encodedMsg = MyCrypt.encode(msg, AES_KEY, AES_IV);
+                if(encodedMsg != null){
+                        out.println(encodedMsg);
+                }
+                else{
+                        out.println(msg);
+                }
                 out.flush();
         }
 
@@ -69,8 +76,10 @@ public class SimpleClient2 extends SimpleClient {//記述（通信用プログ�
                 try{
                         String msg = null;
                         while((msg = in.readLine()) != null){
+                                String decoded = MyCrypt.decode(msg, AES_KEY, AES_IV);
+                                String displayMsg = decoded != null ? decoded : msg;
                                 if(con != null){
-                                        con.displayMessage(msg);
+                                        con.displayMessage(displayMsg);
                                 }
                         }
                         this.close();
