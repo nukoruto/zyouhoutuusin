@@ -45,20 +45,31 @@ public class MyCrypt {
 		try {
 		    String str2 = "";
 
-		    //処理１．【右辺変更】
-			SecretKeySpec key = null;
+                    byte[] keyBytes = strK.getBytes(charset);
+                    byte[] ivBytes = strV.getBytes(charset);
 
-		    //処理２．【右辺変更】
-			IvParameterSpec iv = null;
+                    if (keyBytes.length != 16) {
+                        throw new IllegalArgumentException("Key must be 16 bytes for AES-128");
+                    }
+                    if (ivBytes.length != 16) {
+                        throw new IllegalArgumentException("IV must be 16 bytes for AES-128");
+                    }
 
-		    //処理３．【右辺変更】
-			Cipher cipher = null;
+                    //処理１．【右辺変更】
+                        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
 
-		    //処理４．【1行追加】
+                    //処理２．【右辺変更】
+                        IvParameterSpec iv = new IvParameterSpec(ivBytes);
+
+                    //処理３．【右辺変更】
+                        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+                    //処理４．【1行追加】
+                        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 
 
-		    //処理５．【右辺変更】
-			byte[] bary = null;
+                    //処理５．【右辺変更】
+                        byte[] bary = cipher.doFinal(str1.getBytes(charset));
             System.out.print("AES >> ");
             for (byte b : bary) {
                 System.out.print(String.format("%02X", b));
@@ -94,20 +105,31 @@ public class MyCrypt {
 		try {
 		    String str3 = "";
 
-		    //処理１．【右辺変更】
-			SecretKeySpec key = null;
+                    byte[] keyBytes = strK.getBytes(charset);
+                    byte[] ivBytes = strV.getBytes(charset);
 
-		    //処理２．【右辺変更】
-			IvParameterSpec iv = null;
+                    if (keyBytes.length != 16) {
+                        throw new IllegalArgumentException("Key must be 16 bytes for AES-128");
+                    }
+                    if (ivBytes.length != 16) {
+                        throw new IllegalArgumentException("IV must be 16 bytes for AES-128");
+                    }
 
-		    //処理３．【右辺変更】
-			Cipher cipher = null;
+                    //処理１．【右辺変更】
+                        SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
 
-		    //処理４．【1行追加】
+                    //処理２．【右辺変更】
+                        IvParameterSpec iv = new IvParameterSpec(ivBytes);
+
+                    //処理３．【右辺変更】
+                        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+                    //処理４．【1行追加】
+                        cipher.init(Cipher.DECRYPT_MODE, key, iv);
 
 
-		    //処理５．【右辺変更】
-			byte[] bary = null;
+                    //処理５．【右辺変更】
+                        byte[] bary = cipher.doFinal(Base64.getDecoder().decode(str2));
 
 		    //処理６．【確認のみ】
 			str3 = new String(bary, charset);
