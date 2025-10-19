@@ -10,6 +10,9 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+
+import step06.MyCrypt;
 
 /**
  *  サーバプログラムを起動させるメインプログラム
@@ -43,8 +46,11 @@ public class SimpleServer extends Thread {
 	
 	/** ソケットから文字列を受信するためのオブジェクト */
 	private BufferedReader in;
-	/** ソケットから文字列を送信するためのオブジェクト */
-	private PrintWriter out;
+        /** ソケットから文字列を送信するためのオブジェクト */
+        private PrintWriter out;
+
+        private static final String AES_KEY = "0123012301230123";
+        private static final String AES_IV = "abcdefghijklmnop";
 	
 /**
  *<BR> メインメソッド
@@ -197,13 +203,13 @@ public class SimpleServer extends Thread {
 /**
  *<BR> 課題1－４：　入出力オブジェクトの生成処理【ソースコード追記作業】
  *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
- *<BR>   ・文字コードはSJISを指定する。
+ *<BR>   ・文字コードはSJISを指定する。（※本対応では日本語・記号への対応のためUTF-8を利用）
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
-	public boolean setIO(){
-		try{
-			in = new BufferedReader(new InputStreamReader(client_socket.getInputStream(), "SJIS"));
-			out = new PrintWriter(new OutputStreamWriter(client_socket.getOutputStream(), "SJIS"), true);
+        public boolean setIO(){
+                try{
+                        in = new BufferedReader(new InputStreamReader(client_socket.getInputStream(), StandardCharsets.UTF_8));
+                        out = new PrintWriter(new OutputStreamWriter(client_socket.getOutputStream(), StandardCharsets.UTF_8), true);
 			System.out.println("Server> 入出力オブジェクトを生成しました。<setIO>");
 			return true;
 		}
@@ -245,32 +251,51 @@ public class SimpleServer extends Thread {
  *<BR>   ・tryのスコープで例外(IOException )が発生した場合は、その時点から強制的にcatchへ飛ぶ。
  */
 	public void run(){
-		String msg = "";
-		boolean done = false;
-		try{
-			while(!done){
-				System.out.println("");
-				msg = in.readLine();
+                String msg = "";
+                boolean done = false;
+                try{
+                        while(!done){
+                                System.out.println("");
+                                String received = in.readLine();
 
-				if(msg == null){
-					System.out.println("Server> クライアントとの接続が切れています。<run>");
-					done = true;
-				}
+                                if(received != null){
+                                        String decoded = MyCrypt.decode(received, AES_KEY, AES_IV);
+                                        if(decoded != null){
+                                                msg = decoded;
+                                        }
+                                        else{
+                                                msg = received;
+                                        }
+                                }
+                                else{
+                                        msg = null;
+                                }
+
+                                if(msg == null){
+                                        System.out.println("Server> クライアントとの接続が切れています。<run>");
+                                        done = true;
+                                }
 				else if(msg.equals("bye")){
 					System.out.println("Server> クライアントから接続終了の合言葉がきました。<run>");
 					done = true;
 				}
-				else{
-					System.out.println("Server> クライアントからの文字列を受け取りました。<run>");
-					System.out.println(msg);
-					String response = "ECHO: " + msg;
-					out.println(response);
-					out.flush();
-					System.out.println("Server> クライアントへメッセージを送りました。<run>");
-				}
-			}
+                                else{
+                                        System.out.println("Server> クライアントからの文字列を受け取りました。<run>");
+                                        System.out.println(msg);
+                                        String response = "ECHO: " + msg;
+                                        String encodedResponse = MyCrypt.encode(response, AES_KEY, AES_IV);
+                                        if(encodedResponse != null){
+                                                out.println(encodedResponse);
+                                        }
+                                        else{
+                                                out.println(response);
+                                        }
+                                        out.flush();
+                                        System.out.println("Server> クライアントへメッセージを送りました。<run>");
+                                }
+                        }
 
-			this.close();  //課題1－７
+                        this.close();  //課題1－７
 		}
 		catch(IOException e){
 			System.err.println(""+e+":クライアントとの接続に失敗しました。<run>");

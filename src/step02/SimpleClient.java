@@ -7,6 +7,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+
+import step06.MyCrypt;
 
 /**
  *  クライアントプログラムを起動させるメインプログラム
@@ -46,8 +49,11 @@ public class SimpleClient extends Thread {
 	/** ソケットから文字列を送信するためのオブジェクト */
 	protected PrintWriter out;
 	
-	/** 標準入力から文字列を受け取るためのオブジェクト */
-	private BufferedReader std_in;
+        /** 標準入力から文字列を受け取るためのオブジェクト */
+        private BufferedReader std_in;
+
+        protected static final String AES_KEY = "0123012301230123";
+        protected static final String AES_IV = "abcdefghijklmnop";
 
 /**
  *<BR> メインメソッド
@@ -146,14 +152,14 @@ public class SimpleClient extends Thread {
 /**
  *<BR> 課題②－３：　入出力オブジェクトの生成処理
  *<BR>   ・APIにてBufferedReaderクラス、PrintWriterクラスを調べること。
- *<BR>   ・文字コードはSJISを指定する。
+ *<BR>   ・文字コードはSJISを指定する。（※本対応では日本語・記号への対応のためUTF-8を利用）
  *<BR>   ・例外発生時の処理はfalseを返す。
  */
         public boolean setIO(){
                 try{
-                        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "SJIS"));
-                        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "SJIS"), true);
-                        std_in = new BufferedReader(new InputStreamReader(System.in, "SJIS"));
+                        in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                        out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+                        std_in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
                         System.out.println("Client> 入出力オブジェクトを生成しました。<setIO>");
                         return true;
                 }
@@ -187,10 +193,28 @@ public class SimpleClient extends Thread {
                                         done = true;
                                         continue;
                                 }
-                                out.println(msg1);
+                                String encodedMsg = MyCrypt.encode(msg1, AES_KEY, AES_IV);
+                                if(encodedMsg != null){
+                                        out.println(encodedMsg);
+                                }
+                                else{
+                                        out.println(msg1);
+                                }
                                 out.flush();
                                 System.out.println("Client> サーバからの応答を待ちます。<run>");
-                                msg2 = in.readLine();
+                                String received = in.readLine();
+                                if(received != null){
+                                        String decoded = MyCrypt.decode(received, AES_KEY, AES_IV);
+                                        if(decoded != null){
+                                                msg2 = decoded;
+                                        }
+                                        else{
+                                                msg2 = received;
+                                        }
+                                }
+                                else{
+                                        msg2 = null;
+                                }
                                 if(msg2 == null){
                                         System.out.println("Client> サーバとの接続が切れています。<run>");
                                         done = true;
