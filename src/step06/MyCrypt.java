@@ -41,24 +41,29 @@ public class MyCrypt {
 　処理５．変換：文字列（平文）→byte配列→④を使って変換→byte配列
 　処理６．⑤にBase64でエンコードして文字列（暗号文）
 */
-	public static String encode(String str1,String strK,String strV) {
-		try {
-		    String str2 = "";
+        public static String encode(String str1,String strK,String strV) {
+                try {
+                    if(str1 == null || strK == null || strV == null){
+                            return null;
+                    }
 
-		    //処理１．【右辺変更】
-			SecretKeySpec key = null;
+                    String str2 = "";
 
-		    //処理２．【右辺変更】
-			IvParameterSpec iv = null;
+                    //処理１．【右辺変更】
+                        SecretKeySpec key = createSecretKey(strK);
 
-		    //処理３．【右辺変更】
-			Cipher cipher = null;
+                    //処理２．【右辺変更】
+                        IvParameterSpec iv = createIv(strV);
 
-		    //処理４．【1行追加】
+                    //処理３．【右辺変更】
+                        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+                    //処理４．【1行追加】
+                        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 
 
-		    //処理５．【右辺変更】
-			byte[] bary = null;
+                    //処理５．【右辺変更】
+                        byte[] bary = cipher.doFinal(str1.getBytes(charset));
             System.out.print("AES >> ");
             for (byte b : bary) {
                 System.out.print(String.format("%02X", b));
@@ -90,24 +95,29 @@ public class MyCrypt {
 　処理５．変換：文字列（平文）→byte配列→④を使って変換→byte配列
 　処理６．⑤にBase64でエンコードして文字列（暗号文）
 */
-	public static String decode(String str2,String strK,String strV) {
-		try {
-		    String str3 = "";
+        public static String decode(String str2,String strK,String strV) {
+                try {
+                    if(str2 == null || strK == null || strV == null){
+                            return null;
+                    }
 
-		    //処理１．【右辺変更】
-			SecretKeySpec key = null;
+                    String str3 = "";
 
-		    //処理２．【右辺変更】
-			IvParameterSpec iv = null;
+                    //処理１．【右辺変更】
+                        SecretKeySpec key = createSecretKey(strK);
 
-		    //処理３．【右辺変更】
-			Cipher cipher = null;
+                    //処理２．【右辺変更】
+                        IvParameterSpec iv = createIv(strV);
 
-		    //処理４．【1行追加】
+                    //処理３．【右辺変更】
+                        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+                    //処理４．【1行追加】
+                        cipher.init(Cipher.DECRYPT_MODE, key, iv);
 
 
-		    //処理５．【右辺変更】
-			byte[] bary = null;
+                    //処理５．【右辺変更】
+                        byte[] bary = cipher.doFinal(Base64.getDecoder().decode(str2));
 
 		    //処理６．【確認のみ】
 			str3 = new String(bary, charset);
@@ -126,13 +136,13 @@ public class MyCrypt {
  * AESによる暗号化・復号の動作確認を行うメソッド
  * 標準入力した文字列を、暗号化し、その後、復号する。
  */
-	public static void main(String[] args) {
+        public static void main(String[] args) {
 
-		String strK1 = "0123012301230123"; //鍵（16bit）
-		String strK2 = "kurume-seigyo-5s";
-		String strV1 = "abcdefghijklmnop"; //初期化ベクトル（鍵と同じbit）
-		String strV2 = "0123012301230123";
-		String strV3 = " 1 2 3 4 5 6 7 8";
+                String strK1 = "0123012301230123"; //鍵（16bit）
+                String strK2 = "kurume-seigyo-5s";
+                String strV1 = "abcdefghijklmnop"; //初期化ベクトル（鍵と同じbit）
+                String strV2 = "0123012301230123";
+                String strV3 = " 1 2 3 4 5 6 7 8";
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -148,5 +158,21 @@ public class MyCrypt {
         } catch (IOException e){
             System.out.println(e.toString()+"<main@MyCrypt>");
         }
-	}
+        }
+
+        private static SecretKeySpec createSecretKey(String keyString) {
+                byte[] keyBytes = keyString.getBytes(charset);
+                if(keyBytes.length != 16){
+                        throw new IllegalArgumentException("Key must be 16 bytes.");
+                }
+                return new SecretKeySpec(keyBytes, "AES");
+        }
+
+        private static IvParameterSpec createIv(String ivString) {
+                byte[] ivBytes = ivString.getBytes(charset);
+                if(ivBytes.length != 16){
+                        throw new IllegalArgumentException("IV must be 16 bytes.");
+                }
+                return new IvParameterSpec(ivBytes);
+        }
 }

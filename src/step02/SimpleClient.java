@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import step06.MyCrypt;
+
 /**
  *  クライアントプログラムを起動させるメインプログラム
  *<BR>  
@@ -46,8 +48,11 @@ public class SimpleClient extends Thread {
 	/** ソケットから文字列を送信するためのオブジェクト */
 	protected PrintWriter out;
 	
-	/** 標準入力から文字列を受け取るためのオブジェクト */
-	private BufferedReader std_in;
+        /** 標準入力から文字列を受け取るためのオブジェクト */
+        private BufferedReader std_in;
+
+        protected static final String AES_KEY = "0123012301230123";
+        protected static final String AES_IV = "abcdefghijklmnop";
 
 /**
  *<BR> メインメソッド
@@ -187,10 +192,28 @@ public class SimpleClient extends Thread {
                                         done = true;
                                         continue;
                                 }
-                                out.println(msg1);
+                                String encodedMsg = MyCrypt.encode(msg1, AES_KEY, AES_IV);
+                                if(encodedMsg != null){
+                                        out.println(encodedMsg);
+                                }
+                                else{
+                                        out.println(msg1);
+                                }
                                 out.flush();
                                 System.out.println("Client> サーバからの応答を待ちます。<run>");
-                                msg2 = in.readLine();
+                                String received = in.readLine();
+                                if(received != null){
+                                        String decoded = MyCrypt.decode(received, AES_KEY, AES_IV);
+                                        if(decoded != null){
+                                                msg2 = decoded;
+                                        }
+                                        else{
+                                                msg2 = received;
+                                        }
+                                }
+                                else{
+                                        msg2 = null;
+                                }
                                 if(msg2 == null){
                                         System.out.println("Client> サーバとの接続が切れています。<run>");
                                         done = true;
