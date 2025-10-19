@@ -3,9 +3,9 @@ package step06;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Base64;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -17,16 +17,27 @@ import javax.crypto.spec.SecretKeySpec;
  *<BR>  ・変換は静的なメソッド内で行うため、オブジェクトの生成は不要。
  *<BR>
  *<BR>  管理している主なフィールド
- *<BR>  ・static Charset charset:  文字コードを指定するための値
+ *<BR>  ・static Charset CHARSET:  文字コードを指定するための値
  *<BR>
  *<BR>  管理している主なメソッド
  *<BR>  ・static String encode(String str,String strK,String strV):  AESのエンコード変換
  *<BR>  ・static String decode(String str,String strK,String strV):  AESのデコード変換
  */
-
 public class MyCrypt {
-    /** チャーセット（文字コード）の指定に用いる値 */
-    public static Charset charset = StandardCharsets.UTF_8;
+    /**
+     * チャーセット（文字コード）の指定に用いる値。
+     * 日本語（マルチバイト文字）を含む平文を正しく扱うため UTF-8 に固定する。
+     */
+    public static final Charset CHARSET = StandardCharsets.UTF_8;
+
+    private static final String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+    private static final String ALGORITHM = "AES";
+
+    private static void validateKeyMaterial(byte[] material, String label) {
+        if (material.length != 16) {
+            throw new IllegalArgumentException(label + " must be 16 bytes for AES-128");
+        }
+    }
 
 /**
   エンコードするメソッド
@@ -41,41 +52,42 @@ public class MyCrypt {
 　処理５．変換：文字列（平文）→byte配列→④を使って変換→byte配列
 　処理６．⑤にBase64でエンコードして文字列（暗号文）
 */
-	public static String encode(String str1,String strK,String strV) {
-		try {
-		    String str2 = "";
+        public static String encode(String str1,String strK,String strV) {
+                try {
+                    String str2 = "";
 
-		    //処理１．【右辺変更】
-			SecretKeySpec key = null;
+                    byte[] keyBytes = strK.getBytes(CHARSET);
+                    byte[] ivBytes = strV.getBytes(CHARSET);
 
-		    //処理２．【右辺変更】
-			IvParameterSpec iv = null;
+                    validateKeyMaterial(keyBytes, "Key");
+                    validateKeyMaterial(ivBytes, "IV");
 
-		    //処理３．【右辺変更】
-			Cipher cipher = null;
+                    //処理１．【右辺変更】
+                        SecretKeySpec key = new SecretKeySpec(keyBytes, ALGORITHM);
 
-		    //処理４．【1行追加】
+                    //処理２．【右辺変更】
+                        IvParameterSpec iv = new IvParameterSpec(ivBytes);
+
+                    //処理３．【右辺変更】
+                        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+
+                    //処理４．【1行追加】
+                        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
 
 
-		    //処理５．【右辺変更】
-			byte[] bary = null;
-            System.out.print("AES >> ");
-            for (byte b : bary) {
-                System.out.print(String.format("%02X", b));
-            }
-            System.out.println(" >> new String >> "+new String(bary, charset));
-            System.out.println("");
+                    //処理５．【右辺変更】
+                        byte[] bary = cipher.doFinal(str1.getBytes(CHARSET));
 
-		    //処理６．【確認のみ】
+                    //処理６．【確認のみ】
             str2 = Base64.getEncoder().encodeToString(bary);
 
-			return str2;
+                        return str2;
 
-		} catch (Exception e) {
-		    System.out.println(e.toString()+"<encode@MyCrypt>");
-		}
-		return null;
-	}
+                } catch (Exception e) {
+                    System.out.println(e.toString()+"<encode@MyCrypt>");
+                }
+                return null;
+        }
 
 /**
   デコードするメソッド
@@ -90,34 +102,41 @@ public class MyCrypt {
 　処理５．変換：文字列（平文）→byte配列→④を使って変換→byte配列
 　処理６．⑤にBase64でエンコードして文字列（暗号文）
 */
-	public static String decode(String str2,String strK,String strV) {
-		try {
-		    String str3 = "";
+        public static String decode(String str2,String strK,String strV) {
+                try {
+                    String str3 = "";
 
-		    //処理１．【右辺変更】
-			SecretKeySpec key = null;
+                    byte[] keyBytes = strK.getBytes(CHARSET);
+                    byte[] ivBytes = strV.getBytes(CHARSET);
 
-		    //処理２．【右辺変更】
-			IvParameterSpec iv = null;
+                    validateKeyMaterial(keyBytes, "Key");
+                    validateKeyMaterial(ivBytes, "IV");
 
-		    //処理３．【右辺変更】
-			Cipher cipher = null;
+                    //処理１．【右辺変更】
+                        SecretKeySpec key = new SecretKeySpec(keyBytes, ALGORITHM);
 
-		    //処理４．【1行追加】
+                    //処理２．【右辺変更】
+                        IvParameterSpec iv = new IvParameterSpec(ivBytes);
+
+                    //処理３．【右辺変更】
+                        Cipher cipher = Cipher.getInstance(TRANSFORMATION);
+
+                    //処理４．【1行追加】
+                        cipher.init(Cipher.DECRYPT_MODE, key, iv);
 
 
-		    //処理５．【右辺変更】
-			byte[] bary = null;
+                    //処理５．【右辺変更】
+                        byte[] bary = cipher.doFinal(Base64.getDecoder().decode(str2));
 
-		    //処理６．【確認のみ】
-			str3 = new String(bary, charset);
+                    //処理６．【確認のみ】
+                        str3 = new String(bary, CHARSET);
 
-			return str3;
-		} catch (Exception e) {
-		    System.out.println(e.toString()+"<decode@MyCrypt>");
-		}
-		return null;
-	}
+                        return str3;
+                } catch (Exception e) {
+                    System.out.println(e.toString()+"<decode@MyCrypt>");
+                }
+                return null;
+        }
 
 
 
@@ -126,15 +145,15 @@ public class MyCrypt {
  * AESによる暗号化・復号の動作確認を行うメソッド
  * 標準入力した文字列を、暗号化し、その後、復号する。
  */
-	public static void main(String[] args) {
+        public static void main(String[] args) {
 
-		String strK1 = "0123012301230123"; //鍵（16bit）
-		String strK2 = "kurume-seigyo-5s";
-		String strV1 = "abcdefghijklmnop"; //初期化ベクトル（鍵と同じbit）
-		String strV2 = "0123012301230123";
-		String strV3 = " 1 2 3 4 5 6 7 8";
+                String strK1 = "0123012301230123"; //鍵（16bit）
+                String strK2 = "kurume-seigyo-5s";
+                String strV1 = "abcdefghijklmnop"; //初期化ベクトル（鍵と同じbit）
+                String strV2 = "0123012301230123";
+                String strV3 = " 1 2 3 4 5 6 7 8";
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, CHARSET));
 
         try {
             String str1 = reader.readLine();
@@ -148,5 +167,5 @@ public class MyCrypt {
         } catch (IOException e){
             System.out.println(e.toString()+"<main@MyCrypt>");
         }
-	}
+        }
 }
