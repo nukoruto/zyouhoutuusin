@@ -64,19 +64,24 @@ public class MyCrypt {
 
                     //処理５．【右辺変更】
                         byte[] bary = cipher.doFinal(str1.getBytes(charset));
+                    //処理６．【確認のみ】
+                        str2 = Base64.getEncoder().encodeToString(bary);
             System.out.print("AES >> ");
             for (byte b : bary) {
                 System.out.print(String.format("%02X", b));
             }
-            System.out.println(" >> new String >> "+new String(bary, charset));
+            String decodedLog = decode(str2, strK, strV);
+            if(decodedLog != null){
+                System.out.println(" >> decoded >> "+decodedLog);
+            }
+            else{
+                System.out.println(" >> decoded >> (decode failed)");
+            }
             System.out.println("");
 
-		    //処理６．【確認のみ】
-            str2 = Base64.getEncoder().encodeToString(bary);
+                        return str2;
 
-			return str2;
-
-		} catch (Exception e) {
+                } catch (Exception e) {
 		    System.out.println(e.toString()+"<encode@MyCrypt>");
 		}
 		return null;
