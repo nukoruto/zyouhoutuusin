@@ -14,8 +14,6 @@ import java.nio.charset.StandardCharsets;
 
 import step06.MyCrypt;
 
-import step06.MyCrypt;
-
 /**
  *  サーバプログラムを起動させるメインプログラム
  *<BR>  
@@ -51,8 +49,10 @@ public class SimpleServer extends Thread {
         /** ソケットから文字列を送信するためのオブジェクト */
         private PrintWriter out;
 
-        private static final String AES_KEY = "0123012301230123";
-        private static final String AES_IV = "abcdefghijklmnop";
+		/** 鍵：16/24/32バイト（AES-128/192/256） 日本語はutf-8で複数バイトなので注意*/
+        private static final String AES_KEY = "0123012301230123"; // 鍵は変更するならここ、ただしクライアントと一致させること
+		/** IV：モードに依存（CBC/CTR は16バイト、GCMは通常12バイト推奨） */
+        private static final String AES_IV = "abcdefghijklmnop"; // 初期化ベクトルは変更するならここ、ただし一致しないと、中身はほぼ確実にゴミになるため、"bye"も終了処理にならない。
 	
 /**
  *<BR> メインメソッド
