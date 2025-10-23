@@ -110,12 +110,16 @@ char* encode(char *str1, int len1, int *len2){
     }
 
     /* エンコード後の文字列の領域確保 */
-    str2 = (char*)malloc((*len2)*sizeof(char));
+    str2 = (char*)malloc(((*len2)+1)*sizeof(char));
 
     /* エンコード後の文字列に関して、先に末尾4文字に「=」をパディングしておく（少々冗長） */
-    for(i=0; i<4; i++){
-        *(str2+((*len2)-i)) = '=';
+    if(*len2 > 0){
+        int pad_count = (*len2 >= 4) ? 4 : *len2;
+        for(i=0; i<pad_count; i++){
+            *(str2 + (*len2 - 1 - i)) = '=';
+        }
     }
+    str2[*len2] = '\0';
 
     /* エンコードの処理開始 */
     /* 処理１．str1を2進数の文字列（strB）にする */
@@ -343,12 +347,16 @@ char* encode2(char *str1, int len1, int *len2){
         *len2 += 4 - (*len2)%4;
     }
     /* エンコード後の文字列の領域確保 */
-    str2 = (char*)malloc((*len2)*sizeof(char));
+    str2 = (char*)malloc(((*len2)+1)*sizeof(char));
 
     /* エンコード後の文字列に関して、先に末尾4文字に「=」をパディングしておく（少々冗長） */
-    for(i=0; i<4; i++){
-        *(str2+((*len2)-i)) = '=';
+    if(*len2 > 0){
+        int pad_count = (*len2 >= 4) ? 4 : *len2;
+        for(i=0; i<pad_count; i++){
+            *(str2 + (*len2 - 1 - i)) = '=';
+        }
     }
+    str2[*len2] = '\0';
 
 
     /* エンコードの処理開始 */
